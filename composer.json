@@ -1,0 +1,15 @@
+{
+    "name": "Mparaiso/ksenia",
+    "description": "A blog engine for ksenia portfolio",
+    "authors": [
+        {
+            "name": "mparaiso",
+            "email": "aikah@free.fr"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "silex/silex":"1.*",
+        "doctrine/dbal":"*"
+    }
+}

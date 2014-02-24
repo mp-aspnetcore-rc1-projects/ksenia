@@ -5,4 +5,6 @@ if (php_sapi_name() === 'cli-server' && is_file($filename)) {
 return false;
 }
 
-require 'index.php';
+$app = require __DIR__.'/../php/app.php';
+
+$app->run();

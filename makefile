@@ -4,7 +4,7 @@ commit:
 push: commit
 	git push origin master
 run:
-	@php -S localhost:3000 router.php &
+	@php -S localhost:3000 -t public public/index.php &
 deploy-af:
 	@af update mparaiso-blog
 deploy-heroku: commit

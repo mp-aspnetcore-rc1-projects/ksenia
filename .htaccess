@@ -3,7 +3,7 @@
     RewriteEngine On
     RewriteCond %{HTTP_HOST} ^kseniap.eu01.aws.af.cm$ [NC,OR]
 	RewriteCond %{HTTP_HOST} ^www.kseniap.eu01.aws.af.cm$
-    #RewriteBase /path/to/app
+    #RewriteBase /public
     RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteRule ^ index.php [QSA,L]
+    RewriteRule ^ public/index.php [QSA,L]
 </IfModule>

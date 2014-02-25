@@ -7,7 +7,6 @@
             "email": "aikah@free.fr"
         }
     ],
-    "minimum-stability": "dev",
     "require": {
         "silex/silex":"1.*",
         "doctrine/dbal":"*",

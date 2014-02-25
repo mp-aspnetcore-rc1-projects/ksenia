@@ -25,6 +25,13 @@ $templates['index'] = "
 {% endblock %}
 ";
 
+$templates['admin_index']="
+{% extends 'layout' %}
+{% block content %}
+    <h2>Admin Index</h2>
+{% endblock %}
+";
+
 $templates['admin_upload'] = "
 {% extends 'layout' %}
 {% block content %}

@@ -25,9 +25,19 @@
 				data: formData,
 				processData: false,
 				contentType: false,
+				/* @see http://stackoverflow.com/questions/166221/how-can-i-upload-files-asynchronously-with-jquery */
+				xhr:function(){ //custom xhr
+					var xhr = $.ajaxSettings.xhr();
+					if(xhr.upload){ //if upload property
+						xhr.upload.addEventListener('progress',function(event){
+							self.trigger('progress',event);
+						});
+					}
+					return xhr;
+				},
 				type: 'POST',
 				success: function(res) {
-					self.trigger('uploaded', res);
+					self.trigger('upload', res);
 				},
 				error: function(err) {
 					self.trigger('error', [].slice.call(arguments));

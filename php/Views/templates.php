@@ -7,7 +7,7 @@
  */
 $templates = array();
 
-$templates['layout']="
+$templates['layout']=<<<HERE
 <!doctype html>
 <html lang='{{app.locale}}'>
 	<head>
@@ -21,6 +21,7 @@ $templates['layout']="
 	</head>
 	<body>
 		<main class='container'>
+			<noscript><h2 class="alert alert-warning">Please Enable Javascript!</h2></noscript>
 			<h1>{{app.title}}</h1>
 			{%block content%}{%endblock%}
 		</main>
@@ -28,7 +29,7 @@ $templates['layout']="
 		{% endblock %}
 	</body>
 </html>
-";
+HERE;
 
 $templates['index'] = "
 {% extends 'layout' %}

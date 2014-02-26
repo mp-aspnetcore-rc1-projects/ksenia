@@ -32,7 +32,7 @@ class Config implements ServiceProviderInterface
          * constants
          */
         $app['connection_string'] = getenv('KSENIA_MONGODB');
-        $app['temp'] = $app['debug'] ? getenv('TMP') : __DIR__."/../temp/";
+        $app['temp'] = $app['debug'] ? getenv('TMP') : __DIR__."/../temp";
         $app['title'] = "ksenia - porfolio";
 
         /**

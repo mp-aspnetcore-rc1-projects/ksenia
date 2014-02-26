@@ -6,11 +6,13 @@
  * this code was open sourced for educational purpose only.
  */
 use Controller\Administration;
-use Controller\Portfolio;
+use Controller\Index;
 use Silex\Application;
 use Silex\Provider\ServiceControllerServiceProvider;
 use Silex\Provider\SessionServiceProvider;
+use Silex\Provider\TranslationServiceProvider;
 use Silex\Provider\TwigServiceProvider;
+use Silex\Provider\UrlGeneratorServiceProvider;
 use Silex\ServiceProviderInterface;
 
 class Config implements ServiceProviderInterface
@@ -30,33 +32,35 @@ class Config implements ServiceProviderInterface
          * constants
          */
         $app['connection_string'] = getenv('KSENIA_MONGODB');
-        $app['temp'] = getenv('TMP');
+        $app['temp'] = $app['debug'] ? getenv('TMP') : __DIR__."/../temp/";
         $app['title'] = "ksenia - porfolio";
 
         /**
-         * third party services
+         * silex core services
          */
         $app->register(new ServiceControllerServiceProvider);
         $app->register(new SessionServiceProvider);
         $app->register(new TwigServiceProvider(), array(
-            'twig.templates' => require(__DIR__ . '/templates.php'),
+            'twig.templates' => require(__DIR__ . '/Views/templates.php'),
             'twig.options' => array('cache' => $app['temp'] . '/twig'
             )));
+        $app->register(new TranslationServiceProvider);
+        $app->register(new UrlGeneratorServiceProvider);
         /**
          * custom services
          */
         /**
          * mongodb connection
          */
-        $app['mongo'] = $app->share(function (Application $app) {
-            $mongo = new Mongo($app['connection_string']);
+        $app['mongo'] = $app->share(function (App $app) {
+            $mongo = new MongoClient($app->connection_string);
             return $mongo;
         });
         /**
          * routing
          */
         $app->mount('/private', new Administration());
-        $app->mount('/', new Portfolio());
+        $app->mount('/', new Index());
     }
 
     /**

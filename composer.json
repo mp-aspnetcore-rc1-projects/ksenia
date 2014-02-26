@@ -8,8 +8,11 @@
         }
     ],
     "require": {
-        "silex/silex":"1.*",
+        "silex/silex":"~1.*@dev",
         "doctrine/dbal":"*",
-        "twig/twig":"*"
+        "twig/twig":"*",
+        "symfony/translation": "~2.3",
+        "symfony/twig-bridge":"~2.3",
+        "symfony/forms":"~2.3"
     }
 }

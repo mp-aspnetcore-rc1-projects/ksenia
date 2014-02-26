@@ -6,16 +6,17 @@
  * this code was open sourced for educational purpose only.
  */
 namespace Controller;
+use App;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
 
 
-class Portfolio implements ControllerProviderInterface
+class Index implements ControllerProviderInterface
 {
 
-    function index(Application $app){
-        return $app['twig']->render('index');
+    function index(App $app){
+        return $app->twig->render('index');
     }
     /**
      * Returns routes to connect to the given application.

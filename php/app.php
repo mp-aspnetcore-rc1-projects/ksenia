@@ -6,17 +6,29 @@
  * this code was open sourced for educational purpose only.
  */
 use Silex\Application;
-use Silex\ServiceProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-
-class App extends Application implements ServiceProviderInterface
+/**
+ * Class App
+ * @property \Twig_Environment $twig
+ * @property \MongoClient $mongo
+ * @property string $connection_string
+ */
+class App extends Application
 {
     function __construct(array $params = array())
     {
         parent::__construct($params);
         $this->register(new Config);
 
+    }
+
+    function __get($property){
+        if ($this->offsetExists($property)){
+            return $this[$property];
+        }else{
+            throw new \Exception("Property $property doesnt exist");
+        }
     }
 }
 

@@ -1,0 +1,29 @@
+/**
+ * KSENIA PORTFOLIO
+ * @copyright 2014 mparaiso <mparaiso@online.fr>
+ * all rights reserved
+ * this code was open sourced for educational purpose only.
+ */
+
+ body{
+ 	font-family: 'PT Sans', Helvetica, sans-serif;
+ }
+/**
+ * CLASSES
+ */
+ .dragged-over{
+ 	border:2px dotted #AAA;
+ }
+ .item{
+ 	width:50px;
+ 	height: 50px;
+ 	display: inline-block;
+ 	margin:10px 10px;
+ 	background-color: #AAF;
+ 	overflow: hidden;
+ }
+ #drop_zone{
+ 	background-color: #EEE;
+ 	min-width: 400px;
+ 	min-height:400px;
+ }

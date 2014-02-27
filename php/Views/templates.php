@@ -152,6 +152,7 @@ $templates['project_new']=<<<HERE
 	{%extends 'admin_layout' %}
 	{% block admin_content %}
 		<h2>NEW PROJECT</h2>
+		<p class='text-muted'>You'll be able to add images after the project is saved</p>
 		{% include 'project_form' with {form:form} %}
 	{% endblock %}
 	{% block scripts %}

@@ -59,6 +59,7 @@ class Config implements ServiceProviderInterface
             'odm.connection.dbname' => $app['ksenia_dbname'],
             'odm.connection.options' => array('connect' => true),
             'odm.proxy_dir' => __DIR__ . '/Proxy',
+            'odm.hydrator_dir'=>__DIR__.'/Hydrator',
             'odm.driver.configs' => array(
                 'default' => array(
                     'namespace' => 'Entity',

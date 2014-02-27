@@ -7,21 +7,29 @@
  */
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
-
+use Symfony\Component\Form\FormFactory;
+use Symfony\Component\Routing\Generator\UrlGenerator;
 /**
  * Class App
  * @property \Twig_Environment $twig
  * @property \MongoClient $mongo
  * @property string $connection_string
+ * @property FormFactory formFactory
+ * @property UrlGenerator url_generator
+ * @property  \Service\Project projectService
+ *
  */
 class App extends Application
 {
+
     function __construct(array $params = array())
     {
         parent::__construct($params);
         $this->register(new Config);
 
     }
+
+
 
     function __get($property){
         if ($this->offsetExists($property)){

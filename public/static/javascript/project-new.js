@@ -2,57 +2,55 @@
 /*global jQuery,escape,_,FileReader,FormData*/
 "use strict";
 jQuery(function($) {
-
+	var inputTemplate, fileTemplate, $form, $output, $input, $dropZone, uniqId, renderOutput;
 	//console.log('project-new init');
 	// input[type=file] view
-	var inputTemplate = '<input type="file" accept="image/*" id="files" name="files[]" multiple/>\
+	inputTemplate = '<input type="file" accept="image/*" id="files" name="files[]" multiple/>\
 	<div id="drop_zone">Drop files here</div>\
 	<output id="list"></output>';
 	// a file view
-	var fileTemplate = '<div class="item" title="{{name}}"></div>';
+	fileTemplate = '<div class="item"></div>';
 	// the form
-	var $form = $("form[name='project']");
+	$form = $("form[name='project']");
 	$form.append(inputTemplate);
-	var $output = $("output", $form);
-	var $input = $('input[type=file]', $form);
-	var $dropZone = $('#drop_zone', $form);
+	$output = $("output", $form);
+	$input = $('input[type=file]', $form);
+	$dropZone = $('#drop_zone', $form);
 	/**
 	 * generate a unique id
 	 * @return {String} a unique id
 	 */
-	var uniqId = function() {
+	uniqId = function() {
 		return _.uniqueId('file_');
 	};
-	var renderOutput = function(files) {
+	renderOutput = function(files) {
 		/**
 		 * renderOutput
 		 * @param  {Array} file [description]
 		 * @return {Array} an array of jQuery objects
 		 */
 		return [].slice.call(files).map(function(file) {
-			var html = fileTemplate.replace(/(\{\{(\w+)?\}\})/gi, function(a, b, prop) {
-				if (file[prop] !== 'undefined') {
-					return file[prop];
-				}
-				return "";
-			});
-			var $html = $(html).ksenia_upload({
+			var $html, $progress;
+			$html = $(fileTemplate).attr('title', file.name).ksenia_upload({
 				file: file,
 				id: uniqId(),
 				url: "/private/upload",
 				auto: true
 			});
-			$html.on('progress', function(e,progress) {
-				//console.log(arguments);
+			$progress = $('<progress max="100">');
+			$html.html($progress);
+			$html.on('progress', function(e, progress) {
+				var perc = 0;
 				if (progress.lengthComputable) {
-					$html.text(Math.round(progress.loaded * 100 / progress.total) + "%");
+					perc = Math.floor(progress.loaded * 100 / progress.total);
 				}
+				$progress.attr('value', perc).text(perc);
 			});
-			$html.on('upload', function() {
-				console.log('uploaded!', arguments);
-				var reader = new FileReader();
+			$html.on('upload', function(e) {
+				var reader, $img;
+				reader = new FileReader();
 				reader.onload = function(e) {
-					var $img = $('<img>', {
+					$img = $('<img>', {
 						src: e.target.result
 					});
 					if ($img.width() < $img.height) {

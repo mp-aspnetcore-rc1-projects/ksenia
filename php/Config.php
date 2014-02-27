@@ -7,6 +7,7 @@
  */
 use Controller\Administration;
 use Controller\Index;
+use Mparaiso\Provider\DoctrineODMMongoDBServiceProvider;
 use Silex\Application;
 use Silex\Provider\ServiceControllerServiceProvider;
 use Silex\Provider\SessionServiceProvider;
@@ -14,6 +15,7 @@ use Silex\Provider\TranslationServiceProvider;
 use Silex\Provider\TwigServiceProvider;
 use Silex\Provider\UrlGeneratorServiceProvider;
 use Silex\ServiceProviderInterface;
+use Silex\Provider\FormServiceProvider;
 
 class Config implements ServiceProviderInterface
 {
@@ -31,8 +33,9 @@ class Config implements ServiceProviderInterface
         /**
          * constants
          */
-        $app['connection_string'] = getenv('KSENIA_MONGODB');
-        $app['temp'] = $app['debug'] ? getenv('TMP') : __DIR__."/../temp";
+        $app['ksenia_connection_string'] = getenv('KSENIA_MONGODB');
+        $app['ksenia_dbname'] ="ksenia-portfolio";
+        $app['temp'] = $app['debug'] ? getenv('TMP') : __DIR__ . "/../temp";
         $app['title'] = "ksenia - porfolio";
 
         /**
@@ -46,15 +49,39 @@ class Config implements ServiceProviderInterface
             )));
         $app->register(new TranslationServiceProvider);
         $app->register(new UrlGeneratorServiceProvider);
+        $app->register(new FormServiceProvider);
         /**
          * custom services
          */
+        /** form factory helper */
+        $app->register(new  DoctrineODMMongoDBServiceProvider(), array(
+            'odm.connection.server' => $app['ksenia_connection_string'],
+            'odm.connection.dbname' => $app['ksenia_dbname'],
+            'odm.connection.options' => array('connect' => true),
+            'odm.proxy_dir' => __DIR__ . '/Proxy',
+            'odm.driver.configs' => array(
+                'default' => array(
+                    'namespace' => 'Entity',
+                    'path' => __DIR__ . '/Entity',
+                    'type' => 'annotations'
+                )
+            )
+        ));
+        $app['formFactory'] = $app->share(function ($app) {
+            return $app['form.factory'];
+        });
         /**
          * mongodb connection
          */
         $app['mongo'] = $app->share(function (App $app) {
             $mongo = new MongoClient($app->connection_string);
             return $mongo;
+        });
+        /**
+         * project
+         */
+        $app['projectService'] = $app->share(function ($app) {
+            return new \Service\Project($app['odm.dm']);
         });
         /**
          * routing

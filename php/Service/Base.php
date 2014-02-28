@@ -92,7 +92,7 @@ class Base
 
     function delete($model, $flush = true)
     {
-        $this->dm->clear($model);
+        $this->dm->remove($model);
         if ($flush) {
             $this->dm->flush($model);
         }

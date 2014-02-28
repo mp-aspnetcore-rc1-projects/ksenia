@@ -152,5 +152,28 @@ class Project
         return $this->getTitle();
     }
 
+    /**
+     * @return Project
+     */
+    function copy()
+    {
+        $new = clone($this);
+        $new->setId(null);
+        $new->images = $this->images->map(function ($image) use ($new) {
+            /** @var \Entity\Image $image */
+            $image->setId(null);
+            $image->setProject($new);
+            $gridFsFile = clone $image->getFile();
+            $image->setFile($gridFsFile);
+            return $image;
+        });
+        return $new;
+    }
+
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
 
 }

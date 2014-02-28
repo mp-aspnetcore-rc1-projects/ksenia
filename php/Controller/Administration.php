@@ -84,7 +84,25 @@ class Administration implements ControllerProviderInterface
 
     function projectDelete(App $app, Request $req, $id)
     {
-        //@TODO implement
+        $project = $app->projectService->find($id);
+        if (!$project) {
+            $app->abort(404);
+        }
+        $app->projectService->delete($project);
+        return $app->redirect($app->url_generator->generate('project_index'));
+    }
+
+    function projectClone(App $app, Request $req, $id)
+    {
+        $project = $app->projectService->find($id);
+        if (!$project) {
+            $app->abort(404);
+        }
+        /** @var \Entity\Project $newProject */
+        $newProject = $project->copy();
+        $newProject->setTitle(uniqid($newProject->getTitle() . "_"));
+        $app->projectService->insert($newProject);
+        return $app->redirect($app->url_generator->generate('project_read', array('id' => $newProject->getId())));
     }
 
     function imageIndex(App $app, Request $req, $projectId)
@@ -197,6 +215,8 @@ class Administration implements ControllerProviderInterface
             ->bind('project_update');
         $projectController->delete('/{id}', array($this, 'projectDelete'))
             ->bind('project_delete');
+        $projectController->post('/{id}/clone', array($this, 'projectClone'))
+            ->bind('project_clone');
 
         /**
          * IMAGE MANAGEMENT

@@ -101,12 +101,17 @@ HERE;
 $templates['project_index'] = <<<HERE
 	{% extends 'admin_layout' %}
 	{% block admin_content %}
-		<h2>Projects</h2>
+				<header class="lead">
+            <ol class="breadcrumb">
+                <li class="active">Projects</li>
+            </ol>
+        </header>
 		{% if projects and projects|length > 0 %}
 		<table class="table">
-				<thead>
+			<thead>
 				<tr>
 					<th>Title</th>
+					<th></th>
 					<th></th>
 					<th></th>
 				</tr>
@@ -116,10 +121,16 @@ $templates['project_index'] = <<<HERE
 				<tr>
 					<td><a href="{{ path('project_read',{id:project.id}) }}">{{project.title}}</a></td>
 					<td>{{project.description[:50]~"..."}}</td>
-					<td><a href="{{path('image_index',{projectId:project.id}) }}">Manage Images</a></td>
+					<td><a class="btn btn-link"  href="{{path('image_index',{projectId:project.id}) }}">Manage Images</a></td>
 					<td>
-						<a href="{{ path('project_update',{id:project.id}) }}">Edit</a>
-						<a href="{{ path('project_delete',{id:project.id}) }}">Remove</a>
+					    <form class="inline" action="{{path('project_clone',{id:project.id}) }}" method="POST">
+					    <button class="btn btn-link" type="submit">Clone</button>
+					    </form>
+						<a class="btn btn-link" href="{{ path('project_update',{id:project.id}) }}">Edit</a>
+						<form class="inline" action="{{ path('project_delete',{id:project.id}) }}" method="POST">
+						    <input type="hidden" name="_method" id="_method" value="DELETE"/>
+						    <button class="btn btn-link" type="submit">Remove</a>
+						</form>
 					</td>
 				</tr>
 				{% endfor %}
@@ -182,6 +193,7 @@ $templates['project_read'] = <<<HERE
 	{% block admin_content %}
 		<header class="lead">
             <ol class="breadcrumb">
+                <li><a href="{{path('project_index')}}">Projects</a></li>
                 <li class="active">{{project.title}}</li>
             </ol>
         </header>
@@ -233,8 +245,9 @@ $templates['image_index'] = <<<HERE
     {%block admin_content%}
     	<header class="lead">
             <ol class="breadcrumb">
+                <li><a href="{{path('project_index') }}">Projects</a></li>
                 <li><a href="{{path('project_read',{id:project.id}) }}">{{project.title}}</a></li>
-                <li class="active">Images from project {{project.title}}</li>
+                <li class="active">Images</li>
             </ol>
         </header>
         <a class="btn btn-default" href="{{path('image_create',{projectId:project.id})}}">Add New</a>

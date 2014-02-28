@@ -8,5 +8,5 @@ run:
 deploy-af:
 	@af update mparaiso-blog
 deploy-heroku: commit
-	git push heroku master
+	@git push heroku master
 .PHONY: commit run deploy-af push deploy-heroku

@@ -30,7 +30,7 @@ class GridFSFileToFile implements DataTransformerInterface
         /** @var UploadedFile $value */
         if ($value) {
             $fs = new GridFSFile();
-            $f = $value->move(getenv('TEMP'), uniqid($value->getBasename().'_') . "." . $value->guessExtension());
+            $f = $value->move(__DIR__.'/../../temp/', uniqid($value->getBasename().'_') . "." . $value->guessExtension());
             $fs->setFilename($f->getPathname());
             return $fs;
         }

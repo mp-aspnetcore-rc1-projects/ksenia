@@ -11,10 +11,10 @@
         "silex/silex": "1.*@dev",
         "doctrine/dbal": "*",
         "twig/twig": "*",
-        "symfony/translation": "~2.3",
-        "symfony/twig-bridge": "~2.3",
-        "symfony/validator":"~2.3",
-        "symfony/form": "~2.3",
+        "symfony/translation": "2.3.*",
+        "symfony/twig-bridge": "2.3.*",
+        "symfony/validator":"2.3.*",
+        "symfony/form": "2.3.*",
         "mparaiso/doctrineodmserviceprovider":"0.*@dev",
         "doctrine/mongodb-odm":"*@dev",
         "doctrine/mongodb-odm-bundle":"3.*@dev"
@@ -23,6 +23,8 @@
         "phpunit/phpunit": "3.7.*"
     },
     "provide":{
-        "ext-mongo":"*"
+        "ext-mongo":"*",
+        "ext-intl":"*",
+        "lib-icu":"*"
     }
 }

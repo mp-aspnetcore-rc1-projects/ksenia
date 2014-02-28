@@ -143,7 +143,7 @@ $templates['project_form'] = <<<HERE
 		 </div>
 		{% endfor %}
 		<button type="reset" class="btn btn-default">Reset</button>
-		<button type="submit" class="btn btn-default">Create</button>
+		<button type="submit" class="btn btn-default">Save</button>
 		{{form_end(form)}}
 HERE;
 

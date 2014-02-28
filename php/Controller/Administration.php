@@ -175,20 +175,18 @@ class Administration implements ControllerProviderInterface
     {
         /** @var \Entity\Project $project */
         $project = $app->projectService->find($projectId);
-        $image = $app->imageService->find($imageId);
 
-        if (!$project || !$image) {
+        if (!$project) {
             $app->abort(404);
         }
-
-        if ($project->getImages()->contains($image)) {
-            $project->removeImage($image);
-            $app->projectService->update($project);
-            $app->imageService->delete($image);
-            return $app->redirect($app->url_generator->generate('image_index', array('projectId' => $projectId)));
-        } else {
-            $app->abort(500, 'image not part of project');
+        $image = $project->getImageById($imageId);
+        if (!$image) {
+            $app->abort(404);
         }
+        $project->removeImage($image);
+        $app->imageService->delete($image);
+        $app->projectService->update($project);
+        return $app->redirect($app->url_generator->generate('image_index', array('projectId' => $projectId)));
     }
 
     /**

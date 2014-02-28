@@ -162,7 +162,12 @@ HERE;
 $templates['project_new'] = <<<HERE
 	{%extends 'admin_layout' %}
 	{% block admin_content %}
-		<h2>NEW PROJECT</h2>
+		<header class="lead">
+            <ol class="breadcrumb">
+                <li><a href="{{path('project_index') }}">Projects</a></li>
+                <li class="active">Create</li>
+            </ol>
+        </header>
 		<p class='text-muted'>You'll be able to add images after the project is saved</p>
 		{% include 'project_form' with {form:form} %}
 	{% endblock %}
@@ -174,8 +179,13 @@ HERE;
 $templates['project_update'] = <<<HERE
 	{%extends 'admin_layout' %}
 	{% block admin_content %}
-		<h2>EDIT PROJECT</h2>
-		<p>{{project.title}}</p>
+        <header class="lead">
+        <ol class="breadcrumb">
+            <li><a href="{{path('project_index') }}">Projects</a></li>
+            <li><a href="{{path('project_read',{id:project.id}) }}">{{project.title}}</a></li>
+            <li class="active">Edit</li>
+        </ol>
+        </header>
 		<a class="btn btn-default" href="{{path('image_create',{projectId:project.id})}}">
 		Add a new image</a>
 		{% include 'project_form' with {form:form} %}
@@ -295,7 +305,9 @@ $templates['image_read'] = <<<HERE
     {%block admin_content%}
     <header class="lead">
         <ol class="breadcrumb">
+            <li><a href="{{path('project_index') }}">Projects</a></li>
             <li><a href="{{path('project_read',{id:project.id}) }}">{{project.title}}</a></li>
+            <li><a href="{{path('image_index',{projectId:project.id}) }}">Images</a></li>
             <li class="active">{{image.title}}</li>
         </ol>
     </header>
@@ -329,7 +341,14 @@ HERE;
 $templates['image_create'] = <<<HERE
 	{%extends 'admin_layout'%}
 	{%block admin_content %}
-		<header class="lead">Add a new image to "<em>{{project.title}}</em> "</header>
+	    <header class="lead">
+        <ol class="breadcrumb">
+            <li><a href="{{path('project_index',{id:project.id}) }}">Projects</a></li>
+            <li><a href="{{path('project_read',{id:project.id}) }}">{{project.title}}</a></li>
+            <li><a href="{{path('image_index',{projectId:project.id}) }}">Images</a></li>
+            <li class="active">Create</a></li>
+        </ol>
+        </header>
         {%include 'image_form' with {form:form}%}
 	{%endblock%}
 HERE;
@@ -337,7 +356,15 @@ HERE;
 $templates['image_update'] = <<<HERE
 	{%extends 'admin_layout'%}
 	{%block admin_content %}
-		<header class="lead">Update image for project <a href="{{path('project_read',{id:project.id}) }}">{{project.title}}</a></header>
+	    <header class="lead">
+        <ol class="breadcrumb">
+            <li><a href="{{path('project_index',{id:project.id}) }}">Projects</a></li>
+            <li><a href="{{path('project_read',{id:project.id}) }}">{{project.title}}</a></li>
+            <li><a href="{{path('image_index',{projectId:project.id}) }}">Images</a></li>
+            <li><a href="{{path('image_read',{projectId:project.id,imageId:image.id}) }}">{{image.title}}</a></li>
+            <li class="active">Update</a></li>
+        </ol>
+        </header>
 		<div class="row">
 		<a class="thumbnail col-md-5"
           target="_blank" href="{{path('image_load',{imageId:image.id})}}">

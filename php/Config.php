@@ -9,6 +9,7 @@ use Controller\Administration;
 use Controller\Index;
 use Mparaiso\Provider\DoctrineODMMongoDBServiceProvider;
 use Silex\Application;
+use Silex\Provider\HttpCacheServiceProvider;
 use Silex\Provider\ServiceControllerServiceProvider;
 use Silex\Provider\SessionServiceProvider;
 use Silex\Provider\TranslationServiceProvider;
@@ -16,6 +17,8 @@ use Silex\Provider\TwigServiceProvider;
 use Silex\Provider\UrlGeneratorServiceProvider;
 use Silex\ServiceProviderInterface;
 use Silex\Provider\FormServiceProvider;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class Config implements ServiceProviderInterface
 {
@@ -34,7 +37,7 @@ class Config implements ServiceProviderInterface
          * constants
          */
         $app['ksenia_connection_string'] = getenv('KSENIA_MONGODB');
-        $app['ksenia_dbname'] ="ksenia-portfolio";
+        $app['ksenia_dbname'] = "ksenia-portfolio";
         $app['temp'] = $app['debug'] ? getenv('TMP') : __DIR__ . "/../temp";
         $app['title'] = "ksenia - porfolio";
 
@@ -50,6 +53,9 @@ class Config implements ServiceProviderInterface
         $app->register(new TranslationServiceProvider);
         $app->register(new UrlGeneratorServiceProvider);
         $app->register(new FormServiceProvider);
+        $app->register(new HttpCacheServiceProvider(), array(
+            'http_cache.cache_dir' => $app['temp'] . "/cache/"
+        ));
         /**
          * custom services
          */
@@ -59,7 +65,7 @@ class Config implements ServiceProviderInterface
             'odm.connection.dbname' => $app['ksenia_dbname'],
             'odm.connection.options' => array('connect' => true),
             'odm.proxy_dir' => __DIR__ . '/Proxy',
-            'odm.hydrator_dir'=>__DIR__.'/Hydrator',
+            'odm.hydrator_dir' => __DIR__ . '/Hydrator',
             'odm.driver.configs' => array(
                 'default' => array(
                     'namespace' => 'Entity',
@@ -84,11 +90,18 @@ class Config implements ServiceProviderInterface
         $app['projectService'] = $app->share(function ($app) {
             return new \Service\Project($app['odm.dm']);
         });
+        $app['imageService'] = $app->share(function ($app) {
+            return new \Service\Image($app['odm.dm']);
+        });
         /**
          * routing
          */
         $app->mount('/private', new Administration());
         $app->mount('/', new Index());
+        $app->after(function (Request $req, Response $res) {
+            header_remove("X-Powered-By");
+            return $res;
+        });
     }
 
     /**

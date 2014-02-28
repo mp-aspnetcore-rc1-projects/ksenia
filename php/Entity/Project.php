@@ -3,6 +3,7 @@
 namespace Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 /**
@@ -22,17 +23,17 @@ class Project
     private $description;
     /** @ODM\String */
     private $language;
-    /** @ODM\String*/
+    /** @ODM\String */
     private $client;
     /** @ODM\Collection */
     private $tags;
     /**
      * @var ArrayCollection[\Entity\Image]
-     * @ODM\EmbedMany(targetDocument="\Entity\Image")
+     * @ODM\ReferenceMany(targetDocument="\Entity\Image")
      */
     private $images;
     /**
-     * @ODM\ReferenceMany(targetDocument="\Entity\User")
+     * @ODM\ReferenceMany(targetDocument="\Entity\User",cascade="all")
      * @var \Entity\User
      */
     private $owner;
@@ -79,12 +80,14 @@ class Project
         $this->language = $language;
     }
 
-    public function getClient(){
+    public function getClient()
+    {
         return $this->client;
     }
 
-    public function setClient($client){
-        $this->client=$client;
+    public function setClient($client)
+    {
+        $this->client = $client;
         return $this;
     }
 
@@ -103,6 +106,32 @@ class Project
         return $this->images;
     }
 
+    public function addImage(Image $image)
+    {
+        $added = $this->images->add($image);
+        $image->setProject($this);
+        if (null === $image->getId()) {
+            $image->setId(new \MongoId());
+        }
+        return $added;
+    }
+
+    public function getImageById($id)
+    {
+        /** @var Criteria $matching */
+        $matching = Criteria::create()->where(Criteria::expr()->eq('id', $id));
+        return $this->getImages()->filter(function ($image) use ($id) {
+            return $image->getId() === "$id";
+        })->first();
+    }
+
+    public function removeImage(Image $image)
+    {
+        $removed = $this->images->removeElement($image);
+        $image->setProject(null);
+        return $removed;
+    }
+
     public function setImages($images)
     {
         $this->images = $images;
@@ -116,6 +145,11 @@ class Project
     public function setOwner($owner)
     {
         $this->owner = $owner;
+    }
+
+    function __toString()
+    {
+        return $this->getTitle();
     }
 
 

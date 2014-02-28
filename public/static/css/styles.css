@@ -8,9 +8,13 @@
  body{
  	font-family: 'PT Sans', Helvetica, sans-serif;
  }
+
 /**
  * CLASSES
  */
+.inline{
+	display:inline;
+}
  .dragged-over{
  	border:2px dotted #AAA;
  }

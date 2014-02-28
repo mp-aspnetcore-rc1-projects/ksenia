@@ -2,15 +2,20 @@
 
 namespace Entity;
 
+use Doctrine\MongoDB\GridFSFile;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * Class Image
  * @package Entity
  * @ODM\Document
+ * @ODM\HasLifecycleCallbacks
  */
-class Image{
-	/** @ODM\Id */
+class Image
+{
+    /** @ODM\Id */
     private $id;
     /** @ODM\String */
     private $title;
@@ -24,10 +29,36 @@ class Image{
     private $owner;
     /** @ODM\File */
     private $file;
+    /**
+     * @ODM\String
+     */
+    private $filename;
+    /**
+     * @ODM\String
+     */
+    private $basename;
+    /**
+     * @ODM\String
+     */
+    private $mimeType;
+    /**
+     * @ODM\ReferenceOne(targetDocument="\Entity\Project")
+     * @var \Entity\Project
+     */
+    private $project;
+    /**
+     * @ODM\String
+     */
+    private $md5;
 
     public function getId()
     {
         return $this->id;
+    }
+
+    public function setId($id)
+    {
+        $this->id = $id;
     }
 
     public function getTitle()
@@ -70,6 +101,9 @@ class Image{
         $this->updatedAt = $updatedAt;
     }
 
+    /**
+     * @return GridFSFile
+     */
     public function getFile()
     {
         return $this->file;
@@ -88,5 +122,77 @@ class Image{
     public function setOwner($owner)
     {
         $this->owner = $owner;
+    }
+
+    /**
+     * @param Project $project
+     */
+    public function setProject($project)
+    {
+        $this->project = $project;
+    }
+
+    /**
+     * @return Project
+     */
+    function getProject()
+    {
+        return $this->project;
+    }
+
+    public function getMimeType()
+    {
+        return $this->mimeType;
+    }
+
+    function setMimeType($mimeType)
+    {
+        $this->mimeType = $mimeType;
+    }
+
+    /**
+     * @ODM\PrePersist
+     */
+    function beforeSave()
+    {
+        if (null == $this->getCreatedAt()) {
+            $this->setCreatedAt(new \DateTime());
+        }
+        $this->setUpdatedAt(new \DateTime());
+        if (null != $this->getFile()) {
+            $mime = MimeTypeGuesser::getInstance()->guess($this->getFile()->getFilename());
+            $this->setMimeType($mime);
+        }
+        $this->setBasename(basename($this->getFilename()));
+    }
+
+    public function getMd5()
+    {
+        return $this->md5;
+    }
+
+    public function getFilename()
+    {
+        return $this->filename;
+    }
+
+    public function setFilename($filename)
+    {
+        $this->filename = $filename;
+    }
+
+    public function __toString()
+    {
+        return $this->filename;
+    }
+
+    public function getBasename()
+    {
+        return $this->basename;
+    }
+
+    public function setBasename($basename)
+    {
+        $this->basename = $basename;
     }
 }

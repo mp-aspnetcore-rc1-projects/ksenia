@@ -1,6 +1,6 @@
 commit:
-	git add .
-	git commit -am"$(message) `date`"
+	@git add .
+	@git commit -am"$(message) `date`"
 push: commit
 	git push origin master
 run:
@@ -9,4 +9,4 @@ deploy-af:
 	@af update mparaiso-blog
 deploy-heroku: commit
 	git push heroku master
-.PHONY: commit run deploy-af
+.PHONY: commit run deploy-af push deploy-heroku

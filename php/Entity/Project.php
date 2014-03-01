@@ -130,6 +130,10 @@ class Project
         return $added;
     }
 
+    /**
+     * @param $id
+     * @return \Entity\Image
+     */
     public function getImageById($id)
     {
         /** @var Criteria $matching */

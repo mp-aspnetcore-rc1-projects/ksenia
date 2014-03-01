@@ -4,6 +4,7 @@ namespace Entity;
 
 use Doctrine\MongoDB\GridFSFile;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+use JsonSerializable;
 use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -13,7 +14,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  * @ODM\Document
  * @ODM\HasLifecycleCallbacks
  */
-class Image
+class Image implements JsonSerializable
 {
     /** @ODM\Id */
     private $id;
@@ -52,6 +53,10 @@ class Image
      * @ODM\String
      */
     private $md5;
+    /**
+     * @ODM\String
+     */
+    private $extension;
 
     public function getId()
     {
@@ -152,22 +157,6 @@ class Image
         $this->mimeType = $mimeType;
     }
 
-    /**
-     * @ODM\PrePersist
-     */
-    function beforeSave()
-    {
-        if (null == $this->getCreatedAt()) {
-            $this->setCreatedAt(new \DateTime());
-        }
-        $this->setUpdatedAt(new \DateTime());
-        if (null != $this->getFile()) {
-            $mime = MimeTypeGuesser::getInstance()->guess($this->getFile()->getFilename());
-            $this->setMimeType($mime);
-        }
-        $this->setBasename(basename($this->getFilename()));
-    }
-
     public function getMd5()
     {
         return $this->md5;
@@ -206,5 +195,56 @@ class Image
     public function setIsPublished($isPublished)
     {
         $this->isPublished = $isPublished;
+    }
+
+    public function getExtension()
+    {
+        return $this->extension;
+    }
+
+    public function setExtension($extension)
+    {
+        $this->extension = $extension;
+    }
+
+    /**
+     * (PHP 5 &gt;= 5.4.0)<br/>
+     * Specify data which should be serialized to JSON
+     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     */
+    public function jsonSerialize()
+    {
+        return array(
+            "id"=>$this->getId(),
+            "_id"=>$this->getId(),
+            "title" => $this->getTitle(),
+            "description" => $this->getDescription(),
+            "createdAt" => $this->getCreatedAt(),
+            "updatedAt" => $this->getUpdatedAt(),
+            "filename" => $this->getFilename(),
+            "basename" => $this->getBasename()
+        );
+    }
+
+    /**
+     * @ODM\PrePersist
+     */
+    function beforeSave()
+    {
+        if (null == $this->getCreatedAt()) {
+            $this->setCreatedAt(new \DateTime());
+        }
+        $this->setUpdatedAt(new \DateTime());
+        if (null != $this->getFile()) {
+            $mime = MimeTypeGuesser::getInstance()->guess($this->getFile()->getFilename());
+            $this->setMimeType($mime);
+            $i = preg_match("/\.(?<ext>\w+)$/", $this->getFile()->getFilename(), $matches);
+            if ($i > 0) {
+                $this->setExtension($matches['ext']);
+            }
+        }
+        $this->setBasename(basename($this->getFilename()));
     }
 }

@@ -239,19 +239,31 @@ $templates['project_read'] = <<<HERE
 		</p>
 	    <p class="row">
 		{% for image in project.images %}
-		<div class="col-md-2 thumbnail" data-role="image" >
-			<div style="overflow:hidden;height:100px">
-			<a href="{{path('image_read',{projectId:project.id,imageId:image.id}) }}">
-		    	 <img  src="{{path('image_load',{imageId:image.id}) }}" title="{{image.title}} alt="{{image.title}}"/>
-		    </a>
-			</div>
-		    <h4 class="text-muted"><small data-title="{{image.title}}">{{image.title[:20]}}</small></h4>
-		    <small><a class="btn btn-default btn-xs" href="{{path('image_update',{projectId:project.id,imageId:image.id}) }}">Edit</a></small>
-		    <form role="form" data-role="delete-image" data-image-id="{{image.id}}" class="inline" method="POST" action="{{path('image_delete',{projectId:project.id,imageId:image.id}) }}">
-		        <input type="hidden" name="_method" value="DELETE"/>
-		        <button type="submit" class="btn btn-default btn-xs">Remove</button>
-		    </form>
-		</div>
+		<article class="col-sm-3 " data-role="image" data-id="{{image.id}}">
+		    <section class="thumbnail">
+                <figure style="overflow:hidden;height:100px;">
+                <a href="{{path('image_read',{projectId:project.id,imageId:image.id}) }}">
+                     <img  src="{{path('image_load',{imageId:image.id}) }}" title="{{image.title}} alt="{{image.title}}"/>
+                </a>
+                </figure>
+                <figcaption class="text-muted"><small data-title="{{image.title}}">{{image.title[:20]}}</small></figcaption>
+                    <a class="btn btn-default btn-xs"
+                        href="{{path('image_update',{projectId:project.id,imageId:image.id}) }}">Edit</a>
+                    <form role="form" data-role="image-delete" data-image-id="{{image.id}}"
+                    class="inline" method="POST"
+                    action="{{path('image_delete',{projectId:project.id,imageId:image.id}) }}">
+                        <input type="hidden" name="_method" value="DELETE"/>
+                        <button type="submit" data-role="image-delete" class="btn btn-default btn-xs">Remove</button>
+                    </form>
+                <form role="form"
+                    data-role="image-publish" data-image-id="{{image.id}}" class="inline" method="POST"
+                    action="{{path('image_publish',{projectId:project.id,imageId:image.id}) }}">
+                    <button title="Publish or Unpublish image" class="btn btn-default btn-xs" data-role="image-publish">
+                        {% if image.isPublished%}UnPublish{%else%}Publish{%endif%}
+                    </button>
+                </form>
+		    </section>
+		</article>
 		{%endfor%}
 		</p>
 	{% endblock %}
@@ -259,6 +271,7 @@ $templates['project_read'] = <<<HERE
     	{{parent()}}
     	{% include 'jquery' %}
     	{% include 'underscore' %}
+        <script type="text/javascript" src="/static/javascript/jquery-observable.js"></script>
     	<!-- index_image scripts -->
     	<script src="/static/javascript/project-read.js"></script>
     {%endblock%}
@@ -411,16 +424,14 @@ $templates['image_upload'] = <<<HERE
     <h3>&nbsp;</h3>
     {{form_start(form,{attr:{id:'upload-form'}}) }}
         <div class="hidden">{{form_widget(form)}}</div>
-    <!--<form action="" method="POST" id="upload-form" enctype="multipart/form-data">-->
         <button class="btn btn-lg" type="reset">Clear</button>
         <button class="btn btn-primary btn-lg" type="submit">
-             Upload Images <span class="glyphicon glyphicon-cloud-upload"> </span>
+             <span class="text-btn-upload">Upload Images</span><span class="glyphicon glyphicon-cloud-upload"> </span>
         </button>
         <a class="btn btn-success btn-lg done" href="{{path('project_read',{id:project.id}) }}">
              Done <span class="glyphicon glyphicon-ok"> </span>
         </a>
     {{form_end(form)}}
-    <!-- </form>-->
     {%endblock%}
     {% block scripts%}
     {{parent()}}

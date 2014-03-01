@@ -148,6 +148,14 @@ class EntityImageHydrator implements HydratorInterface
             $this->class->reflFields['md5']->setValue($document, $return);
             $hydratedData['md5'] = $return;
         }
+
+        /** @Field(type="string") */
+        if (isset($data['extension'])) {
+            $value = $data['extension'];
+            $return = (string) $value;
+            $this->class->reflFields['extension']->setValue($document, $return);
+            $hydratedData['extension'] = $return;
+        }
         return $hydratedData;
     }
 }

@@ -1,4 +1,4 @@
-/*global jQuery,FormData,FileReader*/
+/*global jQuery,FormData,FileReader,Observable*/
 "use strict";
 /**
  * IMAGE UPLOAD SCRIPT
@@ -19,11 +19,11 @@ jQuery(function ($) {
      * model
      * @type {Object}
      */
-    model = Observable({
+    model = new Observable({
         progress:0,
         dropText: "Drop Some Image Files Here",
         uploadingText:"Uploading...",
-        doneText:"Done",
+        notUploadingText:"Upload",
         formData: null,
         url: null,
         files: [],
@@ -42,6 +42,7 @@ jQuery(function ($) {
      * @type {Object}
      */
     view = {
+        textButtonUpload:$('.text-btn-upload'),
         progress : $('<progress max="100"></progress>'),
         doneButton:$('.done'),
         form: document.querySelector('#upload-form'),
@@ -200,15 +201,17 @@ jQuery(function ($) {
                 return $image;
             }
         },
-        notifyView:{
+        renderView:{
             execute:function(model){
                 if(model.uploading==true){
                     view.dropZone.find('.background-text').html(view.progress).css({'zIndex':100});
+                    view.textButtonUpload.text(model.uploadingText);
                     $(".upload-item").fadeTo(1000,0.5);
                     command.disableDone.execute();
                     command.disableClear.execute();
                     command.disableSubmit.execute();
                 }else{
+                    view.textButtonUpload.text(model.notUploadingText);
                     view.dropZone.find('.background-text').html(model.dropText).css({zIndex:-10});
                     $(".upload-item").css('opacity',1);
                     command.disableClear.execute();
@@ -231,7 +234,7 @@ jQuery(function ($) {
     mediator = $({}).on({
         'change.model':function(){
             command.log.execute('model changed!');
-           command.notifyView.execute(model);
+           command.renderView.execute(model);
         },
         'ajax:start':function(e,ajax){
             model.uploading=true;

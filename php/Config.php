@@ -10,6 +10,8 @@ use Controller\Index;
 use Mparaiso\Provider\DoctrineODMMongoDBServiceProvider;
 use Silex\Application;
 use Silex\Provider\HttpCacheServiceProvider;
+use Silex\Provider\MonologServiceProvider;
+use Silex\Provider\SerializerServiceProvider;
 use Silex\Provider\ServiceControllerServiceProvider;
 use Silex\Provider\SessionServiceProvider;
 use Silex\Provider\TranslationServiceProvider;
@@ -46,7 +48,8 @@ class Config implements ServiceProviderInterface
          */
         $app->register(new ServiceControllerServiceProvider);
         $app->register(new SessionServiceProvider);
-        $app->register(new \Silex\Provider\MonologServiceProvider,array(
+        $app->register(new SerializerServiceProvider());
+        $app->register(new MonologServiceProvider,array(
             'monolog.logfile'=>$app['temp'].'/'.date('Y-m-d').'.txt'
         ));
         $app->register(new TwigServiceProvider(), array(
@@ -104,10 +107,6 @@ class Config implements ServiceProviderInterface
          */
         $app->mount('/private', new Administration());
         $app->mount('/', new Index());
-        $app->after(function (Request $req, Response $res) {
-            header_remove("X-Powered-By");
-            return $res;
-        });
     }
 
     /**

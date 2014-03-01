@@ -19,7 +19,7 @@ use Symfony\Component\Routing\Generator\UrlGenerator;
  * @property  \Service\Project projectService
  * @property \Service\Page pageService
  * @property \Service\Image imageService
- *
+ * @property \Symfony\Component\Serializer\Serializer serializer
  */
 class App extends Application
 {

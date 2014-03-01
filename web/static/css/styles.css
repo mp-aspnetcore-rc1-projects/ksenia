@@ -71,11 +71,7 @@
      vertical-align: middle;
      cursor: default;
  }
-.transition{
-    -webkit-transition:all 2s;
-    transition:all 2s;
-}
-}
+
  /*
 .background-text:before {
     content: "Drop Some Files Here";

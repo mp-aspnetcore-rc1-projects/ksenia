@@ -4,6 +4,7 @@ var Observable = function (data) {
     }
     var $notifier = $({});
     var $data = {};
+    var projectectProperties=['on','off','trigger','model','register'];
     this.on = $notifier.on.bind($notifier);
     this.off = $notifier.off.bind($notifier);
     this.trigger = $notifier.trigger.bind($notifier);
@@ -29,6 +30,9 @@ var Observable = function (data) {
             this[key] = value;
         }
     };
+    projectectProperties.forEach(function(p){
+        Object.defineProperty(this,p,{value:this[p],writable:false});
+    },this);
     Object.keys(data).forEach(function (key) {
         if (data.hasOwnProperty(key)) {
             this.register(key, data[key]);

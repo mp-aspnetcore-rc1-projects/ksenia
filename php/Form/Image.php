@@ -16,6 +16,7 @@ class Image extends AbstractType
         parent::buildForm($builder, $options);
         $builder
             ->add("title", "text")
+            ->add('isPublished', 'choice', array('choices' => array('yes', 'no')))
             ->add('description', 'textarea')
             ->add(
                 $builder->create('file', 'file', array('required' => false, 'attr' => array('accept' => 'image/*')))

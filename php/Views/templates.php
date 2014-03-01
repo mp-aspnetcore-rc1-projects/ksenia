@@ -87,6 +87,11 @@ $templates['admin_nav'] = <<<HERE
 		</li>
 		<li class="list-group-item"><a href="{{path('project_index')}}">Manage Projects</a></li>
 		<li class="list-group-item"><a href="{{path('project_new')}}">Create a new project</a></li>
+	    <li class="list-group-item text-muted uppercase">
+			<strong>PAGES</strong>
+		</li>
+		<li class="list-group-item"><a href="{{path('page_index')}}">Manage Pages</a></li>
+		<li class="list-group-item"><a href="{{path('page_create')}}">Create a new page</a></li>
 	</ul>
 HERE;
 
@@ -426,6 +431,21 @@ $templates['image_upload']=<<<HERE
     {%endblock%}
 HERE;
 
+/**
+ * PAGES
+ */
+$templates['page_index']=<<<HERE
+    {%extends 'admin_layout'%}
+    {%block admin_content%}
+        Page Index
+    {%endblock%}
+HERE;
+$templates['page_create']=<<<HERE
+    {%extends 'admin_layout'%}
+    {%block admin_content%}
+        Page Create
+    {%endblock%}
+HERE;
 /**
  * UTITITLES
  */

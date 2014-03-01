@@ -288,6 +288,8 @@ class Administration implements ControllerProviderInterface
             ->bind('admin_index');
         $adminController->post('/upload', array($this, 'upload'));
         $adminController->mount('/project', $projectController);
+        $page=new Page();
+        $adminController->mount('/page',$page->connect($app));
 
         return $adminController;
     }

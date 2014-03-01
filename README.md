@@ -13,3 +13,7 @@ this code was open sourced for educational purpose only.
 
 You cannot use it for personal nor commercial projects.
 
+### TODO
+
+- [ ] Complete page templates
+

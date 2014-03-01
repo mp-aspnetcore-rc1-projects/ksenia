@@ -17,6 +17,7 @@ use Symfony\Component\Routing\Generator\UrlGenerator;
  * @property FormFactory formFactory
  * @property UrlGenerator url_generator
  * @property  \Service\Project projectService
+ * @property \Service\Page pageService
  * @property \Service\Image imageService
  *
  */

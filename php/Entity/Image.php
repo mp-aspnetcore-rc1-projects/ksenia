@@ -21,6 +21,8 @@ class Image
     private $title;
     /** @ODM\String */
     private $description;
+    /** @ODM\Boolean */
+    private $isPublished;
     /** @ODM\Date */
     private $createdAt;
     /** @ODM\Date */
@@ -194,5 +196,15 @@ class Image
     public function setBasename($basename)
     {
         $this->basename = $basename;
+    }
+
+    public function getIsPublished()
+    {
+        return $this->isPublished;
+    }
+
+    public function setIsPublished($isPublished)
+    {
+        $this->isPublished = $isPublished;
     }
 }

@@ -93,6 +93,9 @@ class Config implements ServiceProviderInterface
         $app['imageService'] = $app->share(function ($app) {
             return new \Service\Image($app['odm.dm']);
         });
+        $app['pageService'] = $app->share(function ($app) {
+            return new \Service\Page($app['odm.dm']);
+        });
         /**
          * routing
          */

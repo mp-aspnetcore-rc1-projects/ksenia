@@ -51,6 +51,14 @@ class EntityImageHydrator implements HydratorInterface
             $hydratedData['description'] = $return;
         }
 
+        /** @Field(type="boolean") */
+        if (isset($data['isPublished'])) {
+            $value = $data['isPublished'];
+            $return = (bool) $value;
+            $this->class->reflFields['isPublished']->setValue($document, $return);
+            $hydratedData['isPublished'] = $return;
+        }
+
         /** @Field(type="date") */
         if (isset($data['createdAt'])) {
             $value = $data['createdAt'];

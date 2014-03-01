@@ -33,7 +33,7 @@ class Project extends AbstractType
                 $form->add('poster', 'document', array(
                     'empty_value'=>"Choose a poster for the project",
                     'class'=>'\Entity\Image'));
-            }   @
+            }   
         });
     }
 

@@ -217,8 +217,8 @@ class Image implements JsonSerializable
     public function jsonSerialize()
     {
         return array(
-            "id"=>$this->getId(),
-            "_id"=>$this->getId(),
+            "id" => $this->getId(),
+            "_id" => $this->getId(),
             "title" => $this->getTitle(),
             "description" => $this->getDescription(),
             "createdAt" => $this->getCreatedAt(),
@@ -244,6 +244,9 @@ class Image implements JsonSerializable
             if ($i > 0) {
                 $this->setExtension($matches['ext']);
             }
+        }
+        if (null != $this->getId()) {
+            $this->setFilename($this->getId() . "." . $this->getExtension());
         }
         $this->setBasename(basename($this->getFilename()));
     }

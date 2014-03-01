@@ -97,7 +97,7 @@ class Image implements ControllerProviderInterface
                 "image" => array(
                     'id' => $image->getId(),
                     'isPublished' => $image->getIsPublished()
-                )),200);
+                )), 200);
         }
     }
 
@@ -115,8 +115,8 @@ class Image implements ControllerProviderInterface
         }
 
         $project->removeImage($image);
-        $app->imageService->delete($image);
         $app->projectService->update($project);
+        $app->imageService->delete($image);
         if ($req->isXmlHttpRequest()) {
             return $app->json(array('status' => 200, 'message' => 'ok'), 200);
         }
@@ -135,17 +135,17 @@ class Image implements ControllerProviderInterface
             try {
                 if ($form->handleRequest($req)->isValid()) {
                     $data = $form->getData();
-                    $files = $data['images'];
                     //loginfile_put_contents('php://stdout',var_export($files,true));
-                    foreach ($files as $file) {
+                    foreach ($data['images'] as $file) {
                         /** @var UploadedFile $file */
-                        $image = new \Entity\Image();
+                        $image = $app->imageService->fromFile($file);
                         $image->setTitle($file->getClientOriginalName());
                         $image->setDescription($file->getClientOriginalName());
-                        $file = new GridFSFile($file->getRealPath());
-                        $image->setFile($file);
+                        $image->setBasename($file->getClientOriginalName());
+                        $image->setExtension($file->getClientOriginalExtension());
                         $project->addImage($image);
-                        $app->imageService->insert($image);
+                        $app->imageService->update($image);
+                        $app->projectService->update($project);
                     }
                     $app->projectService->update($project);
                     return $app->json(array('status' => 200, 'message' => 'ok'), 200);
@@ -158,6 +158,11 @@ class Image implements ControllerProviderInterface
             }
         }
         return $app->twig->render('image_upload', array('project' => $project, 'form' => $form->createView()));
+    }
+
+    function imagePoster()
+    {
+
     }
 
     /**
@@ -183,6 +188,9 @@ class Image implements ControllerProviderInterface
             ->bind('image_publish');
         $imageController->match('/upload-multiple', array($this, 'imageUpload'))
             ->bind('image_upload');
+        $imageController->post('/{imageId}/poster', array($this), 'imagePoster')
+            ->bind('image_poster');
+
         $imageController->get('/{imageId}', array($this, 'imageRead'))
             ->bind('image_read')
             ->assert('imageId', '^\w+$');

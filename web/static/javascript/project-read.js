@@ -19,7 +19,7 @@ jQuery(function ($) {
         'success.image.remove': function (e, data) {
             console.log('success', arguments);
         },
-        'success.image.publish': function (e, data,image) {
+        'success.image.publish': function (e, data, image) {
             console.log("success publish");
             command.renderImageView.execute(data.image);
         }
@@ -27,14 +27,16 @@ jQuery(function ($) {
     command = {
         renderImageView: {
             execute: function (imageData) {
-                console.log(arguments);
-                var $view,$button;
-                if(imageData.id){
-                    $view = $("[data-role='image']").filter("[data-id="+imageData.id+"]");
-                    $button= $view.find("button[data-role='image-publish']");
-                    if($button){
-                        $button.text(imageData.isPublished?model.text.unpublish:model.text.publish);
+                var $view, $button;
+                if (imageData.id) {
+                    $view = $("[data-role='image']").filter("[data-id=" + imageData.id + "]");
+                    $button = $view.find("button[data-role='image-publish']");
+                    if (imageData.isPublished) {
+                        $button.text(model.text.unpublish);
+                    } else {
+                        $button.text(model.text.publish);
                     }
+                    $view.data('isPublished', imageData.isPublished);
                 }
             }
         },

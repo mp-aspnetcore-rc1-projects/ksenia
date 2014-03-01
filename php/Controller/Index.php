@@ -11,6 +11,7 @@ use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 
 class Index implements ControllerProviderInterface
@@ -39,14 +40,14 @@ class Index implements ControllerProviderInterface
         return $app->stream(function () use ($image) {
             $file = $image->getFile();
             $r = $file->getMongoGridFSFile()->getResource();
-            $out = fopen('php://output','w');
+            $out = fopen('php://output', 'w');
             stream_copy_to_stream($r, $out);
             fclose($out);
             fclose($r);
         }, 200, array(
-            'Content-Type' => $image->getMimeType() ? $image->getMimeType():'image/*',
-            'Cache-Control'=>'s-maxage=10',
-            'Etag'=>$image->getMd5()
+            'Content-Type' => $image->getMimeType() ? $image->getMimeType() : 'image/*',
+            'Cache-Control' => 's-maxage=10',
+            'Etag' => $image->getMd5()
         ));
     }
 
@@ -66,6 +67,25 @@ class Index implements ControllerProviderInterface
         $portfolioController->get('/static/images/{imageId}.{extension}', array($this, 'imageLoad'))
             ->value("extension", "jpg")
             ->bind('image_load');
+//@TODO solve image caching problem
+//            ->after(function (Request $req, Response $res) use ($app) {
+//                /* @var \App $app */
+//                if (isset($app['ksenia_cache_images_locally']) && $app['ksenia_cache_images_locally']==true) {
+//                    /* @var \Entity\Image $image */
+//                    $image = $app->imageService->find($req->attributes->get('imageId'));
+//                    $path = $app['ksenia_image_cache_path'] . "/" . $image->getId() . "." . $image->getExtension();
+//                    try {
+//                        $localImage = fopen($path, 'x+');
+//                        $fsImage = $image->getFile()->getMongoGridFSFile()->getResource();
+//                        stream_copy_to_stream($fsImage, $localImage);
+//                        fclose($fsImage);
+//                        fclose($localImage);
+//                    } catch (\Exception $e) {
+//                        $app->logger->err($e->getMessage());
+//                    }
+//                }
+//            });
+
         return $portfolioController;
     }
 }

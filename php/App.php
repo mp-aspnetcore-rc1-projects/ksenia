@@ -20,6 +20,7 @@ use Symfony\Component\Routing\Generator\UrlGenerator;
  * @property \Service\Page pageService
  * @property \Service\Image imageService
  * @property \Symfony\Component\Serializer\Serializer serializer
+ * @property \Monolog\Logger logger
  */
 class App extends Application
 {

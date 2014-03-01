@@ -6,7 +6,6 @@
  * this code was open sourced for educational purpose only.
  */
 $templates = array();
-
 $templates['layout'] = <<<HERE
 	<!doctype html>
 	<html lang='{{app.locale}}'>
@@ -34,14 +33,12 @@ $templates['layout'] = <<<HERE
 		</body>
 	</html>
 HERE;
-
 $templates['index'] = <<<HERE
 	{% extends 'layout' %}
 	{% block content %}
 		<h1>HOMEPAGE</h1>
 	{% endblock %}
 HERE;
-
 /** administration */
 $templates['admin_layout'] = <<<HERE
 	{% extends 'layout'%}
@@ -78,7 +75,6 @@ $templates['admin_layout'] = <<<HERE
 		<script src='//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js'></script>
 	{% endblock %}
 HERE;
-
 $templates['admin_nav'] = <<<HERE
 	<ul class="list-group">
 		<li class="list-group-item"><strong><a href="{{path('admin_index')}}">DASHBOARD</a></strong></li>
@@ -94,21 +90,18 @@ $templates['admin_nav'] = <<<HERE
 		<li class="list-group-item"><a href="{{path('page_create')}}">Create a new page</a></li>
 	</ul>
 HERE;
-
 $templates['admin_index'] = <<<HERE
 	{% extends 'admin_layout' %}
 	{% block admin_content %}
         <header class="lead text-muted">ADMINISTRATION</header>
 	{% endblock %}
 HERE;
-
 $templates['admin_upload'] = <<<HERE
 	{% extends 'admin_layout' %}
 	{% block content %}
 	<h2>Upload</h2>
 	{% endblock %}
 HERE;
-
 /** Project management */
 
 /* list all projects */
@@ -156,8 +149,6 @@ $templates['project_index'] = <<<HERE
 		{% endif %}
 	{% endblock%}
 HERE;
-
-
 $templates['project_form'] = <<<HERE
 		{# @node @silex display a Symfony form by field #}
 		{{form_start(form)}}
@@ -171,7 +162,6 @@ $templates['project_form'] = <<<HERE
 		<button type="submit" class="btn btn-default">Save</button>
 		{{form_end(form)}}
 HERE;
-
 /* create a new project */
 $templates['project_new'] = <<<HERE
 	{%extends 'admin_layout' %}
@@ -189,7 +179,6 @@ $templates['project_new'] = <<<HERE
 	{{ parent() }}
 	{% endblock %}
 HERE;
-
 $templates['project_update'] = <<<HERE
 	{%extends 'admin_layout' %}
 	{% block admin_content %}
@@ -211,7 +200,6 @@ $templates['project_update'] = <<<HERE
 	{#<script src="/static/javascript/project-new.js"></script>#}
 	{% endblock %}
 HERE;
-
 $templates['project_read'] = <<<HERE
 	{%extends 'admin_layout' %}
 	{% block admin_content %}
@@ -248,18 +236,31 @@ $templates['project_read'] = <<<HERE
                 </figure>
                 <figcaption class="text-muted"><small data-title="{{image.title}}">{{image.title[:20]}}</small></figcaption>
                     <a class="btn btn-default btn-xs"
-                        href="{{path('image_update',{projectId:project.id,imageId:image.id}) }}">Edit</a>
+                        title="Edit image"
+                        href="{{path('image_update',{projectId:project.id,imageId:image.id}) }}">
+                        <span class="glyphicon glyphicon-pencil"></span>
+                        </a>
                     <form role="form" data-role="image-delete" data-image-id="{{image.id}}"
                     class="inline" method="POST"
                     action="{{path('image_delete',{projectId:project.id,imageId:image.id}) }}">
                         <input type="hidden" name="_method" value="DELETE"/>
-                        <button type="submit" data-role="image-delete" class="btn btn-default btn-xs">Remove</button>
+                        <button type="submit" title="delete the image"
+                            data-role="image-delete" class="btn btn-default btn-xs">
+                            <span class="glyphicon glyphicon-remove"></span>
+                            </button>
                     </form>
                 <form role="form"
                     data-role="image-publish" data-image-id="{{image.id}}" class="inline" method="POST"
                     action="{{path('image_publish',{projectId:project.id,imageId:image.id}) }}">
                     <button title="Publish or Unpublish image" class="btn btn-default btn-xs" data-role="image-publish">
                         {% if image.isPublished%}UnPublish{%else%}Publish{%endif%}
+                    </button>
+                </form>
+                <form role="form"
+                    data-role="image-poster" data-image-id="{{image.id}}" class="inline" method="POST"
+                    action="{{path('image_poster',{projectId:project.id,imageId:image.id}) }}">
+                    <button title="Select image as project poster" class="btn btn-default btn-xs" data-role="image-poster">
+                        <span class="glyphicon glyphicon-star"></span>
                     </button>
                 </form>
 		    </section>
@@ -276,11 +277,9 @@ $templates['project_read'] = <<<HERE
     	<script src="/static/javascript/project-read.js"></script>
     {%endblock%}
 HERE;
-
 /**
  * IMAGES
  */
-
 $templates['image_index'] = <<<HERE
     {%extends 'admin_layout'%}
     {%block admin_content%}
@@ -329,7 +328,6 @@ $templates['image_index'] = <<<HERE
         {%endif%}
     {%endblock%}
 HERE;
-
 $templates['image_read'] = <<<HERE
     {% extends 'admin_layout'%}
     {%block admin_content%}
@@ -354,7 +352,6 @@ $templates['image_read'] = <<<HERE
     </dl>
     {%endblock%}
 HERE;
-
 $templates['image_form'] = <<<HERE
     {{form_start(form)}}
     {% for field in form %}
@@ -366,7 +363,6 @@ $templates['image_form'] = <<<HERE
     <button type="submit">Submit</button>
     {{form_end(form)}}
 HERE;
-
 $templates['image_create'] = <<<HERE
 	{%extends 'admin_layout'%}
 	{%block admin_content %}
@@ -381,7 +377,6 @@ $templates['image_create'] = <<<HERE
         {%include 'image_form' with {form:form}%}
 	{%endblock%}
 HERE;
-
 $templates['image_update'] = <<<HERE
 	{%extends 'admin_layout'%}
 	{%block admin_content %}
@@ -406,7 +401,6 @@ $templates['image_update'] = <<<HERE
         {%include 'image_form' with {form:form}%}
 	{%endblock%}
 HERE;
-
 $templates['image_upload'] = <<<HERE
 	{%extends 'admin_layout'%}
 	{% block admin_content %}
@@ -441,7 +435,6 @@ $templates['image_upload'] = <<<HERE
     <script type="text/javascript" src="/static/javascript/image-upload.js"></script>
     {%endblock%}
 HERE;
-
 /**
  * PAGES
  */

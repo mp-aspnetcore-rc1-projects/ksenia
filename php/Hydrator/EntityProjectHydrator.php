@@ -87,6 +87,23 @@ class EntityProjectHydrator implements HydratorInterface
         $this->class->reflFields['images']->setValue($document, $return);
         $hydratedData['images'] = $return;
 
+        /** @ReferenceOne */
+        if (isset($data['poster'])) {
+            $reference = $data['poster'];
+            if (isset($this->class->fieldMappings['poster']['simple']) && $this->class->fieldMappings['poster']['simple']) {
+                $className = $this->class->fieldMappings['poster']['targetDocument'];
+                $mongoId = $reference;
+            } else {
+                $className = $this->unitOfWork->getClassNameForAssociation($this->class->fieldMappings['poster'], $reference);
+                $mongoId = $reference['$id'];
+            }
+            $targetMetadata = $this->dm->getClassMetadata($className);
+            $id = $targetMetadata->getPHPIdentifierValue($mongoId);
+            $return = $this->dm->getReference($className, $id);
+            $this->class->reflFields['poster']->setValue($document, $return);
+            $hydratedData['poster'] = $return;
+        }
+
         /** @Many */
         $mongoData = isset($data['owner']) ? $data['owner'] : null;
         $return = new \Doctrine\ODM\MongoDB\PersistentCollection(new \Doctrine\Common\Collections\ArrayCollection(), $this->dm, $this->unitOfWork);

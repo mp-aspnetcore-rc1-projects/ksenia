@@ -29,9 +29,11 @@ class Project
     private $tags;
     /**
      * @var ArrayCollection[\Entity\Image]
-     * @ODM\ReferenceMany(targetDocument="\Entity\Image")
+     * @ODM\ReferenceMany(targetDocument="\Entity\Image",cascade="all")
      */
     private $images;
+    /** @ODM\ReferenceOne(targetDocument="\Entity\Image",cascade="all") */
+    private $poster;
     /**
      * @ODM\ReferenceMany(targetDocument="\Entity\User",cascade="all")
      * @var \Entity\User
@@ -145,9 +147,12 @@ class Project
 
     public function removeImage(Image $image)
     {
-        $removed = $this->images->removeElement($image);
-        $image->setProject(null);
-        return $removed;
+        $i=$this->getImageById($image->getId());
+        if($i){
+            $this->images->removeElement($i);
+        }
+        $i->setProject(null);
+        return $i;
     }
 
     public function setImages($images)
@@ -184,6 +189,16 @@ class Project
     public function setId($id)
     {
         $this->id = $id;
+    }
+
+    public function getPoster()
+    {
+        return $this->poster;
+    }
+
+    public function setPoster($poster)
+    {
+        $this->poster = $poster;
     }
 
 

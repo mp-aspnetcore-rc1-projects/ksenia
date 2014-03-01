@@ -99,7 +99,7 @@ class Config implements ServiceProviderInterface
         /**
          * routing
          */
-        $app->mount('/private', new Administration());
+        $app->mount('/secret', new Administration());
         $app->mount('/', new Index());
         $app->after(function (Request $req, Response $res) {
             header_remove("X-Powered-By");

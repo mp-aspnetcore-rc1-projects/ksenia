@@ -47,7 +47,7 @@ class Config implements ServiceProviderInterface
         $app->register(new ServiceControllerServiceProvider);
         $app->register(new SessionServiceProvider);
         $app->register(new \Silex\Provider\MonologServiceProvider,array(
-            'monolog.logfile'=>$app['temp'].'/logs/'.date('Y-m-d').'.txt'
+            'monolog.logfile'=>$app['temp'].'/'.date('Y-m-d').'.txt'
         ));
         $app->register(new TwigServiceProvider(), array(
             'twig.templates' => require(__DIR__ . '/Views/templates.php'),

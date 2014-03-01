@@ -18,7 +18,8 @@
         "mparaiso/doctrineodmserviceprovider":"0.*@dev",
         "doctrine/mongodb-odm":"*@dev",
         "doctrine/mongodb-odm-bundle":"3.*@dev",
-        "monolog/monolog":"*"
+        "monolog/monolog":"*",
+        "symfony/monolog-bridge":"*"
     },
     "require-dev": {
         "phpunit/phpunit": "3.7.*"

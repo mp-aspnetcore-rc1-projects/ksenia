@@ -219,7 +219,7 @@ jQuery(function ($) {
         },
         updateProgress:{
             execute:function(){
-                target.attr('value',model.progress);
+                this.target.attr('value',model.progress);
             },
             target:view.progress
 

@@ -46,6 +46,9 @@ class Config implements ServiceProviderInterface
          */
         $app->register(new ServiceControllerServiceProvider);
         $app->register(new SessionServiceProvider);
+        $app->register(new \Silex\Provider\MonologServiceProvider,array(
+            'monolog.logfile'=>$app['temp'].'/logs/'.date('Y-m-d').'.txt'
+        ));
         $app->register(new TwigServiceProvider(), array(
             'twig.templates' => require(__DIR__ . '/Views/templates.php'),
             'twig.options' => array('cache' => $app['temp'] . '/twig'
@@ -99,7 +102,7 @@ class Config implements ServiceProviderInterface
         /**
          * routing
          */
-        $app->mount('/secret', new Administration());
+        $app->mount('/private', new Administration());
         $app->mount('/', new Index());
         $app->after(function (Request $req, Response $res) {
             header_remove("X-Powered-By");

@@ -17,6 +17,7 @@ class Project extends AbstractType
             ->add("title", "text")
             ->add('language', "choice", array('choices' => array('en' => "English", 'ru' => "Russian")))
             ->add('client', 'text')
+            ->add('isPublished',"choice",array('choices'=>array('yes','no')))
             ->add('description', 'textarea')
             ->add($builder->create('tags', 'text', array('required' => false))
                 ->addModelTransformer(new StringToArray()));

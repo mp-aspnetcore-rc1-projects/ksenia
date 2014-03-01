@@ -4,6 +4,11 @@
  * all rights reserved
  * this code was open sourced for educational purpose only.
  */
+*{
+    -moz-box-sizing:    border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing:        border-box;
+}
 
  body{
  	font-family: 'PT Sans', Helvetica, sans-serif;
@@ -18,6 +23,14 @@
  .dragged-over{
  	border:2px dotted #AAA;
  }
+ .no-select{
+     -webkit-touch-callout: none;
+     -webkit-user-select: none;
+     -khtml-user-select: none;
+     -moz-user-select: none;
+     -ms-user-select: none;
+     user-select: none;
+ }
  .item{
  	width:50px;
  	height: 50px;
@@ -30,9 +43,41 @@
  	width:100%;
  	height:100%;
  }
+ main.container{
+     min-height: 700px;
+ }
  #drop_zone{
  	background-color: #EEE;
  	min-width: 400px;
  	min-height:400px;
  	font-size: 20px;
  }
+ .drop-zone{
+     position:relative;
+     min-height: 500px;
+     vertical-align: middle;
+     z-index: 0;
+     background-color: #dbe0d1;
+ }
+ .drop-zone .background-text{
+     width:300px;
+     position:absolute;
+     font-size: 2em;
+     color: #909588;
+     z-index:-100;
+     margin:auto;
+     top:50%;
+     left:35%;
+     vertical-align: middle;
+     cursor: default;
+ }
+.transition{
+    -webkit-transition:all 2s;
+    transition:all 2s;
+}
+}
+ /*
+.background-text:before {
+    content: "Drop Some Files Here";
+}
+ */

@@ -98,6 +98,14 @@ class EntityProjectHydrator implements HydratorInterface
         }
         $this->class->reflFields['owner']->setValue($document, $return);
         $hydratedData['owner'] = $return;
+
+        /** @Field(type="boolean") */
+        if (isset($data['isPublished'])) {
+            $value = $data['isPublished'];
+            $return = (bool) $value;
+            $this->class->reflFields['isPublished']->setValue($document, $return);
+            $hydratedData['isPublished'] = $return;
+        }
         return $hydratedData;
     }
 }

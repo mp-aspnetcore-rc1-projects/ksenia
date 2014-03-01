@@ -37,6 +37,10 @@ class Project
      * @var \Entity\User
      */
     private $owner;
+    /**
+     * @ODM\Boolean
+     */
+    public $isPublished;
 
     function __constructor()
     {
@@ -48,6 +52,16 @@ class Project
     public function getId()
     {
         return $this->id;
+    }
+
+    public function getIsPublished()
+    {
+        return $this->isPublished;
+    }
+
+    public function setIsPublished($isPublished)
+    {
+        $this->isPublished = $isPublished;
     }
 
     public function getTitle()
@@ -159,14 +173,7 @@ class Project
     {
         $new = clone($this);
         $new->setId(null);
-        $new->images = $this->images->map(function ($image) use ($new) {
-            /** @var \Entity\Image $image */
-            $image->setId(null);
-            $image->setProject($new);
-            $gridFsFile = clone $image->getFile();
-            $image->setFile($gridFsFile);
-            return $image;
-        });
+        $new->images->clear();
         return $new;
     }
 

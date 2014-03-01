@@ -25,6 +25,10 @@ $templates['layout'] = <<<HERE
 				<h1>{{app.title}}</h1>
 				{%block content%}{%endblock%}
 			</main>
+			<footer class="container">
+			{%block footer%}
+			{%endblock%}
+			</footer>
 			{% block scripts %}
 			{% endblock %}
 		</body>
@@ -61,6 +65,11 @@ $templates['admin_layout'] = <<<HERE
 			{% endblock %}
 		</article>
 		</section>
+	{% endblock %}
+	{%block footer%}
+	    &copy; {{"now"|date("Y")}} mparaiso mparaiso@online.fr
+		{% block admin_footer %}
+		{% endblock %}
 	{% endblock %}
 	{% block scripts %}
 		{# jQuery (necessary for Bootstrap's JavaScript plugins) #}
@@ -218,32 +227,36 @@ $templates['project_read'] = <<<HERE
             <dd>{{ project.tags | join(', ')}}</dd>
 		</dl>
 		<p class="row">
-			<a class="btn btn-default" href="{{path('project_update',{id:project.id})}}">Edit</a>
-		    <a class="btn btn-default" href="{{path('image_index',{projectId:project.id})}}">Manage Images</a>
-		    <a class="btn btn-default" href="{{path('image_create',{projectId:project.id})}}">Add a new Image</a>
+			<a class="btn btn-default" href="{{path('project_update',{id:project.id})}}">Edit Project Infos</a>
+		    {#<a class="btn btn-default" href="{{path('image_create',{projectId:project.id})}}">Add a new Image</a>#}
+		    <a class="btn btn-default" href="{{path('image_upload',{projectId:project.id})}}">Add Images</a>
+		    {#<a class="btn btn-default" href="{{path('image_index',{projectId:project.id})}}">Manage Images</a>#}
 		</p>
-		{% for row in project.images|batch(5)%}
 	    <p class="row">
-		{% for image in row %}
-		<div class="col-md-2 thumbnail">
-		    <a href="{{path('image_read',{projectId:project.id,imageId:image.id}) }}">
-		        <img height="150" src="{{path('image_load',{imageId:image.id}) }}" alt="{{image.title}}"/>
+		{% for image in project.images %}
+		<div class="col-md-2 thumbnail" data-role="image" >
+			<div style="overflow:hidden;height:100px">
+			<a href="{{path('image_read',{projectId:project.id,imageId:image.id}) }}">
+		    	 <img  src="{{path('image_load',{imageId:image.id}) }}" title="{{image.title}} alt="{{image.title}}"/>
 		    </a>
-		    <h4 class="text-muted"><small>{{image.title}}</small></h4>
+			</div>
+		    <h4 class="text-muted"><small data-title="{{image.title}}">{{image.title[:20]}}</small></h4>
 		    <small><a class="btn btn-default btn-xs" href="{{path('image_update',{projectId:project.id,imageId:image.id}) }}">Edit</a></small>
-		    <form class="inline" method="POST" action="{{path('image_delete',{projectId:project.id,imageId:image.id}) }}">
+		    <form role="form" data-role="delete-image" data-image-id="{{image.id}}" class="inline" method="POST" action="{{path('image_delete',{projectId:project.id,imageId:image.id}) }}">
 		        <input type="hidden" name="_method" value="DELETE"/>
 		        <button type="submit" class="btn btn-default btn-xs">Remove</button>
 		    </form>
-
 		</div>
 		{%endfor%}
 		</p>
-		{%endfor%}
 	{% endblock %}
-	{% block scripts %}
-	{{ parent() }}
-	{% endblock %}
+    {%block scripts %}
+    	{{parent()}}
+    	{% include 'jquery' %}
+    	{% include 'underscore' %}
+    	<!-- index_image scripts -->
+    	<script src="/static/javascript/project-read.js"></script>
+    {%endblock%}
 HERE;
 
 /**
@@ -296,7 +309,6 @@ $templates['image_index'] = <<<HERE
         {%else%}
         <p>No image yet</p>
         {%endif%}
-
     {%endblock%}
 HERE;
 
@@ -336,7 +348,6 @@ $templates['image_form'] = <<<HERE
     <button type="submit">Submit</button>
     {{form_end(form)}}
 HERE;
-
 
 $templates['image_create'] = <<<HERE
 	{%extends 'admin_layout'%}
@@ -378,5 +389,52 @@ $templates['image_update'] = <<<HERE
 	{%endblock%}
 HERE;
 
+$templates['image_upload']=<<<HERE
+	{%extends 'admin_layout'%}
+	{% block admin_content %}
+	<header class="lead">
+        <ol class="breadcrumb">
+            <li><a href="{{path('project_index')}}">Projects</a></li>
+            <li><a href="{{path('project_read',{id:project.id}) }}">{{project.title}}</a></li>
+            <li><a href="{{path('image_index',{projectId:project.id})}}">Images</a></li>
+            <li class="active">Upload Images</li>
+        </ol>
+    </header>
+    <div class="row drop-zone">
+        <div class="lead strong no-select background-text">Drop Some Image Files Here</div>
+    </div>
+    <h3>&nbsp;</h3>
+    {{form_start(form,{attr:{id:'upload-form'}}) }}
+        <div class="hidden">{{form_widget(form)}}</div>
+    <!--<form action="" method="POST" id="upload-form" enctype="multipart/form-data">-->
+        <button class="btn btn-lg" type="reset">Clear</button>
+        <button class="btn btn-primary btn-lg" type="submit">
+             Upload Images <span class="glyphicon glyphicon-cloud-upload"> </span>
+        </button>
+        <a class="btn btn-success btn-lg done" href="{{path('project_read',{id:project.id}) }}">
+             Done <span class="glyphicon glyphicon-ok"> </span>
+        </a>
+    {{form_end(form)}}
+    <!-- </form>-->
+    {%endblock%}
+    {% block scripts%}
+    {{parent()}}
+    {%include 'jquery'%}
+    {%include 'underscore'%}
+    <script type="text/javascript" src="/static/javascript/jquery-observable.js"></script>
+    <script type="text/javascript" src="/static/javascript/image-upload.js"></script>
+    {%endblock%}
+HERE;
 
+/**
+ * UTITITLES
+ */
+$templates['jquery']=<<<HERE
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+HERE;
+$templates['underscore']=<<<HERE
+	<script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js">
+	</script>
+HERE;
 return $templates;

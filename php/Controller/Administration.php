@@ -9,11 +9,14 @@ namespace Controller;
 
 use App;
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\MongoDB\GridFSFile;
 use Entity\Image;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class Administration implements ControllerProviderInterface
 {
@@ -183,10 +186,52 @@ class Administration implements ControllerProviderInterface
         if (!$image) {
             $app->abort(404);
         }
+
         $project->removeImage($image);
         $app->imageService->delete($image);
         $app->projectService->update($project);
+        if ($req->isXmlHttpRequest()) {
+            return $app->json(array('status' => 200, 'message' => 'ok'), 200);
+        }
         return $app->redirect($app->url_generator->generate('image_index', array('projectId' => $projectId)));
+    }
+
+
+    function imageUpload(App $app, Request $req, $projectId)
+    {
+        /** @var \Entity\Project $project */
+        $project = $app->projectService->find($projectId);
+        if ($project == null) {
+            $app->abort(404);
+        }
+        $form = $app->formFactory->create(new \Form\Upload);
+        if ($req->isXmlHttpRequest() && "POST" == $req->getMethod()) {
+            try {
+                if ($form->handleRequest($req)->isValid()) {
+                    $data = $form->getData();
+                    $files = $data['images'];
+                    //loginfile_put_contents('php://stdout',var_export($files,true));
+                    foreach ($files as $file) {
+                        /** @var UploadedFile $file */
+                        $image = new \Entity\Image();
+                        $image->setTitle($file->getClientOriginalName());
+                        $image->setDescription($file->getClientOriginalName());
+                        $file=new GridFSFile($file->getRealPath());
+                        $image->setFile($file);
+                        $project->addImage($image);
+                        $app->imageService->insert($image);
+                    }
+                    $app->projectService->update($project);
+                    return $app->json(array('status' => 200, 'message' => 'ok'), 200);
+                } else {
+                    throw new \Exception('Form is not valid');
+                }
+            } catch (\Exception $e) {
+                file_put_contents('php://stdout',var_export($e->getTraceAsString(),true));
+                return $app->json(array('status' => 500, 'message' => $e->getMessage(), 'errors' => $form->getErrors()), 500);
+            }
+        }
+        return $app->twig->render('image_upload', array('project' => $project, 'form' => $form->createView()));
     }
 
     /**
@@ -215,7 +260,6 @@ class Administration implements ControllerProviderInterface
             ->bind('project_delete');
         $projectController->post('/{id}/clone', array($this, 'projectClone'))
             ->bind('project_clone');
-
         /**
          * IMAGE MANAGEMENT
          */
@@ -230,8 +274,11 @@ class Administration implements ControllerProviderInterface
             ->bind('image_update');
         $imageController->delete('/{projectId}/image/{imageId}/delete', array($this, 'imageDelete'))
             ->bind('image_delete');
+        $imageController->match('/{projectId}/image/upload-multiple', array($this, 'imageUpload'))
+            ->bind('image_upload');
         $imageController->get('/{projectId}/image/{imageId}', array($this, 'imageRead'))
-            ->bind('image_read');
+            ->bind('image_read')
+            ->assert('imageId', '^\w+$');
         /**
          * ADMINISTRATION
          */

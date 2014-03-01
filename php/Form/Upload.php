@@ -3,15 +3,22 @@
 namespace Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Transformer\CollectionToIdCollection;
 
-class Images extends AbstractType
+class Upload extends AbstractType
 {
+    /**
+     * @inheritdoc
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         parent::buildForm($builder, $options);
-        $builder->addModelTransformer(new CollectionToIdCollection());
+        $builder->add('images','collection',array(
+            'allow_add'  => TRUE,
+            'prototype'  => TRUE,
+            'attr'=>array('multiple'=>true,'accept'=>'image/*')));
     }
 
     /**
@@ -19,13 +26,7 @@ class Images extends AbstractType
      */
     public function getName()
     {
-        return "images";
+        return "upload";
     }
-
-    public function getParent()
-    {
-        return "hidden";
-    }
-
 
 }

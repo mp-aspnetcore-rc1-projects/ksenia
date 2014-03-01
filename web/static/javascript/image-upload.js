@@ -42,7 +42,7 @@ jQuery(function ($) {
      * @type {Object}
      */
     view = {
-        progress : $('<progress max="100" style="width:100%"></progress>'),
+        progress : $('<progress max="100"></progress>'),
         doneButton:$('.done'),
         form: document.querySelector('#upload-form'),
         submitButton: $('button[type=submit]').on({'click': function (event) {
@@ -216,6 +216,13 @@ jQuery(function ($) {
                     command.enableDone.execute();
                 }
             }
+        },
+        updateProgress:{
+            execute:function(){
+                target.attr('value',model.progress);
+            },
+            target:view.progress
+
         }
     };
     /**
@@ -242,7 +249,7 @@ jQuery(function ($) {
             if (progress.lengthComputable) {
                 model.progress = Math.floor(progress.loaded * 100 / progress.total);
             }
-            command.log.execute('progress', progress);
+            command.updateProgress.execute();
         },
         'submit-button:clicked': function () {
             command.sendFiles.execute();

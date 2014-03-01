@@ -161,10 +161,58 @@ class Image extends \Entity\Image implements \Doctrine\ODM\MongoDB\Proxy\Proxy
         return parent::beforeSave();
     }
 
+    public function getMd5()
+    {
+        $this->__load();
+        return parent::getMd5();
+    }
+
+    public function getFilename()
+    {
+        $this->__load();
+        return parent::getFilename();
+    }
+
+    public function setFilename($filename)
+    {
+        $this->__load();
+        return parent::setFilename($filename);
+    }
+
+    public function __toString()
+    {
+        $this->__load();
+        return parent::__toString();
+    }
+
+    public function getBasename()
+    {
+        $this->__load();
+        return parent::getBasename();
+    }
+
+    public function setBasename($basename)
+    {
+        $this->__load();
+        return parent::setBasename($basename);
+    }
+
+    public function getIsPublished()
+    {
+        $this->__load();
+        return parent::getIsPublished();
+    }
+
+    public function setIsPublished($isPublished)
+    {
+        $this->__load();
+        return parent::setIsPublished($isPublished);
+    }
+
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'title', 'description', 'createdAt', 'updatedAt', 'owner', 'file', 'filename', 'mimeType', 'project');
+        return array('__isInitialized__', 'id', 'title', 'description', 'isPublished', 'createdAt', 'updatedAt', 'owner', 'file', 'filename', 'basename', 'mimeType', 'project', 'md5');
     }
 
     public function __clone()

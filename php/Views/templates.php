@@ -127,7 +127,7 @@ $templates['project_index'] = <<<HERE
 					<th>Title</th>
 					<th></th>
 					<th></th>
-					<th></th>
+					<th class="col-md-3"></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -135,7 +135,7 @@ $templates['project_index'] = <<<HERE
 				<tr>
 					<td><a href="{{ path('project_read',{id:project.id}) }}">{{project.title}}</a></td>
 					<td>{{project.description[:50]~"..."}}</td>
-					<td><a class="btn btn-link"  href="{{path('image_index',{projectId:project.id}) }}">Manage Images</a></td>
+					<td><a class="btn btn-link"  href="{{path('project_read',{id:project.id}) }}">Manage Images</a></td>
 					<td>
 					    <form class="inline" action="{{path('project_clone',{id:project.id}) }}" method="POST">
 					    <button class="btn btn-link" type="submit">Clone</button>
@@ -394,7 +394,7 @@ $templates['image_update'] = <<<HERE
 	{%endblock%}
 HERE;
 
-$templates['image_upload']=<<<HERE
+$templates['image_upload'] = <<<HERE
 	{%extends 'admin_layout'%}
 	{% block admin_content %}
 	<header class="lead">
@@ -434,26 +434,124 @@ HERE;
 /**
  * PAGES
  */
-$templates['page_index']=<<<HERE
+$templates['page_index'] = <<<HERE
     {%extends 'admin_layout'%}
     {%block admin_content%}
-        Page Index
+    	<header class="lead">
+            <ol class="breadcrumb">
+                <li class="active">Pages</li>
+            </ol>
+        </header>
+        <a class="btn btn-default" href="{{path('page_create')}}">Add New</a>
+        {%if  pages|length>0%}
+        <table class="table">
+            <thead>
+                <tr>
+                <td>Title</td>
+                <td>Description</td>
+                <td style="width:30%"></td>
+                </tr>
+            </thead>
+            <tbody>
+            {%for page in pages%}
+            <tr>
+                <td>
+                    <a href="{{path('page_read',{id:page.id})}}">
+                        {{page.title}}
+                    </a>
+                <td>{{page.description}}</td>
+                <td>
+                <a class="btn btn-link" href="{{path('page_update',{id:page.id}) }}">Edit</a>
+                <form class="inline"
+                action="{{path('page_delete',{id:page.id}) }}"
+                method="POST">
+                    <input type="hidden" id="_method" name="_method" value="DELETE" />
+                    <button class="btn btn-link" type="submit">Remove</button>
+                </form>
+                </td>
+            </tr>
+            {%endfor%}
+            </tbody>
+        </table>
+        {%else%}
+        <p>No Page yet</p>
+        {%endif%}
     {%endblock%}
 HERE;
-$templates['page_create']=<<<HERE
-    {%extends 'admin_layout'%}
-    {%block admin_content%}
-        Page Create
-    {%endblock%}
+$templates['page_create'] = <<<HERE
+	{%extends 'admin_layout'%}
+	{%block admin_content %}
+	    <header class="lead">
+        <ol class="breadcrumb">
+            <li><a href="{{path('page_index') }}">Pages</a></li>
+            <li class="active">New</li>
+        </ol>
+        </header>
+        {{form_start(form)}}
+            {% for field in form %}
+            <div class="form-group">
+                {{form_row(field,{attr:{class:'form-control'}}) }}
+            </div>
+            {%endfor%}
+            <button type="reset">Reset</button>
+            <button type="submit">Save</button>
+        {{form_end(form)}}
+	{%endblock%}
+HERE;
+$templates['page_update'] = <<<HERE
+	{%extends 'admin_layout'%}
+	{%block admin_content %}
+	    <header class="lead">
+        <ol class="breadcrumb">
+            <li><a href="{{path('page_index') }}">Pages</a></li>
+            <li><a href="{{path('page_read',{id:page.id}) }}">{{page.title}}</a></li>
+            <li class="active">Update</li>
+        </ol>
+        </header>
+        {{form_start(form)}}
+            {% for field in form %}
+            <div class="form-group">
+                {{form_row(field,{attr:{class:'form-control'}}) }}
+            </div>
+            {%endfor%}
+            <button type="reset">Reset</button>
+            <button type="submit">Save</button>
+        {{form_end(form)}}
+	{%endblock%}
+HERE;
+$templates['page_read'] = <<<HERE
+	{%extends 'admin_layout'%}
+	{%block admin_content %}
+	    <header class="lead">
+        <ol class="breadcrumb">
+            <li><a href="{{path('page_index') }}">Pages</a></li>
+            <li class="active">{{page.title}}</li>
+        </ol>
+        </header>
+        <div class="row">
+        <dl>
+        <dt>Title</dt>
+        <dd>{{page.title}}</dd>
+         <dt>Category</dt>
+        <dd>{{page.category}}</dd>
+        <dt>Language</dt>
+        <dd>{{page.language}}</dd>
+         <dt>Description</dt>
+        <dd>{{page.description}}</dd>
+         <dt>Content</dt>
+        <dd>{{page.content}}</dd>
+        </dl>
+        </div>
+	{%endblock%}
 HERE;
 /**
  * UTITITLES
  */
-$templates['jquery']=<<<HERE
+$templates['jquery'] = <<<HERE
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 HERE;
-$templates['underscore']=<<<HERE
+$templates['underscore'] = <<<HERE
 	<script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js">
 	</script>
 HERE;

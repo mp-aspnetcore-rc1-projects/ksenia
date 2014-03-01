@@ -59,6 +59,18 @@ class Project extends \Entity\Project implements \Doctrine\ODM\MongoDB\Proxy\Pro
         return parent::getId();
     }
 
+    public function getIsPublished()
+    {
+        $this->__load();
+        return parent::getIsPublished();
+    }
+
+    public function setIsPublished($isPublished)
+    {
+        $this->__load();
+        return parent::setIsPublished($isPublished);
+    }
+
     public function getTitle()
     {
         $this->__load();
@@ -167,10 +179,22 @@ class Project extends \Entity\Project implements \Doctrine\ODM\MongoDB\Proxy\Pro
         return parent::__toString();
     }
 
+    public function copy()
+    {
+        $this->__load();
+        return parent::copy();
+    }
+
+    public function setId($id)
+    {
+        $this->__load();
+        return parent::setId($id);
+    }
+
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'title', 'description', 'language', 'client', 'tags', 'images', 'owner');
+        return array('__isInitialized__', 'id', 'title', 'description', 'language', 'client', 'tags', 'images', 'owner', 'isPublished');
     }
 
     public function __clone()

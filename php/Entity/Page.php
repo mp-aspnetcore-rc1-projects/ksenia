@@ -4,7 +4,7 @@ namespace Entity;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
-/** @ODM\Document */
+/** @ODM\Document @ODM\HasLifecycleCallbacks */
 class  Page
 {
     /** @ODM\Id */
@@ -13,6 +13,8 @@ class  Page
     private $title;
     /** @ODM\String */
     private $description;
+    /** @ODM\String */
+    private $language;
     /** @ODM\String */
     private $category;
     /** @ODM\String */
@@ -23,6 +25,8 @@ class  Page
     private $updated_at;
     /** @ODM\Boolean */
     private $isPublished;
+    /** @ODM\ReferenceOne(targetDocument="\Entity\User") */
+    private $owner;
 
     public function setCategory($category)
     {
@@ -104,4 +108,31 @@ class  Page
         $this->content = $content;
     }
 
+    public function getLanguage()
+    {
+        return $this->language;
+    }
+
+    public function setLanguage($language)
+    {
+        $this->language = $language;
+    }
+
+    /** @ODM\PrePersist */
+    public function prepersist(){
+        $this->setUpdatedAt(new \DateTime());
+        if(null==$this->getId()){
+            $this->setCreatedAt(new \DateTime());
+        }
+    }
+
+    public function getOwner()
+    {
+        return $this->owner;
+    }
+
+    public function setOwner($owner)
+    {
+        $this->owner = $owner;
+    }
 }

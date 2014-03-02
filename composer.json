@@ -29,5 +29,10 @@
     "provide": {
         "ext-mongo": "*",
         "lib-icu": "*"
+    },
+    "autoload":{
+        "psr-0":{
+            "":"/php"
+        }
     }
 }

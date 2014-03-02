@@ -100,7 +100,7 @@ class Config implements ServiceProviderInterface
             return new \Service\Project($app['odm.dm']);
         });
         $app['imageService'] = $app->share(function ($app) {
-            return new \Service\Image($app['odm.dm']);
+            return new \Service\Image($app['odm.dm'],$app['projectService']);
         });
         $app['pageService'] = $app->share(function ($app) {
             return new \Service\Page($app['odm.dm']);

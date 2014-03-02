@@ -221,15 +221,18 @@ class Image implements JsonSerializable, IModel
             "id" => $this->getId(),
             "_id" => $this->getId(),
             "title" => $this->getTitle(),
-            "isPublished"=>$this->getIsPublished(),
+            "isPublished" => $this->getIsPublished(),
             "description" => $this->getDescription(),
             "createdAt" => $this->getCreatedAt(),
             "updatedAt" => $this->getUpdatedAt(),
             "filename" => $this->getFilename(),
             "basename" => $this->getBasename(),
+            "owner"=>$this->getOwner(),
             "project" => $this->project ? array(
                 "id" => $this->getProject()->getId(),
-                "title"=>$this->getProject()->getTitle()
+                "title" => $this->getProject()->getTitle(),
+                "poster" => $this->getProject()->getPoster(),
+                "owner"=>$this->getProject()->getOwner()
             ) : null
         );
     }

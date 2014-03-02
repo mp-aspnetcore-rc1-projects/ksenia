@@ -76,7 +76,7 @@ class Base
     {
         $this->dm->persist($model);
         if ($flush) {
-            $this->dm->flush($model);
+            $this->dm->flush();
         }
     }
 
@@ -90,7 +90,7 @@ class Base
             $this->dm->persist($model);
         }
         if ($flush) {
-            $this->dm->flush($model);
+            $this->dm->flush();
         }
     }
 
@@ -98,7 +98,7 @@ class Base
     {
         $this->dm->remove($model);
         if ($flush) {
-            $this->dm->flush($model);
+            $this->dm->flush();
         }
     }
 

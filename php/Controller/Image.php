@@ -81,7 +81,7 @@ class Image implements ControllerProviderInterface
 
     }
 
-    function imagePublish(App $app, Request $req, $projectId, $imageId,$_format)
+    function imagePublish(App $app, Request $req, $projectId, $imageId, $_format)
     {
         /** @var \Entity\Project $project */
         $project = $app->projectService->find($projectId);
@@ -95,7 +95,7 @@ class Image implements ControllerProviderInterface
         $image->setIsPublished($image->getIsPublished() === true ? false : true);
         $app->imageService->update($image);
         $app->projectService->update($project);
-        if ($_format=="json") {
+        if ($_format == "json") {
             return $app->json(array(
                 'status' => 200, "message" => "ok",
                 "image" => array(
@@ -182,7 +182,7 @@ class Image implements ControllerProviderInterface
         /** @var \Silex\ControllerCollection $imageController */
         $imageController = $app['controllers_factory'];
         $imageController->match('.{_format}', array($this, 'imageIndex'))
-            ->assert('format','json')
+            ->assert('format', 'json')
             ->bind('image_index_json');
         $imageController->match('/', array($this, 'imageIndex'))
             ->bind('image_index');
@@ -193,6 +193,7 @@ class Image implements ControllerProviderInterface
         $imageController->delete('/{imageId}/delete', array($this, 'imageDelete'))
             ->bind('image_delete');
         $imageController->post('/{imageId}/publish.{_format}', array($this, 'imagePublish'))
+            ->value('_format', 'json')
             ->bind('image_publish');
         $imageController->match('/upload-multiple', array($this, 'imageUpload'))
             ->bind('image_upload');

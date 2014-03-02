@@ -2,6 +2,7 @@
 
 namespace Entity;
 
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
@@ -13,6 +14,7 @@ use JsonSerializable;
  * has many images
  * has one user
  * @ODM\Document
+ * @ODM\HasLifecycleCallbacks
  */
 class Project implements JsonSerializable
 {
@@ -44,6 +46,10 @@ class Project implements JsonSerializable
      * @ODM\Boolean
      */
     public $isPublished;
+    /** @ODM\Date */
+    public $createdAt;
+    /** @ODM\Date */
+    public $updatedAt;
 
     function __constructor()
     {
@@ -148,8 +154,8 @@ class Project implements JsonSerializable
 
     public function removeImage(Image $image)
     {
-        $i=$this->getImageById($image->getId());
-        if($i){
+        $i = $this->getImageById($image->getId());
+        if ($i) {
             $this->images->removeElement($i);
         }
         $i->setProject(null);
@@ -203,6 +209,35 @@ class Project implements JsonSerializable
     }
 
 
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+    }
+
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+    }
+
+    /** @ODM\PrePersist */
+    public function prePersist()
+    {
+        $this->setUpdatedAt(new DateTime());
+        if ($this->getCreatedAt() == null) {
+            $this->setCreatedAt(new DateTime);
+        }
+    }
+
     /**
      * (PHP 5 &gt;= 5.4.0)<br/>
      * Specify data which should be serialized to JSON
@@ -213,12 +248,18 @@ class Project implements JsonSerializable
     public function jsonSerialize()
     {
         return array(
-            "id"=>$this->getId(),
-            "title"=>$this->getTitle(),
-            "description"=>$this->getDescription(),
-            "poster"=>$this->getPoster(),
-            "images"=>$this->getImages(),
-            "tags"=>$this->getTags()
+            "id" => $this->getId(),
+            "title" => $this->getTitle(),
+            "description" => $this->getDescription(),
+            "language" => $this->getLanguage(),
+            "owner" => $this->getOwner(),
+            "isPublished" => $this->getIsPublished(),
+            "client" => $this->getClient(),
+            "poster" => $this->getPoster(),
+            "images" => $this->getImages()->toArray(),
+            "tags" => $this->getTags(),
+            "createdAt" => $this->getCreatedAt(),
+            "updatedAt" => $this->getUpdatedAt()
         );
     }
 }

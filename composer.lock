@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "064e87d3b75dc00468f2ed2a30208183",
+    "hash": "83a354cfaf76546644d76e1eca500824",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -814,6 +814,40 @@
                 "silex"
             ],
             "time": "2013-09-19 23:25:02"
+        },
+        {
+            "name": "mparaiso/silex-simplerest",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Mparaiso/silex-simplerest.git",
+                "reference": "c6f51cd7c19c357687b9817a8b933363932133f4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Mparaiso/silex-simplerest/zipball/c6f51cd7c19c357687b9817a8b933363932133f4",
+                "reference": "c6f51cd7c19c357687b9817a8b933363932133f4",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Mparaiso": "lib"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL"
+            ],
+            "description": "Restfull controller for silex",
+            "homepage": "https://github.com/Mparaiso/silex-simplerest",
+            "keywords": [
+                "extensions",
+                "rest",
+                "restfull",
+                "silex"
+            ],
+            "time": "2014-03-02 01:35:06"
         },
         {
             "name": "pimple/pimple",
@@ -2968,7 +3002,8 @@
         "silex/silex": 20,
         "mparaiso/doctrineodmserviceprovider": 20,
         "doctrine/mongodb-odm": 20,
-        "doctrine/mongodb-odm-bundle": 20
+        "doctrine/mongodb-odm-bundle": 20,
+        "mparaiso/silex-simplerest": 20
     },
     "platform": [
 

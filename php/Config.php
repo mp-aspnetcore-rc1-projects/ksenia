@@ -8,6 +8,7 @@
 use Controller\Administration;
 use Controller\Index;
 use Mparaiso\Provider\DoctrineODMMongoDBServiceProvider;
+use Mparaiso\SimpleRest\Controller\Controller as RestController;
 use Silex\Application;
 use Silex\Provider\HttpCacheServiceProvider;
 use Silex\Provider\MonologServiceProvider;
@@ -104,11 +105,28 @@ class Config implements ServiceProviderInterface
         $app['pageService'] = $app->share(function ($app) {
             return new \Service\Page($app['odm.dm']);
         });
-        /**
-         * routing
-         */
-        $app->mount('/private', new Administration());
-        $app->mount('/', new Index());
+        /** REST CONTROLLERS */
+        $app['imageRestController'] = $app->share(function ($app) {
+            return new RestController(array(
+                "resource" => "image",
+                "resourcePluralize" => "images",
+                "model" => '\Entity\Image',
+                "service" => $app["imageService"],
+                "criteria"=>array('project','project.$id'),
+                "allows"=>array('list','read')
+            ));
+        });
+        $app['projectRestController'] = $app->share(function ($app) {
+            return new RestController(array(
+                "resource" => "project",
+                "resourcePluralize" => "projects",
+                "model" => '\Entity\Project',
+                "service" => $app["projectService"],
+                "logger"=>$app['logger'],
+                "allows"=>array('list','read')
+            ));
+        });
+
     }
 
     /**
@@ -120,7 +138,13 @@ class Config implements ServiceProviderInterface
      */
     public function boot(Application $app)
     {
-// TODO: Implement boot() method.
+        /**
+         * routing
+         */
+        $app->mount('/private', new Administration());
+        $app->mount('/private/api/', $app['imageRestController']);
+        $app->mount('/private/api/', $app['projectRestController']);
+        $app->mount('/', new Index());
     }
 }
 

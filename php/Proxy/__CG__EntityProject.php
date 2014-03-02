@@ -191,10 +191,28 @@ class Project extends \Entity\Project implements \Doctrine\ODM\MongoDB\Proxy\Pro
         return parent::setId($id);
     }
 
+    public function getPoster()
+    {
+        $this->__load();
+        return parent::getPoster();
+    }
+
+    public function setPoster($poster)
+    {
+        $this->__load();
+        return parent::setPoster($poster);
+    }
+
+    public function jsonSerialize()
+    {
+        $this->__load();
+        return parent::jsonSerialize();
+    }
+
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'title', 'description', 'language', 'client', 'tags', 'images', 'owner', 'isPublished');
+        return array('__isInitialized__', 'id', 'title', 'description', 'language', 'client', 'tags', 'images', 'poster', 'owner', 'isPublished');
     }
 
     public function __clone()

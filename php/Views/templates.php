@@ -225,6 +225,9 @@ $templates['project_read'] = <<<HERE
 		    <a class="btn btn-default" href="{{path('image_upload',{projectId:project.id})}}">Add Images</a>
 		    {#<a class="btn btn-default" href="{{path('image_index',{projectId:project.id})}}">Manage Images</a>#}
 		</p>
+		<p class="row script">
+		</script>
+		</p>
 	    <p class="row">
 		{% for image in project.images %}
 		<article class="col-sm-3 " data-role="image" data-id="{{image.id}}">

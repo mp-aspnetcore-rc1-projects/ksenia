@@ -3,9 +3,11 @@ namespace Service;
 
 use Doctrine\MongoDB\GridFSFile;
 use Doctrine\ODM\MongoDB\DocumentManager;
+use Mparaiso\SimpleRest\Model\IModel;
 use Symfony\Component\HttpFoundation\File\File;
+use Mparaiso\SimpleRest\Service\IService;
 
-class Image extends Base
+class Image extends Base implements IService
 {
     function __construct(DocumentManager $dm)
     {

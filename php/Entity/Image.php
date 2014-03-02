@@ -5,6 +5,7 @@ namespace Entity;
 use Doctrine\MongoDB\GridFSFile;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use JsonSerializable;
+use Mparaiso\SimpleRest\Model\IModel;
 use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -14,7 +15,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  * @ODM\Document
  * @ODM\HasLifecycleCallbacks
  */
-class Image implements JsonSerializable
+class Image implements JsonSerializable, IModel
 {
     /** @ODM\Id */
     private $id;
@@ -45,7 +46,7 @@ class Image implements JsonSerializable
      */
     private $mimeType;
     /**
-     * @ODM\ReferenceOne(targetDocument="\Entity\Project")
+     * @ODM\ReferenceOne(targetDocument="\Entity\Project",simple=true)
      * @var \Entity\Project
      */
     private $project;
@@ -224,7 +225,11 @@ class Image implements JsonSerializable
             "createdAt" => $this->getCreatedAt(),
             "updatedAt" => $this->getUpdatedAt(),
             "filename" => $this->getFilename(),
-            "basename" => $this->getBasename()
+            "basename" => $this->getBasename(),
+            "project" => $this->project ? array(
+                "id" => $this->getProject()->getId(),
+                "title"=>$this->getProject()->getTitle()
+            ) : null
         );
     }
 

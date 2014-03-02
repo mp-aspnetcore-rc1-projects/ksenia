@@ -11,14 +11,18 @@ use Symfony\Component\HttpFoundation\Request;
 
 class Image implements ControllerProviderInterface
 {
-    function imageIndex(App $app, Request $req, $projectId)
+    function imageIndex(App $app, Request $req, $projectId, $_format)
     {
         /** @var \Entity\Project $project */
         $project = $app->projectService->find($projectId);
         if (!$project) {
             $app->abort(404);
         }
-        return $app->twig->render('image_index', array('project' => $project));
+        if ('json' == $_format) {
+            return $app->json($app->imageService->findBy(array('project' => $project)));
+        } else {
+            return $app->twig->render('image_index', array('project' => $project));
+        }
     }
 
     function imageRead(App $app, Request $req, $projectId, $imageId)
@@ -45,7 +49,7 @@ class Image implements ControllerProviderInterface
         if ('POST' === $req->getMethod()) {
             if ($form->handleRequest($req)->isValid()) {
                 $project->addImage($image);
-                $app->imageService->insert($image);
+                $app->imageService->create($image);
                 $app->projectService->update($project);
                 return $app->redirect($app->url_generator->generate('project_read', array('id' => $projectId)));
             }
@@ -116,7 +120,7 @@ class Image implements ControllerProviderInterface
 
         $project->removeImage($image);
         $app->projectService->update($project);
-        $app->imageService->delete($image);
+        $app->imageService->remove($image);
         if ($req->isXmlHttpRequest()) {
             return $app->json(array('status' => 200, 'message' => 'ok'), 200);
         }
@@ -176,6 +180,9 @@ class Image implements ControllerProviderInterface
          */
         /** @var \Silex\ControllerCollection $imageController */
         $imageController = $app['controllers_factory'];
+        $imageController->match('.{_format}', array($this, 'imageIndex'))
+            ->assert('format','json')
+            ->bind('image_index_json');
         $imageController->match('/', array($this, 'imageIndex'))
             ->bind('image_index');
         $imageController->match('/new', array($this, 'imageCreate'))

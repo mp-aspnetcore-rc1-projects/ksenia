@@ -35,7 +35,7 @@ class Page implements ControllerProviderInterface
         $form = $app->formFactory->create(new \Form\Page(), $page);
         if ('POST' === $req->getMethod()) {
             if ($form->handleRequest($req)->isValid()) {
-                $app->pageService->insert($page);
+                $app->pageService->create($page);
                 return $app->redirect($app->url_generator->generate('page_read', array('id' => $page->getId())));
             }
         }
@@ -70,7 +70,7 @@ class Page implements ControllerProviderInterface
         if (!$page) {
             $app->abort(404);
         }
-        $app->pageService->delete($page);
+        $app->pageService->remove($page);
         return $app->redirect($app->url_generator->generate('page_index'));
     }
 
@@ -83,7 +83,7 @@ class Page implements ControllerProviderInterface
         /** @var \Entity\Page $newPage */
         $newPage = $page->copy();
         $newPage->setTitle(uniqid($newPage->getTitle() . "_"));
-        $app->pageService->insert($newPage);
+        $app->pageService->create($newPage);
         return $app->redirect($app->url_generator->generate('page_read', array('id' => $newPage->getId())));
     }
 

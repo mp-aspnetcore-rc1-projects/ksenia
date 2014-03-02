@@ -3,6 +3,7 @@
 namespace Service;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
+use Doctrine\ODM\MongoDB\LockMode;
 
 /**
  * Class Project
@@ -51,11 +52,14 @@ class Base
      * @param null $skip
      * @return array<T>
      */
-    function findBy(array $criteria = array(), $sort = null, $limit = null, $skip = null)
+    function findBy(array $criteria = array(),array $sort = null, $limit = null, $skip = null)
     {
         return $this->dm->getRepository($this->getClassName())->findBy($criteria, $sort, $limit, $skip);
     }
 
+    function findOneBy(array $criteria,array $order=array()){
+        return $this->getDm()->getRepository($this->getClassName())->findOneBy($criteria);
+    }
     /**
      * @param array $criteria
      * @param null $sort
@@ -68,7 +72,7 @@ class Base
         return count($this->findBy($criteria, $sort, $limit, $skip));
     }
 
-    function insert($model, $flush = true)
+    function create($model, $flush = true)
     {
         $this->dm->persist($model);
         if ($flush) {
@@ -76,12 +80,12 @@ class Base
         }
     }
 
-    function update($model, $id = null, $flush = true)
+    function update($model, array $where=null, $flush = true)
     {
-        if ($id == null) {
-            $id = $model->getId();
+        if ($where==null) {
+            $where=array('id' => $model->getId());
         }
-        $lookup = $this->find($id);
+        $lookup = $this->findOneBy($where);
         if ($lookup) {
             $this->dm->persist($model);
         }
@@ -90,7 +94,7 @@ class Base
         }
     }
 
-    function delete($model, $flush = true)
+    function remove($model, $flush = true)
     {
         $this->dm->remove($model);
         if ($flush) {

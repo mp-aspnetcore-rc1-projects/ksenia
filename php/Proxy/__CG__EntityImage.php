@@ -155,12 +155,6 @@ class Image extends \Entity\Image implements \Doctrine\ODM\MongoDB\Proxy\Proxy
         return parent::setMimeType($mimeType);
     }
 
-    public function beforeSave()
-    {
-        $this->__load();
-        return parent::beforeSave();
-    }
-
     public function getMd5()
     {
         $this->__load();
@@ -209,10 +203,34 @@ class Image extends \Entity\Image implements \Doctrine\ODM\MongoDB\Proxy\Proxy
         return parent::setIsPublished($isPublished);
     }
 
+    public function getExtension()
+    {
+        $this->__load();
+        return parent::getExtension();
+    }
+
+    public function setExtension($extension)
+    {
+        $this->__load();
+        return parent::setExtension($extension);
+    }
+
+    public function jsonSerialize()
+    {
+        $this->__load();
+        return parent::jsonSerialize();
+    }
+
+    public function beforeSave()
+    {
+        $this->__load();
+        return parent::beforeSave();
+    }
+
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'title', 'description', 'isPublished', 'createdAt', 'updatedAt', 'owner', 'file', 'filename', 'basename', 'mimeType', 'project', 'md5');
+        return array('__isInitialized__', 'id', 'title', 'description', 'isPublished', 'createdAt', 'updatedAt', 'owner', 'file', 'filename', 'basename', 'mimeType', 'project', 'md5', 'extension');
     }
 
     public function __clone()

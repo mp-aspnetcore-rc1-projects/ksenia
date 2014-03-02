@@ -5,6 +5,7 @@ namespace Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+use JsonSerializable;
 
 /**
  * Class Project
@@ -13,7 +14,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
  * has one user
  * @ODM\Document
  */
-class Project
+class Project implements JsonSerializable
 {
     /** @ODM\Id */
     private $id;
@@ -29,13 +30,13 @@ class Project
     private $tags;
     /**
      * @var ArrayCollection[\Entity\Image]
-     * @ODM\ReferenceMany(targetDocument="\Entity\Image",cascade="all")
+     * @ODM\ReferenceMany(targetDocument="\Entity\Image",cascade="all",inversedBy="project",simple=true)
      */
     private $images;
-    /** @ODM\ReferenceOne(targetDocument="\Entity\Image",cascade="all") */
+    /** @ODM\ReferenceOne(targetDocument="\Entity\Image",cascade="all",simple=true) */
     private $poster;
     /**
-     * @ODM\ReferenceMany(targetDocument="\Entity\User",cascade="all")
+     * @ODM\ReferenceMany(targetDocument="\Entity\User",cascade="all",inversedBy="project",simple=true)
      * @var \Entity\User
      */
     private $owner;
@@ -202,4 +203,22 @@ class Project
     }
 
 
+    /**
+     * (PHP 5 &gt;= 5.4.0)<br/>
+     * Specify data which should be serialized to JSON
+     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     */
+    public function jsonSerialize()
+    {
+        return array(
+            "id"=>$this->getId(),
+            "title"=>$this->getTitle(),
+            "description"=>$this->getDescription(),
+            "poster"=>$this->getPoster(),
+            "images"=>$this->getImages(),
+            "tags"=>$this->getTags()
+        );
+    }
 }

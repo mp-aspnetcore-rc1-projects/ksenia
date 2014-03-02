@@ -108,16 +108,18 @@ class Config implements ServiceProviderInterface
         /** REST CONTROLLERS */
         $app['imageRestController'] = $app->share(function ($app) {
             return new RestController(array(
+                "debug"=>$app['debug'],
                 "resource" => "image",
                 "resourcePluralize" => "images",
                 "model" => '\Entity\Image',
                 "service" => $app["imageService"],
-                "criteria"=>array('project','project.$id'),
-                "allows"=>array('list','read')
+                "criteria"=>array('project'),
+                "allows"=>array('list','read','update','delete')
             ));
         });
         $app['projectRestController'] = $app->share(function ($app) {
             return new RestController(array(
+                "debug"=>$app['debug'],
                 "resource" => "project",
                 "resourcePluralize" => "projects",
                 "model" => '\Entity\Project',

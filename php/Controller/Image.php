@@ -81,7 +81,7 @@ class Image implements ControllerProviderInterface
 
     }
 
-    function imagePublish(App $app, Request $req, $projectId, $imageId)
+    function imagePublish(App $app, Request $req, $projectId, $imageId,$_format)
     {
         /** @var \Entity\Project $project */
         $project = $app->projectService->find($projectId);
@@ -95,7 +95,7 @@ class Image implements ControllerProviderInterface
         $image->setIsPublished($image->getIsPublished() === true ? false : true);
         $app->imageService->update($image);
         $app->projectService->update($project);
-        if ($req->isXmlHttpRequest()) {
+        if ($_format=="json") {
             return $app->json(array(
                 'status' => 200, "message" => "ok",
                 "image" => array(
@@ -103,6 +103,7 @@ class Image implements ControllerProviderInterface
                     'isPublished' => $image->getIsPublished()
                 )), 200);
         }
+        return "";
     }
 
     function imageDelete(App $app, Request $req, $projectId, $imageId)
@@ -148,8 +149,8 @@ class Image implements ControllerProviderInterface
                         $image->setBasename($file->getClientOriginalName());
                         $image->setExtension($file->getClientOriginalExtension());
                         $project->addImage($image);
+                        $image->setProject($project);
                         $app->imageService->update($image);
-                        $app->projectService->update($project);
                     }
                     $app->projectService->update($project);
                     return $app->json(array('status' => 200, 'message' => 'ok'), 200);
@@ -191,16 +192,14 @@ class Image implements ControllerProviderInterface
             ->bind('image_update');
         $imageController->delete('/{imageId}/delete', array($this, 'imageDelete'))
             ->bind('image_delete');
-        $imageController->post('/{imageId}/publish', array($this, 'imagePublish'))
+        $imageController->post('/{imageId}/publish.{_format}', array($this, 'imagePublish'))
             ->bind('image_publish');
         $imageController->match('/upload-multiple', array($this, 'imageUpload'))
             ->bind('image_upload');
         $imageController->post('/{imageId}/poster', array($this), 'imagePoster')
             ->bind('image_poster');
-
         $imageController->get('/{imageId}', array($this, 'imageRead'))
-            ->bind('image_read')
-            ->assert('imageId', '^\w+$');
-        return $imageController;
+            ->bind('image_read');
+        return $imageController->assert('imageId', '^[\:\w]+$');
     }
 }

@@ -150,17 +150,17 @@ $templates['project_index'] = <<<HERE
 	{% endblock%}
 HERE;
 $templates['project_form'] = <<<HERE
-		{# @node @silex display a Symfony form by field #}
-		{{form_start(form)}}
-		{{ form_errors(form) }}
-		{% for field in form %}
-		<div class="form-group">
-		        {{form_row(field,{attr:{class:'form-control'}})}}
-		 </div>
-		{% endfor %}
-		<button type="reset" class="btn btn-default">Reset</button>
-		<button type="submit" class="btn btn-default">Save</button>
-		{{form_end(form)}}
+	{# @node @silex display a Symfony form by field #}
+	{{form_start(form)}}
+	{{ form_errors(form) }}
+	{% for field in form %}
+	<div class="form-group">
+	        {{form_row(field,{attr:{class:'form-control'}})}}
+	 </div>
+	{% endfor %}
+	<button type="reset" class="btn btn-default">Reset</button>
+	<button type="submit" class="btn btn-default">Save</button>
+	{{form_end(form)}}
 HERE;
 /* create a new project */
 $templates['project_new'] = <<<HERE
@@ -219,18 +219,71 @@ $templates['project_read'] = <<<HERE
             <dt>Tags</dt>
             <dd>{{ project.tags | join(', ')}}</dd>
 		</dl>
-		<p class="row">
-			<a class="btn btn-default" href="{{path('project_update',{id:project.id})}}">Edit Project Infos</a>
-		    {#<a class="btn btn-default" href="{{path('image_create',{projectId:project.id})}}">Add a new Image</a>#}
-		    <a class="btn btn-default" href="{{path('image_upload',{projectId:project.id})}}">Add Images</a>
-		    {#<a class="btn btn-default" href="{{path('image_index',{projectId:project.id})}}">Manage Images</a>#}
-		</p>
-		<p class="row script">
+		<section class="row">
+			<nav class="col-md-12">
+				<a class="btn btn-default" href="{{path('project_update',{id:project.id})}}">Edit Project Infos</a>
+			    <a class="btn btn-default" href="{{path('image_upload',{projectId:project.id})}}">Add Images</a>
+			</nav>
+			<h3>&nbsp;</h3>
+		</section>
+		<script type="text/javascript">
+			var Config={
+					projectId:"{{project.id}}",
+					imageResource:"{{path('mp_simplerest_image_index')}}",
+					imageSrc:"{{path('image_load',{imageId:":id"}) }}",
+					imagePublish:"{{url("image_publish",{ projectId:project.id, imageId:":id" }) }}",
+					imageHref:"{{path('image_read',{projectId:project.id,imageId:":id"}) }}"
+			};
 		</script>
-		</p>
-	    <p class="row">
+		{%raw%}
+		<!-- if javascript enabled -->
+		<section class="row script" ng-app="ProjectRead" ng-controller="ImageCollectionCtrl">
+		    <article ng-repeat="image in images" article class="col-sm-3">
+		    	<section class="thumbnail">
+		    		<figure style="overflow:hidden;height:100px;">
+                		<a ng-href="{{imageHref(image)}}">
+                     		<img  ng-src="{{imageSrc(image)}}" title="{{image.title}} alt="{{image.title}}"/>
+                		</a>
+                	</figure>
+                	<figcaption class="text-muted"><small>{{image.title}}</small></figcaption>
+                	<a class="btn btn-default btn-xs" ng-href="{{imageHref(image)}}/update" title="Edit image">
+                        <span class="glyphicon glyphicon-pencil"></span>
+                    </a>
+                    <button ng-click="remove(image)" title="delete the image" class="btn btn-default btn-xs">
+                            <span class="glyphicon glyphicon-remove"></span>
+                    </button>
+                    <button ng-click="publish(image)" title="Publish or Unpublish image" class="btn btn-default btn-xs" >
+                        {{image.isPublished?"UnPublish":"Publish"}}
+                    </button>
+                    <button title="Select image as project poster" class="btn btn-default btn-xs">
+                        <span class="glyphicon glyphicon-star"></span>
+                    </button>
+		    	</section>
+		    </article>
+		</section>
+		{%endraw%}
+		{# @TODO fix that stuff {%include 'project_read_no_script'%} #}
+	{% endblock %}
+    {%block scripts %}
+    	{{parent()}}
+    	{% include 'jquery' %}
+    	{% include 'underscore' %}
+        {% include 'angular' %}
+        <script src="/static/javascript/project-read-angular.js"></script>
+        {#
+        <script type="text/javascript" src="/static/javascript/jquery-observable.js"></script>
+    	<!-- index_image scripts -->
+    	<script src="/static/javascript/project-read.js"></script>
+    	#}
+    {%endblock%}
+HERE;
+$templates['project_read_no_script']=<<<HERE
+	<noscript>
+		<!-- if javascript disabled -->
+		{#
+	    <section class="row">
 		{% for image in project.images %}
-		<article class="col-sm-3 " data-role="image" data-id="{{image.id}}">
+		<article class="col-sm-3 "  data-id="{{image.id}}">
 		    <section class="thumbnail">
                 <figure style="overflow:hidden;height:100px;">
                 <a href="{{path('image_read',{projectId:project.id,imageId:image.id}) }}">
@@ -238,30 +291,21 @@ $templates['project_read'] = <<<HERE
                 </a>
                 </figure>
                 <figcaption class="text-muted"><small data-title="{{image.title}}">{{image.title[:20]}}</small></figcaption>
-                    <a class="btn btn-default btn-xs"
-                        title="Edit image"
-                        href="{{path('image_update',{projectId:project.id,imageId:image.id}) }}">
+                    <a class="btn btn-default btn-xs" title="Edit image" href="{{path('image_update',{projectId:project.id,imageId:image.id}) }}">
                         <span class="glyphicon glyphicon-pencil"></span>
-                        </a>
-                    <form role="form" data-role="image-delete" data-image-id="{{image.id}}"
-                    class="inline" method="POST"
-                    action="{{path('image_delete',{projectId:project.id,imageId:image.id}) }}">
+                    </a>
+                    <form role="form" class="inline" method="POST" action="{{path('image_delete',{projectId:project.id,imageId:image.id}) }}">
                         <input type="hidden" name="_method" value="DELETE"/>
-                        <button type="submit" title="delete the image"
-                            data-role="image-delete" class="btn btn-default btn-xs">
+                        <button type="submit" title="delete the image" class="btn btn-default btn-xs">
                             <span class="glyphicon glyphicon-remove"></span>
                             </button>
                     </form>
-                <form role="form"
-                    data-role="image-publish" data-image-id="{{image.id}}" class="inline" method="POST"
-                    action="{{path('image_publish',{projectId:project.id,imageId:image.id}) }}">
-                    <button title="Publish or Unpublish image" class="btn btn-default btn-xs" data-role="image-publish">
+                <form role="form" class="inline" method="POST" action="{{path('image_publish',{projectId:project.id,imageId:image.id}) }}">
+                    <button title="Publish or Unpublish image" class="btn btn-default btn-xs">
                         {% if image.isPublished%}UnPublish{%else%}Publish{%endif%}
                     </button>
                 </form>
-                <form role="form"
-                    data-role="image-poster" data-image-id="{{image.id}}" class="inline" method="POST"
-                    action="{{path('image_poster',{projectId:project.id,imageId:image.id}) }}">
+                <form role="form" class="inline" method="POST" action="{{path('image_poster',{projectId:project.id,imageId:image.id}) }}">
                     <button title="Select image as project poster" class="btn btn-default btn-xs" data-role="image-poster">
                         <span class="glyphicon glyphicon-star"></span>
                     </button>
@@ -269,16 +313,9 @@ $templates['project_read'] = <<<HERE
 		    </section>
 		</article>
 		{%endfor%}
-		</p>
-	{% endblock %}
-    {%block scripts %}
-    	{{parent()}}
-    	{% include 'jquery' %}
-    	{% include 'underscore' %}
-        <script type="text/javascript" src="/static/javascript/jquery-observable.js"></script>
-    	<!-- index_image scripts -->
-    	<script src="/static/javascript/project-read.js"></script>
-    {%endblock%}
+		</section>
+		#}
+		</noscript>
 HERE;
 /**
  * IMAGES
@@ -562,4 +599,9 @@ $templates['underscore'] = <<<HERE
 	<script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js">
 	</script>
 HERE;
+$templates['angular']=<<<HERE
+	<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.10/angular.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.3/angular-resource.min.js"></script>
+HERE;
+
 return $templates;

@@ -37,7 +37,7 @@ class Index implements ControllerProviderInterface
         if (!$image) {
             $app->abort(404);
         }
-        return $app->stream(function () use ($image) {
+        $r =$app->stream(function () use ($image) {
             $file = $image->getFile();
             $r = $file->getMongoGridFSFile()->getResource();
             $out = fopen('php://output', 'w');
@@ -46,9 +46,11 @@ class Index implements ControllerProviderInterface
             fclose($r);
         }, 200, array(
             'Content-Type' => $image->getMimeType() ? $image->getMimeType() : 'image/*',
-            'Cache-Control' => 's-maxage=10',
-            'Etag' => $image->getMd5()
+            'Cache-Control' => 's-maxage=20',
+            'Etag' => '"'.$image->getMd5().'"'
         ));
+        $r->setTtl(20);
+        return $r;
     }
 
     /**

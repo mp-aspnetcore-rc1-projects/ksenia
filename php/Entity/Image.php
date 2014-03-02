@@ -221,6 +221,7 @@ class Image implements JsonSerializable, IModel
             "id" => $this->getId(),
             "_id" => $this->getId(),
             "title" => $this->getTitle(),
+            "isPublished"=>$this->getIsPublished(),
             "description" => $this->getDescription(),
             "createdAt" => $this->getCreatedAt(),
             "updatedAt" => $this->getUpdatedAt(),

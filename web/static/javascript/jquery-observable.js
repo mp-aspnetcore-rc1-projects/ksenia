@@ -4,10 +4,14 @@ var Observable = function (data) {
     }
     var $notifier = $({});
     var $data = {};
-    var projectectProperties=['on','off','trigger','model','register'];
+    //var projectectProperties=['on','off','trigger','model','register'];
+    $.extend(this,$notifier);
+    var projectectProperties=Object.keys(this);
+    /*
     this.on = $notifier.on.bind($notifier);
     this.off = $notifier.off.bind($notifier);
     this.trigger = $notifier.trigger.bind($notifier);
+    */
     this.model = function (key, value) {
         if (value !== undefined) {
             var old = $data[key];

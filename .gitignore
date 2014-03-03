@@ -1,4 +1,4 @@
 .idea
 /vendor/
 /temp/
-/static/images/cache/
+/web/static/images/cache/

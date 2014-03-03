@@ -21,6 +21,7 @@ use Symfony\Component\Routing\Generator\UrlGenerator;
  * @property \Service\Image imageService
  * @property \Symfony\Component\Serializer\Serializer serializer
  * @property \Monolog\Logger logger
+ * @property \Service\Menu menuService
  */
 class App extends Application
 {

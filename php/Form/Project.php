@@ -31,9 +31,9 @@ class Project extends AbstractType
             $form = $event->getForm();
             if ($project && $project->getId() !== null) {
                 $form->add('poster', 'document', array(
-                    'empty_value'=>"Choose a poster for the project",
-                    'class'=>'\Entity\Image'));
-            }   
+                    'empty_value' => "Choose a poster for the project",
+                    'class' => '\Entity\Image'));
+            }
         });
     }
 

@@ -47,7 +47,8 @@ class Administration implements ControllerProviderInterface
         $adminController->mount('/project', $projectController->connect($app));
         $page = new Page();
         $adminController->mount('/page', $page->connect($app));
-
+        $menu=new Menu();
+        $adminController->mount('/menu',$menu->connect($app));
         return $adminController;
     }
 }

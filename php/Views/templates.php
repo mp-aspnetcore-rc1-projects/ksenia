@@ -88,6 +88,17 @@ $templates['admin_nav'] = <<<HERE
 		</li>
 		<li class="list-group-item"><a href="{{path('page_index')}}">Manage Pages</a></li>
 		<li class="list-group-item"><a href="{{path('page_create')}}">Create a new page</a></li>
+
+		<li class="list-group-item text-muted uppercase"><strong>MENUS</strong></li>
+		<li class="list-group-item"><a href="{{path('menu_index')}}">Manage Menus</a></li>
+		<li class="list-group-item"><a href="{{path('menu_create')}}">Create a new menu</a></li>
+
+		<li class="list-group-item text-muted uppercase"><strong>USERS</strong></li>
+		<li class="list-group-item"><a href="#">Manage Users</a></li>
+
+	    <li class="list-group-item text-muted uppercase"><strong>CONFIGURATION</strong></li>
+		<li class="list-group-item"><a href="#">Manage Configuration</a></li>
+
 	</ul>
 HERE;
 $templates['admin_index'] = <<<HERE
@@ -613,6 +624,79 @@ $templates['page_read'] = <<<HERE
         </div>
 	{%endblock%}
 HERE;
+/**
+ * MENUS
+ */
+$templates['menu_index']=<<<HERE
+    {%extends 'admin_layout'%}
+    {%block admin_content%}
+       <header class="lead">
+            <ol class="breadcrumb">
+                <li  class="active">Menus</a></li>
+            </ol>
+        </header>
+        <section class="row">
+            {% if menus|length>0%}
+            <table class="table col-md-12">
+                <thead>
+                    <tr>
+                    <td>Title</td>
+                    <td>Description</td>
+                    <td style="width:30%"></td>
+                    </tr>
+                </thead>
+                <tbody>
+                {%for menu in menus%}
+                <tr>
+                    <td>
+                        <a href="{{path('menu_read',{id:menu.id})}}">
+                            {{menu.title}}
+                        </a>
+                    <td>{{menu.description}}</td>
+                    <td>
+                    <a class="btn btn-link" href="{{path('menu_update',{id:menu.id}) }}">Edit</a>
+                    <form class="inline"
+                    action="{{path('menu_delete',{id:menu.id}) }}"
+                    method="POST">
+                        <input type="hidden" id="_method" name="_method" value="DELETE" />
+                        <button class="btn btn-link" type="submit">Remove</button>
+                    </form>
+                    </td>
+                </tr>
+                {%endfor%}
+                </tbody>
+            </table>
+            {%else%}
+            <section class='lead text-muted col-md-12'>
+                No menu defined yet,please <a href="{{path('menu_create')}}">
+                    Create one</a></section>
+            {%endif%}
+        </section>
+    {%endblock%}
+HERE;
+$templates['menu_create']=<<<HERE
+    {%extends 'admin_layout'%}
+    {%block admin_content%}
+        <header class="lead">
+            <ol class="breadcrumb">
+                <li><a hfef="{{path('menu_index')}}">Menus</a></li>
+                <li  class="active">Create</li>
+            </ol>
+        </header>
+        <section class="row">
+        {{form_start(form,{attr:{class:'col-md-12'}})}}
+            <fieldset><legend>Create a new menu</legend>
+                {%for field in form %}
+                <div class="control-group">
+                    {{form_row(field,{attr:{class:'form-control'}})}}
+                </div>
+                {%endfor%}
+            </fieldset>
+        {{form_end(form)}}
+        </section>
+    {%endblock%}
+HERE;
+
 /**
  * UTITITLES
  */

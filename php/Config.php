@@ -100,32 +100,35 @@ class Config implements ServiceProviderInterface
             return new \Service\Project($app['odm.dm']);
         });
         $app['imageService'] = $app->share(function ($app) {
-            return new \Service\Image($app['odm.dm'],$app['projectService']);
+            return new \Service\Image($app['odm.dm'], $app['projectService']);
         });
         $app['pageService'] = $app->share(function ($app) {
             return new \Service\Page($app['odm.dm']);
         });
+        $app['menuService'] = $app->share(function ($app) {
+            return new \Service\Menu($app['odm.dm']);
+        });
         /** REST CONTROLLERS */
         $app['imageRestController'] = $app->share(function ($app) {
             return new RestController(array(
-                "debug"=>$app['debug'],
+                "debug" => $app['debug'],
                 "resource" => "image",
                 "resourcePluralize" => "images",
                 "model" => '\Entity\Image',
                 "service" => $app["imageService"],
-                "criteria"=>array('project'),
+                "criteria" => array('project'),
                 //"allows"=>array('list','read','update','delete')
             ));
         });
         $app['projectRestController'] = $app->share(function ($app) {
             return new RestController(array(
-                "debug"=>$app['debug'],
+                "debug" => $app['debug'],
                 "resource" => "project",
                 "resourcePluralize" => "projects",
                 "model" => '\Entity\Project',
                 "service" => $app["projectService"],
-                "logger"=>$app['logger'],
-                "allows"=>array('list','read')
+                "logger" => $app['logger'],
+                "allows" => array('list', 'read')
             ));
         });
 

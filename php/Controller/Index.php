@@ -30,22 +30,22 @@ class Index implements ControllerProviderInterface
      * @param $imageId
      * @return \Symfony\Component\HttpFoundation\StreamedResponse
      */
-    function imageLoad(App $app, Request $req, $imageId,$extension)
+    function imageLoad(App $app, Request $req, $imageId, $extension)
     {
         /** @var \Entity\Image $image */
         $image = $app->imageService->find($imageId);
-        if (!$image)  $app->abort(404);
-        $dir=$app['ksenia_image_cache_path'];
-        $r =$app->stream(function () use ($image,$imageId,$dir) {
+        if (!$image) $app->abort(404);
+        $dir = $app['ksenia_image_cache_path'];
+        $r = $app->stream(function () use ($image, $imageId, $dir) {
             $file = $image->getFile();
             $r = $file->getMongoGridFSFile()->getResource();
             $out = fopen('php://output', 'w');
-            $cache=fopen("$dir/$imageId.".$image->getExtension(),"w");
-            //stream_copy_to_stream($r, $out);
+            $cache = fopen("$dir/$imageId." . $image->getExtension(), "w");
             while (!feof($r)) {
                 $packet = fread($r, 8192);
-                fputs($out,$packet);
-                fputs($cache,$packet);
+                fputs($out, $packet);
+                fputs($cache, $packet);
+                ob_flush();
                 sleep(0.1);
             }
             fclose($r);
@@ -54,7 +54,7 @@ class Index implements ControllerProviderInterface
         }, 200, array(
             'Content-Type' => $image->getMimeType() ? $image->getMimeType() : 'image/*',
             'Cache-Control' => 's-maxage=20',
-            'Etag' => '"'.$image->getMd5().'"'
+            'Etag' => '"' . $image->getMd5() . '"'
         ));
         $r->setTtl(20);
         return $r;

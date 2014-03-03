@@ -8,7 +8,7 @@
 (function () {
     "use strict";
     /*global angular*/
-    angular.module('ProjectRead', ['ngResource'])
+    angular.module('ProjectRead', ['ngResource','ngAnimate'])
         .factory('Config', function () {
             return Config;
         })

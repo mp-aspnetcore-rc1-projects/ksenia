@@ -253,7 +253,9 @@ $templates['project_read'] = <<<HERE
             </script>
             {%raw%}
             <section class="row script" data-ng-controller="ProjectCtrl">
-                <article data-ng-repeat="image in project.images|orderBy:config.sort" class="col-sm-3">
+                <article
+                 data-ng-repeat="image in project.images|orderBy:config.sort"
+                class="col-sm-3 image-list">
                     <section class="thumbnail" >
                         <figure style="overflow:hidden;height:100px;">
                             <a data-ng-href="{{imageHref(image)}}">
@@ -619,6 +621,7 @@ HERE;
 $templates['angular'] = <<<HERE
 	<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.10/angular.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.3/angular-resource.min.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.3/angular-animate.js"></script>
 HERE;
 
 return $templates;

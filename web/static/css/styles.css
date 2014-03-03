@@ -72,9 +72,17 @@
      vertical-align: middle;
      cursor: default;
  }
-
- /*
-.background-text:before {
-    content: "Drop Some Files Here";
+/** animation for angularjs */
+.image-list.ng-enter,
+.image-list.ng-leave{
+     -webkit-transition:all ease-in 0.6s;
+     transition:all ease-in 0.6s;
+ }
+.image-list.ng-enter,
+.image-list.ng-leave.ng-leave-active{
+    opacity:0;
 }
- */
+.image-list.ng-leave,
+.image-list.ng-enter.ng-enter-active{
+    opacity:1;
+}

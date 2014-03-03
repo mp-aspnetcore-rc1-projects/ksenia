@@ -104,17 +104,22 @@ class EntityProjectHydrator implements HydratorInterface
             $hydratedData['poster'] = $return;
         }
 
-        /** @Many */
-        $mongoData = isset($data['owner']) ? $data['owner'] : null;
-        $return = new \Doctrine\ODM\MongoDB\PersistentCollection(new \Doctrine\Common\Collections\ArrayCollection(), $this->dm, $this->unitOfWork);
-        $return->setHints($hints);
-        $return->setOwner($document, $this->class->fieldMappings['owner']);
-        $return->setInitialized(false);
-        if ($mongoData) {
-            $return->setMongoData($mongoData);
+        /** @ReferenceOne */
+        if (isset($data['owner'])) {
+            $reference = $data['owner'];
+            if (isset($this->class->fieldMappings['owner']['simple']) && $this->class->fieldMappings['owner']['simple']) {
+                $className = $this->class->fieldMappings['owner']['targetDocument'];
+                $mongoId = $reference;
+            } else {
+                $className = $this->unitOfWork->getClassNameForAssociation($this->class->fieldMappings['owner'], $reference);
+                $mongoId = $reference['$id'];
+            }
+            $targetMetadata = $this->dm->getClassMetadata($className);
+            $id = $targetMetadata->getPHPIdentifierValue($mongoId);
+            $return = $this->dm->getReference($className, $id);
+            $this->class->reflFields['owner']->setValue($document, $return);
+            $hydratedData['owner'] = $return;
         }
-        $this->class->reflFields['owner']->setValue($document, $return);
-        $hydratedData['owner'] = $return;
 
         /** @Field(type="boolean") */
         if (isset($data['isPublished'])) {
@@ -122,6 +127,22 @@ class EntityProjectHydrator implements HydratorInterface
             $return = (bool) $value;
             $this->class->reflFields['isPublished']->setValue($document, $return);
             $hydratedData['isPublished'] = $return;
+        }
+
+        /** @Field(type="date") */
+        if (isset($data['createdAt'])) {
+            $value = $data['createdAt'];
+            if ($value instanceof \MongoDate) { $return = new \DateTime(); $return->setTimestamp($value->sec); } elseif (is_numeric($value)) { $return = new \DateTime(); $return->setTimestamp($value); } elseif ($value instanceof \DateTime) { $return = $value; } else { $return = new \DateTime($value); }
+            $this->class->reflFields['createdAt']->setValue($document, clone $return);
+            $hydratedData['createdAt'] = $return;
+        }
+
+        /** @Field(type="date") */
+        if (isset($data['updatedAt'])) {
+            $value = $data['updatedAt'];
+            if ($value instanceof \MongoDate) { $return = new \DateTime(); $return->setTimestamp($value->sec); } elseif (is_numeric($value)) { $return = new \DateTime(); $return->setTimestamp($value); } elseif ($value instanceof \DateTime) { $return = $value; } else { $return = new \DateTime($value); }
+            $this->class->reflFields['updatedAt']->setValue($document, clone $return);
+            $hydratedData['updatedAt'] = $return;
         }
         return $hydratedData;
     }

@@ -32,13 +32,13 @@ class Project implements JsonSerializable
     private $tags;
     /**
      * @var ArrayCollection[\Entity\Image]
-     * @ODM\ReferenceMany(targetDocument="\Entity\Image",cascade="all",inversedBy="project",simple=true)
+     * @ODM\ReferenceMany(name="images",targetDocument="\Entity\Image",cascade="all",mappedBy="project",simple=true)
      */
     private $images;
     /** @ODM\ReferenceOne(targetDocument="\Entity\Image",cascade="all",simple=true) */
     private $poster;
     /**
-     * @ODM\ReferenceMany(targetDocument="\Entity\User",cascade="all",inversedBy="project",simple=true)
+     * @ODM\ReferenceOne(targetDocument="\Entity\User",cascade="all",inversedBy="users",simple=true)
      * @var \Entity\User
      */
     private $owner;
@@ -262,4 +262,8 @@ class Project implements JsonSerializable
             "updatedAt" => $this->getUpdatedAt()
         );
     }
+
+    /**
+     * BUSINESS METHODS
+     */
 }

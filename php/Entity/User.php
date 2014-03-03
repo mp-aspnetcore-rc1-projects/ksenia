@@ -11,4 +11,8 @@ class User{
 	 * @var \MongoId 
 	 */
 	private $id;
+    /**
+     * @ODM\ReferenceMany(name="projects",targetDocument="\Entity\Image",cascade="all",mappedBy="user",simple=true)
+     */
+    private $projects;
 }

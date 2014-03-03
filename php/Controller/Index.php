@@ -30,20 +30,26 @@ class Index implements ControllerProviderInterface
      * @param $imageId
      * @return \Symfony\Component\HttpFoundation\StreamedResponse
      */
-    function imageLoad(App $app, Request $req, $imageId)
+    function imageLoad(App $app, Request $req, $imageId,$extension)
     {
         /** @var \Entity\Image $image */
         $image = $app->imageService->find($imageId);
-        if (!$image) {
-            $app->abort(404);
-        }
-        $r =$app->stream(function () use ($image) {
+        if (!$image)  $app->abort(404);
+        $dir=$app['ksenia_image_cache_path'];
+        $r =$app->stream(function () use ($image,$imageId,$dir) {
             $file = $image->getFile();
             $r = $file->getMongoGridFSFile()->getResource();
             $out = fopen('php://output', 'w');
-            stream_copy_to_stream($r, $out);
-            fclose($out);
+            $cache=fopen("$dir/$imageId.".$image->getExtension(),"w");
+            //stream_copy_to_stream($r, $out);
+            while (!feof($r)) {
+                $packet = fread($r, 8192);
+                fputs($out,$packet);
+                fputs($cache,$packet);
+            }
             fclose($r);
+            fclose($out);
+            fclose($cache);
         }, 200, array(
             'Content-Type' => $image->getMimeType() ? $image->getMimeType() : 'image/*',
             'Cache-Control' => 's-maxage=20',
@@ -69,25 +75,6 @@ class Index implements ControllerProviderInterface
         $portfolioController->get('/static/images/{imageId}.{extension}', array($this, 'imageLoad'))
             ->value("extension", "jpg")
             ->bind('image_load');
-//@TODO solve image caching problem
-//            ->after(function (Request $req, Response $res) use ($app) {
-//                /* @var \App $app */
-//                if (isset($app['ksenia_cache_images_locally']) && $app['ksenia_cache_images_locally']==true) {
-//                    /* @var \Entity\Image $image */
-//                    $image = $app->imageService->find($req->attributes->get('imageId'));
-//                    $path = $app['ksenia_image_cache_path'] . "/" . $image->getId() . "." . $image->getExtension();
-//                    try {
-//                        $localImage = fopen($path, 'x+');
-//                        $fsImage = $image->getFile()->getMongoGridFSFile()->getResource();
-//                        stream_copy_to_stream($fsImage, $localImage);
-//                        fclose($fsImage);
-//                        fclose($localImage);
-//                    } catch (\Exception $e) {
-//                        $app->logger->err($e->getMessage());
-//                    }
-//                }
-//            });
-
         return $portfolioController;
     }
 }

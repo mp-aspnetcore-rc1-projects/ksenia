@@ -46,7 +46,7 @@ class Image implements JsonSerializable, IModel
      */
     private $mimeType;
     /**
-     * @ODM\ReferenceOne(targetDocument="\Entity\Project",simple=true)
+     * @ODM\ReferenceOne(name="project",targetDocument="\Entity\Project",simple=true,inversedBy="images")
      * @var \Entity\Project
      */
     private $project;
@@ -175,7 +175,7 @@ class Image implements JsonSerializable, IModel
 
     public function __toString()
     {
-        return $this->filename;
+        return (string)$this->getTitle();
     }
 
     public function getBasename()
@@ -219,7 +219,6 @@ class Image implements JsonSerializable, IModel
     {
         return array(
             "id" => $this->getId(),
-            "_id" => $this->getId(),
             "title" => $this->getTitle(),
             "isPublished" => $this->getIsPublished(),
             "description" => $this->getDescription(),
@@ -227,11 +226,10 @@ class Image implements JsonSerializable, IModel
             "updatedAt" => $this->getUpdatedAt(),
             "filename" => $this->getFilename(),
             "basename" => $this->getBasename(),
-            "owner"=>$this->getOwner(),
+            "extension"=>$this->getExtension(),
             "project" => $this->project ? array(
                 "id" => $this->getProject()->getId(),
                 "title" => $this->getProject()->getTitle(),
-                "poster" => $this->getProject()->getPoster(),
                 "owner"=>$this->getProject()->getOwner()
             ) : null
         );
@@ -257,6 +255,5 @@ class Image implements JsonSerializable, IModel
         if (null != $this->getId()) {
             $this->setFilename($this->getId() . "." . $this->getExtension());
         }
-        $this->setBasename(basename($this->getFilename()));
     }
 }

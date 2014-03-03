@@ -203,66 +203,83 @@ HERE;
 $templates['project_read'] = <<<HERE
 	{%extends 'admin_layout' %}
 	{% block admin_content %}
-		<header class="lead">
-            <ol class="breadcrumb">
-                <li><a href="{{path('project_index')}}">Projects</a></li>
-                <li class="active">{{project.title}}</li>
-            </ol>
-        </header>
-		<dl class="dl-horizontal">
-		    <dt>Title</dt>
-		    <dd>{{project.title}}</dd>
-            <dt>Description</dt>
-            <dd>{{project.description}}</dd>
-            <dt>Client</dt>
-            <dd>{{project.client}}</dd>
-            <dt>Tags</dt>
-            <dd>{{ project.tags | join(', ')}}</dd>
-		</dl>
-		<section class="row">
-			<nav class="col-md-12">
-				<a class="btn btn-default" href="{{path('project_update',{id:project.id})}}">Edit Project Infos</a>
-			    <a class="btn btn-default" href="{{path('image_upload',{projectId:project.id})}}">Add Images</a>
-			</nav>
-			<h3>&nbsp;</h3>
-		</section>
-		<script type="text/javascript">
-			var Config={
-					projectId:"{{project.id}}",
-					imageResource:"{{path('mp_simplerest_image_index')}}",
-					imageSrc:"{{path('image_load',{imageId:":id"}) }}",
-					imagePublish:"{{url("image_publish",{ projectId:project.id, imageId:":id" }) }}",
-					imageHref:"{{path('image_read',{projectId:project.id,imageId:":id"}) }}"
-			};
-		</script>
-		{%raw%}
-		<!-- if javascript enabled -->
-		<section class="row script" ng-app="ProjectRead" ng-controller="ImageCollectionCtrl">
-		    <article ng-repeat="image in images" article class="col-sm-3">
-		    	<section class="thumbnail">
-		    		<figure style="overflow:hidden;height:100px;">
-                		<a ng-href="{{imageHref(image)}}">
-                     		<img  ng-src="{{imageSrc(image)}}" title="{{image.title}} alt="{{image.title}}"/>
-                		</a>
-                	</figure>
-                	<figcaption class="text-muted"><small>{{image.title}}</small></figcaption>
-                	<a class="btn btn-default btn-xs" ng-href="{{imageHref(image)}}/update" title="Edit image">
-                        <span class="glyphicon glyphicon-pencil"></span>
-                    </a>
-                    <button ng-click="remove(image)" title="delete the image" class="btn btn-default btn-xs">
-                            <span class="glyphicon glyphicon-remove"></span>
-                    </button>
-                    <button ng-click="publish(image)" title="Publish or Unpublish image" class="btn btn-default btn-xs" >
-                        {{image.isPublished?"UnPublish":"Publish"}}
-                    </button>
-                    <button title="Select image as project poster" class="btn btn-default btn-xs">
-                        <span class="glyphicon glyphicon-star"></span>
-                    </button>
-		    	</section>
-		    </article>
-		</section>
-		{%endraw%}
-		{# @TODO fix that stuff {%include 'project_read_no_script'%} #}
+	    <section data-ng-app="ProjectRead">
+            <header class="lead">
+                <ol class="breadcrumb">
+                    <li><a href="{{path('project_index')}}">Projects</a></li>
+                    <li class="active">{{project.title}}</li>
+                </ol>
+            </header>
+            <dl class="dl-horizontal" data-ng-controller="ProjectCtrl">
+                <dt>Title</dt>
+                <dd data-ng-bind="project.title">{{project.title}}</dd>
+                <dt>Description</dt>
+                <dd>{{project.description}}</dd>
+                <dt>Client</dt>
+                <dd>{{project.client}}</dd>
+                <dt>Tags</dt>
+                <dd>{{ project.tags | join(', ')}}</dd>
+                <dt>Poster</dt>
+                <dd data-ng-bind="project.poster?project.poster.title:'No Image Selected'"></dd>
+                <dt>Created at</dt>
+                <dd data-ng-bind="project.createdAt.date"></dd>
+                <dt>Modified at</dt>
+                <dd data-ng-bind="project.updatedAt.date"></dd>
+            </dl>
+            <section class="row" >
+                <nav class="col-md-12">
+                    <a class="btn btn-default" href="{{path('project_update',{id:project.id})}}">Edit Project Infos</a>
+                    <a class="btn btn-default" href="{{path('image_upload',{projectId:project.id})}}">Add Images</a>
+                    <label data-ng-controller="ProjectCtrl">Sort by
+                            <select data-ng-model="config.sort" name="image-sort" id="">
+                                <option value="title">Title</option>
+                                <option value="filename">FileName</option>
+                                <option value="createdAt">Creation Date</option>
+                            </select>
+                     </label>
+                </nav>
+                <h3>&nbsp;</h3>
+            </section>
+            <script type="text/javascript">
+                var Config={
+                        projectId:"{{project.id}}",
+                        markAsPoster:"{{path('image_mark_as_poster',{imageId:':id',projectId:project.id}) }}",
+                        imageResource:"{{path('mp_simplerest_image_index')}}",
+                        projectResource:"{{path('mp_simplerest_project_read',{id:project.id})}}",
+                        imageSrc:"{{path('image_load',{imageId:':id'}) }}",
+                        imagePublish:"{{url('image_publish',{ projectId:project.id, imageId:':id' }) }}",
+                        imageHref:"{{path('image_read',{projectId:project.id,imageId:':id'}) }}"
+                };
+            </script>
+            {%raw%}
+            <section class="row script" data-ng-controller="ProjectCtrl">
+                <article data-ng-repeat="image in project.images|orderBy:config.sort" class="col-sm-3">
+                    <section class="thumbnail" >
+                        <figure style="overflow:hidden;height:100px;">
+                            <a data-ng-href="{{imageHref(image)}}">
+                                <img data-ng-src="{{imageSrc(image)}}" title="{{image.title}} alt="{{image.title}}"/>
+                            </a>
+                        </figure>
+                        <figcaption class="text-muted"><small>{{image.title}}</small></figcaption>
+                        <a class="btn btn-default btn-xs" data-ng-href="{{imageHref(image)}}/update" title="Edit image">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                        </a>
+                        <button data-ng-click="remove(image)" title="delete the image" class="btn btn-default btn-xs">
+                                <span class="glyphicon glyphicon-remove"></span>
+                        </button>
+                        <button data-ng-click="publish(image)" title="Publish or Unpublish image" class="btn btn-default btn-xs" >
+                            {{image.isPublished?"UnPublish":"Publish"}}
+                        </button>
+                        <button title="Select image as project poster" data-ng-click="markAsPoster(image)"
+                        class="btn btn-default btn-xs">
+                            <span class="glyphicon glyphicon-star{{isPoster(image)?' ':'-empty'}}"></span>
+                        </button>
+                    </section>
+                </article>
+            </section>
+            {%endraw%}
+            {# @TODO fix that stuff {%include 'project_read_no_script'%} #}
+        </section>
 	{% endblock %}
     {%block scripts %}
     	{{parent()}}
@@ -277,7 +294,7 @@ $templates['project_read'] = <<<HERE
     	#}
     {%endblock%}
 HERE;
-$templates['project_read_no_script']=<<<HERE
+$templates['project_read_no_script'] = <<<HERE
 	<noscript>
 		<!-- if javascript disabled -->
 		{#
@@ -287,7 +304,7 @@ $templates['project_read_no_script']=<<<HERE
 		    <section class="thumbnail">
                 <figure style="overflow:hidden;height:100px;">
                 <a href="{{path('image_read',{projectId:project.id,imageId:image.id}) }}">
-                     <img  src="{{path('image_load',{imageId:image.id}) }}" title="{{image.title}} alt="{{image.title}}"/>
+                     <img  src="{{path('image_load',{imageId:image.id,extension:image.extension}) }}" title="{{image.title}} alt="{{image.title}}"/>
                 </a>
                 </figure>
                 <figcaption class="text-muted"><small data-title="{{image.title}}">{{image.title[:20]}}</small></figcaption>
@@ -346,7 +363,7 @@ $templates['image_index'] = <<<HERE
             <tr>
                 <td>
                     <a href="{{path('image_read',{projectId:project.id,imageId:image.id})}}">
-                        <img width="100" src="{{path('image_load',{imageId:image.id}) }}" alt="{{image.title}}"/>
+                        <img width="100" src="{{path('image_load',{imageId:image.id,extension:image.extension}) }}" alt="{{image.title}}"/>
                     </a>
                 <td>{{image.title}}</td>
                 <td>{{image.description}}</td>
@@ -375,13 +392,13 @@ $templates['image_read'] = <<<HERE
         <ol class="breadcrumb">
             <li><a href="{{path('project_index') }}">Projects</a></li>
             <li><a href="{{path('project_read',{id:project.id}) }}">{{project.title}}</a></li>
-            <li><a href="{{path('image_index',{projectId:project.id}) }}">Images</a></li>
+            <li><a href="{{path('project_read',{id:project.id}) }}">Images</a></li>
             <li class="active">{{image.title}}</li>
         </ol>
     </header>
     <div class="row">
         <div class="thumbnail">
-            <img src="{{path('image_load',{imageId:image.id}) }}" alt="{{image.title}}"/>
+            <img src="{{path('image_load',{imageId:image.id,extension:image.extension}) }}" alt="{{image.title}}"/>
         </div>
     </div>
     <dl class="dl-horizontal">
@@ -410,7 +427,7 @@ $templates['image_create'] = <<<HERE
         <ol class="breadcrumb">
             <li><a href="{{path('project_index',{id:project.id}) }}">Projects</a></li>
             <li><a href="{{path('project_read',{id:project.id}) }}">{{project.title}}</a></li>
-            <li><a href="{{path('image_index',{projectId:project.id}) }}">Images</a></li>
+            <li><a href="{{path('project_read',{id:project.id}) }}">Images</a></li>
             <li class="active">Create</a></li>
         </ol>
         </header>
@@ -424,16 +441,16 @@ $templates['image_update'] = <<<HERE
         <ol class="breadcrumb">
             <li><a href="{{path('project_index',{id:project.id}) }}">Projects</a></li>
             <li><a href="{{path('project_read',{id:project.id}) }}">{{project.title}}</a></li>
-            <li><a href="{{path('image_index',{projectId:project.id}) }}">Images</a></li>
+            <li><a href="{{path('project_read',{id:project.id}) }}">Images</a></li>
             <li><a href="{{path('image_read',{projectId:project.id,imageId:image.id}) }}">{{image.title}}</a></li>
             <li class="active">Update</a></li>
         </ol>
         </header>
 		<div class="row">
 		<a class="thumbnail col-md-5"
-          target="_blank" href="{{path('image_load',{imageId:image.id})}}">
+          target="_blank" href="{{path('image_load',{imageId:image.id,image.extension})}}">
             <img title="{{image.title}}"
-            src="{{path('image_load',{imageId:image.id})}}"
+            src="{{path('image_load',{imageId:image.id,extension:image.extension})}}"
             alt="{{image.title}}"/>
         </a>
         </div>
@@ -448,7 +465,7 @@ $templates['image_upload'] = <<<HERE
         <ol class="breadcrumb">
             <li><a href="{{path('project_index')}}">Projects</a></li>
             <li><a href="{{path('project_read',{id:project.id}) }}">{{project.title}}</a></li>
-            <li><a href="{{path('image_index',{projectId:project.id})}}">Images</a></li>
+            <li><a href="{{path('project_read',{id:project.id})}}">Images</a></li>
             <li class="active">Upload Images</li>
         </ol>
     </header>
@@ -599,7 +616,7 @@ $templates['underscore'] = <<<HERE
 	<script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js">
 	</script>
 HERE;
-$templates['angular']=<<<HERE
+$templates['angular'] = <<<HERE
 	<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.10/angular.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.3/angular-resource.min.js"></script>
 HERE;

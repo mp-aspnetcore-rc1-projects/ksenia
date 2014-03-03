@@ -114,7 +114,7 @@ class Config implements ServiceProviderInterface
                 "model" => '\Entity\Image',
                 "service" => $app["imageService"],
                 "criteria"=>array('project'),
-                "allows"=>array('list','read','update','delete')
+                //"allows"=>array('list','read','update','delete')
             ));
         });
         $app['projectRestController'] = $app->share(function ($app) {

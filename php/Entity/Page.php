@@ -5,7 +5,7 @@ namespace Entity;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 /** @ODM\Document @ODM\HasLifecycleCallbacks */
-class  Page
+class  Page implements \JsonSerializable
 {
     /** @ODM\Id */
     private $id;
@@ -119,9 +119,10 @@ class  Page
     }
 
     /** @ODM\PrePersist */
-    public function prepersist(){
+    public function prepersist()
+    {
         $this->setUpdatedAt(new \DateTime());
-        if(null==$this->getId()){
+        if (null == $this->getId()) {
             $this->setCreatedAt(new \DateTime());
         }
     }
@@ -134,5 +135,21 @@ class  Page
     public function setOwner($owner)
     {
         $this->owner = $owner;
+    }
+
+    /**
+     * (PHP 5 &gt;= 5.4.0)<br/>
+     * Specify data which should be serialized to JSON
+     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     */
+    public function jsonSerialize()
+    {
+        return array(
+            'title' => $this->getTitle(),
+            'description' => $this->getDescription(),
+            "id" => $this->getId()
+        );
     }
 }

@@ -627,7 +627,7 @@ HERE;
 /**
  * MENUS
  */
-$templates['menu_index']=<<<HERE
+$templates['menu_index'] = <<<HERE
     {%extends 'admin_layout'%}
     {%block admin_content%}
        <header class="lead">
@@ -674,7 +674,7 @@ $templates['menu_index']=<<<HERE
         </section>
     {%endblock%}
 HERE;
-$templates['menu_create']=<<<HERE
+$templates['menu_create'] = <<<HERE
     {%extends 'admin_layout'%}
     {%block admin_content%}
         <header class="lead">
@@ -685,16 +685,72 @@ $templates['menu_create']=<<<HERE
         </header>
         <section class="row">
         {{form_start(form,{attr:{class:'col-md-12'}})}}
-            <fieldset><legend>Create a new menu</legend>
+            <fieldset>
+                <legend>Create a new menu</legend>
+                {{form_row(form['links'],{attr:{id:'links'}})}}
                 {%for field in form %}
-                <div class="control-group">
+                <div class="form-group">
                     {{form_row(field,{attr:{class:'form-control'}})}}
                 </div>
                 {%endfor%}
+                {%include 'menu-link-widget'%}
+                <div class="form-group">
+                    <button clas="btn btn-default"  type="reset">Reset</button>
+                    <button clas="btn btn-default" type="submit">Save</button>
+                </div>
             </fieldset>
         {{form_end(form)}}
         </section>
     {%endblock%}
+    {%block scripts%}
+        {{parent()}}
+        {%include 'jquery'%}
+        {%include 'underscore'%}
+        {%include 'angular'%}
+        <script type="text/javascript" src="/static/javascript/menu-form-angular.js"></script>
+    {%endblock%}
+HERE;
+$templates['menu-link-widget'] = <<<HERE
+<script type="text/javascript">
+    var Config={
+        projectResource:"{{path('mp_simplerest_project_index')}}",
+        pageResource:"{{path('mp_simplerest_page_index')}}"
+    }
+</script>
+{%raw%}
+<section class="row" ng-app="MenuForm" ng-controller="MenuFormCtrl">
+    <article class="col-md-6">
+        <h4 class="text-muted">Links</h4>
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs">
+          <li class="{{isActive('Pages')}}"><a href='' ng-click="activate('Pages')" >Pages</a></li>
+          <li class="{{isActive('Projects')}}"><a href='' ng-click="activate('Projects')">Projects</a></li>
+          <li class="{{isActive('Images')}}"><a href='' ng-click="activate('Images')" >Images</a></li>
+          <li class="{{isActive('Custom')}}"><a href='' ng-click="activate('Custom')">Custom</a></li>
+        </ul>
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div class="tab-pane {{isActive('Pages')}}">
+                <header class="lead">Drag and drop pages into the menu</header>
+                <p class="alert alert-info no-select" ng-repeat="page in pages">
+                    {{page.title}}
+                </p>
+            </div>
+            <div class="tab-pane {{isActive('Projects')}}">
+                <header class="lead">Drag and drop projects into the menu</header>
+                <p class="alert alert-info no-select" ng-repeat="project in projects">
+                    {{project.title}}
+                </p>
+            </div>
+            <div class="tab-pane {{isActive('Images')}}">Images</div>
+            <div class="tab-pane {{isActive('Custom')}}">Custom</div>
+        </div>
+    </article>
+    <article class="col-md-6">
+        <h4 class="text-muted">Menu</h4>
+    </article>
+</section>
+{%endraw%}
 HERE;
 
 /**

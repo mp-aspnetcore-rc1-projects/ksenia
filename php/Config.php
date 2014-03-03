@@ -131,6 +131,17 @@ class Config implements ServiceProviderInterface
                 "allows" => array('list', 'read')
             ));
         });
+        $app['pageRestController'] = $app->share(function ($app) {
+            return new RestController(array(
+                "debug" => $app['debug'],
+                "resource" => "page",
+                "resourcePluralize" => "pages",
+                "model" => '\Entity\Page',
+                "service" => $app['pageService'],
+                "logger" => $app['logger'],
+                "allows" => array('list', 'read')
+            ));
+        });
 
     }
 
@@ -149,6 +160,7 @@ class Config implements ServiceProviderInterface
         $app->mount('/private', new Administration());
         $app->mount('/private/api/', $app['imageRestController']);
         $app->mount('/private/api/', $app['projectRestController']);
+        $app->mount('/private/api/', $app['pageRestController']);
         $app->mount('/', new Index());
     }
 }

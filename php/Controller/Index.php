@@ -36,21 +36,22 @@ class Index implements ControllerProviderInterface
         $image = $app->imageService->find($imageId);
         if (!$image) $app->abort(404);
         $dir = $app['ksenia_image_cache_path'];
-        $r = $app->stream(function () use ($image, $imageId, $dir) {
+        $doCache= $app['ksenia_cache_images_locally'];
+        $r = $app->stream(function () use ($image, $imageId, $dir,$doCache) {
             $file = $image->getFile();
             $r = $file->getMongoGridFSFile()->getResource();
             $out = fopen('php://output', 'w');
-            $cache = fopen("$dir/$imageId." . $image->getExtension(), "w");
+            if ($doCache)$cache = fopen("$dir/$imageId." . $image->getExtension(), "w");
             while (!feof($r)) {
                 $packet = fread($r, 8192);
                 fputs($out, $packet);
-                fputs($cache, $packet);
+                if($doCache)fputs($cache, $packet);
                 ob_flush();
                 sleep(0.1);
             }
             fclose($r);
             fclose($out);
-            fclose($cache);
+            if($doCache)fclose($cache);
         }, 200, array(
             'Content-Type' => $image->getMimeType() ? $image->getMimeType() : 'image/*',
             'Cache-Control' => 's-maxage=20',

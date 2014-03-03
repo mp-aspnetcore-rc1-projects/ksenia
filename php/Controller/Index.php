@@ -46,6 +46,7 @@ class Index implements ControllerProviderInterface
                 $packet = fread($r, 8192);
                 fputs($out,$packet);
                 fputs($cache,$packet);
+                sleep(0.1);
             }
             fclose($r);
             fclose($out);

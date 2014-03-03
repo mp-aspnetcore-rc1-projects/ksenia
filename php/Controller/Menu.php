@@ -18,34 +18,44 @@ class Menu implements ControllerProviderInterface
 {
     function index(App $app, Request $req)
     {
-        $menus=$app->menuService->findAll();
-        return $app->twig->render('menu_index',array('menus'=>$menus));
+        $menus = $app->menuService->findAll();
+        return $app->twig->render('menu_index', array('menus' => $menus));
     }
 
-    function read(App $app, Request $req,$id)
+    function read(App $app, Request $req, $id)
     {
 
     }
 
     function create(App $app, Request $req)
     {
-        $menu=new \Entity\Menu;
-        $form=$app->formFactory->create(new \Form\Menu,$menu);
-        if($req->getMethod()=="POST"){
-            if($form->handleRequest($req)->isValid()){
+        $menu = new \Entity\Menu;
+        $form = $app->formFactory->create(new \Form\Menu, $menu);
+        if ($req->getMethod() == "POST") {
+            if ($form->handleRequest($req)->isValid()) {
                 $app->menuService->create($menu);
                 return $app->redirect($app->url_generator->generate('menu_index'));
             }
         }
-        return $app->twig->render('menu_create',array('form'=>$form->createView()));
+        return $app->twig->render('menu_create', array('form' => $form->createView()));
     }
 
-    function update(App $app, Request $req,$id)
+    function update(App $app, Request $req, $id)
     {
+        $menu = $app->menuService->find($id);
+        if (!$menu) $app->abort(404);
+        $form = $app->formFactory->create(new \Form\Menu, $menu);
+        if ($req->getMethod() == "POST") {
+            if ($form->handleRequest($req)->isValid()) {
+                $app->menuService->create($menu);
+                return $app->redirect($app->url_generator->generate('menu_index'));
+            }
+        }
+        return $app->twig->render('menu_update', array('menu' => $menu, 'form' => $form->createView()));
 
     }
 
-    function delete(App $app, Request $req,$id)
+    function delete(App $app, Request $req, $id)
     {
 
     }

@@ -679,14 +679,48 @@ $templates['menu_create'] = <<<HERE
     {%block admin_content%}
         <header class="lead">
             <ol class="breadcrumb">
-                <li><a hfef="{{path('menu_index')}}">Menus</a></li>
+                <li><a href="{{path('menu_index')}}">Menus</a></li>
                 <li  class="active">Create</li>
             </ol>
         </header>
         <section class="row">
+            {%include 'menu_form'%}
+        </section>
+    {%endblock%}
+    {%block scripts%}
+        {{parent()}}
+        {%include 'jquery'%}
+        {%include 'underscore'%}
+        {%include 'angular'%}
+        <script type="text/javascript" src="/static/javascript/menu-form-angular.js"></script>
+    {%endblock%}
+HERE;
+$templates['menu_update'] = <<<HERE
+    {%extends 'admin_layout'%}
+    {%block admin_content%}
+        <header class="lead">
+            <ol class="breadcrumb">
+                <li><a href="{{path('menu_index')}}">Menus</a></li>
+                <li><a href="{{path('menu_read',{id:menu.id})}}">{{menu.title}}</a></li>
+                <li  class="active">Update</li>
+            </ol>
+        </header>
+        <section class="row">
+            {%include 'menu_form'%}
+        </section>
+    {%endblock%}
+    {%block scripts%}
+        {{parent()}}
+        {%include 'jquery'%}
+        {%include 'underscore'%}
+        {%include 'angular'%}
+        <script type="text/javascript" src="/static/javascript/menu-form-angular.js"></script>
+    {%endblock%}
+HERE;
+$templates['menu_form']=<<<HERE
         {{form_start(form,{attr:{class:'col-md-12'}})}}
             <fieldset>
-                <legend>Create a new menu</legend>
+                <legend>Edit a new menu</legend>
                 {{form_row(form['links'],{attr:{id:'links'}})}}
                 {%for field in form %}
                 <div class="form-group">
@@ -700,16 +734,8 @@ $templates['menu_create'] = <<<HERE
                 </div>
             </fieldset>
         {{form_end(form)}}
-        </section>
-    {%endblock%}
-    {%block scripts%}
-        {{parent()}}
-        {%include 'jquery'%}
-        {%include 'underscore'%}
-        {%include 'angular'%}
-        <script type="text/javascript" src="/static/javascript/menu-form-angular.js"></script>
-    {%endblock%}
 HERE;
+
 $templates['menu-link-widget'] = <<<HERE
 <script type="text/javascript">
     var Config={

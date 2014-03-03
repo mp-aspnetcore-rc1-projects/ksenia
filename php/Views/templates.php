@@ -259,7 +259,7 @@ $templates['project_read'] = <<<HERE
                     <section class="thumbnail" >
                         <figure style="overflow:hidden;height:100px;">
                             <a data-ng-href="{{imageHref(image)}}">
-                                <img data-ng-src="{{imageSrc(image)}}" title="{{image.title}} alt="{{image.title}}"/>
+                                <img data-ng-src="{{imageSrc(image)}}" title="{{image.title}}" alt="{{image.title}}"/>
                             </a>
                         </figure>
                         <figcaption class="text-muted"><small>{{image.title}}</small></figcaption>
@@ -400,14 +400,20 @@ $templates['image_read'] = <<<HERE
     </header>
     <div class="row">
         <div class="thumbnail">
-            <img src="{{path('image_load',{imageId:image.id,extension:image.extension}) }}" alt="{{image.title}}"/>
+            <a target="_blank" href="{{path('image_load_flush',{imageId:image.id,extension:image.extension}) }}">
+                <img src="{{path('image_load',{imageId:image.id,extension:image.extension}) }}" alt="{{image.title}}"/>
+            </a>
         </div>
     </div>
     <dl class="dl-horizontal">
-        <dt>title</dt>
+        <dt>Title</dt>
         <dd>{{image.title}}</dd>
-        <dt>description</dt>
-        <dd>{{image.description}}</dd>
+        <dt>Description</dt>
+        <dd>{{image.description[:50]}}</dd>
+        <dt>Filename</dt>
+        <dd>{{image.filename}}</dd>
+        <dt>Project</dt>
+        <dd>{{image.project.title}}</dd>
     </dl>
     {%endblock%}
 HERE;

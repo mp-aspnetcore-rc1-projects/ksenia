@@ -73,9 +73,12 @@ class Index implements ControllerProviderInterface
         $portfolioController = $app['controllers_factory'];
         $portfolioController->get('/', array($this, 'index'))
             ->bind('index');
-        $portfolioController->get('/static/images/{imageId}.{extension}', array($this, 'imageLoad'))
+        $portfolioController->get('/static/images/cache/{imageId}.{extension}', array($this, 'imageLoad'))
             ->value("extension", "jpg")
             ->bind('image_load');
+        $portfolioController->get('/static/images/cache/flush/{imageId}.{extension}',array($this,'imageLoad'))
+            ->value("extension", "jpg")
+            ->bind('image_load_flush');
         return $portfolioController;
     }
 }

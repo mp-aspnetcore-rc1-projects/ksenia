@@ -42,7 +42,7 @@ class Config implements ServiceProviderInterface
         $app['ksenia_connection_string'] = getenv('KSENIA_MONGODB');
         $app['ksenia_dbname'] = "ksenia-portfolio";
         $app['ksenia_cache_images_locally'] = true;
-        $app['ksenia_image_cache_path'] = __DIR__ . "/../web/static/images/";
+        $app['ksenia_image_cache_path'] = __DIR__ . "/../web/static/images/cache/";
         $app['temp'] = __DIR__ . "/../temp";
         $app['title'] = "ksenia - porfolio";
 

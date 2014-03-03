@@ -65,7 +65,8 @@
                 ImageResource.markAsPoster({id: image.id}, Util.log);
             };
             $scope.isPoster = function (image) {
-                return image.id === $scope.project.poster.id;
+                if($scope.project.poster)
+                    return image.id === $scope.project.poster.id;
             };
             $scope.remove = function (image) {
                 $scope.project.images = $scope.project.images.filter(function (im) {

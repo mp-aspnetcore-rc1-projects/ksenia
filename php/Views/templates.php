@@ -43,10 +43,7 @@ HERE;
 $templates['admin_layout'] = <<<HERE
 	{% extends 'layout'%}
 	{% block styles %}
-		{# Latest compiled and minified CSS #}
-		<link rel='stylesheet' href='//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css'>
-		{# Optional theme #}
-		<link rel='stylesheet' href='//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css'>
+	    {%include 'bootstrap_css'%}
 		{# google font #}
 		<link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css'>
 		{# custom styles #}
@@ -717,7 +714,7 @@ $templates['menu_update'] = <<<HERE
         <script type="text/javascript" src="/static/javascript/menu-form-angular.js"></script>
     {%endblock%}
 HERE;
-$templates['menu_form']=<<<HERE
+$templates['menu_form'] = <<<HERE
         {{form_start(form,{attr:{class:'col-md-12'}})}}
             <fieldset>
                 <legend>Edit a new menu</legend>
@@ -758,15 +755,21 @@ $templates['menu-link-widget'] = <<<HERE
         <div class="tab-content">
             <div class="tab-pane {{isActive('Pages')}}">
                 <header class="lead">Drag and drop pages into the menu</header>
-                <p class="alert alert-info no-select" ng-repeat="page in pages">
-                    {{page.title}}
-                </p>
+                    <ul class="list-group">
+                        <li class="list-group-item" data="page" my-draggable
+                        ng-repeat="page in pages" title="drag me and drop me on the right! ">
+                            {{page.title}}
+                        </li>
+                    </ul>
             </div>
             <div class="tab-pane {{isActive('Projects')}}">
                 <header class="lead">Drag and drop projects into the menu</header>
-                <p class="alert alert-info no-select" ng-repeat="project in projects">
-                    {{project.title}}
-                </p>
+                <ul class="list-group">
+                    <li class="list-group-item" data="project" my-draggable
+                    ng-repeat="project in projects">
+                        {{project.title}}
+                    </li>
+                </ul>
             </div>
             <div class="tab-pane {{isActive('Images')}}">Images</div>
             <div class="tab-pane {{isActive('Custom')}}">Custom</div>
@@ -774,6 +777,26 @@ $templates['menu-link-widget'] = <<<HERE
     </article>
     <article class="col-md-6">
         <h4 class="text-muted">Menu</h4>
+        <div title="Drop some content here to create a link">
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#">Links</a></li>
+            </ul>
+            <div class="tab-content active">
+                <div class="lead">&nbsp;</div>
+                 <ul class="list-group">
+                    <li my-drop="drop" class="list-group-item  text-muted drop-zone lead">Drop items right here!</li>
+                </ul>
+                <ul class="list-group">
+                    <li class="list-group-item"
+                        ng-repeat="link in Link.links">
+                        <button type="button" class="close" ng-click="removeLink(link)">&times;</button>
+                        {{link.title}} - <span class="text-muted">{{link.type}}</span>
+
+                    </li>
+                </ul>
+
+            </div>
+        </div>
     </article>
 </section>
 {%endraw%}
@@ -794,6 +817,12 @@ $templates['angular'] = <<<HERE
 	<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.10/angular.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.3/angular-resource.min.js"></script>
 	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.3/angular-animate.js"></script>
+HERE;
+$templates['bootstrap_css'] = <<<HERE
+    {# Latest compiled and minified CSS #}
+    <link rel='stylesheet' href='//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css'>
+	{# Optional theme #}
+	{#<link rel='stylesheet' href='//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css'>#}
 HERE;
 
 return $templates;

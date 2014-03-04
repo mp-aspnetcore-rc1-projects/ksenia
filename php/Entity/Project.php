@@ -236,6 +236,12 @@ class Project implements JsonSerializable
         if ($this->getCreatedAt() == null) {
             $this->setCreatedAt(new DateTime);
         }
+        /** if no poster and project has images, set first image as poster */
+        if (null == $this->getPoster()) {
+            if ($this->getImages()->count() > 0) {
+                $this->setPoster($this->getImages()->first());
+            }
+        }
     }
 
     /**

@@ -8,7 +8,7 @@
 (function () {
     "use strict";
     /*global angular*/
-    angular.module('ProjectRead', ['ngResource','ngAnimate'])
+    angular.module('ProjectRead', ['ngResource', 'ngAnimate'])
         .factory('Config', function () {
             return Config;
         })
@@ -55,7 +55,7 @@
             return ProjectResource.get(Util.log);
         })
         .controller("ProjectCtrl", function ($scope, Config, Project, ImageResource, Util) {
-            $scope.config=Config;
+            $scope.config = Config;
             $scope.publish = function (image) {
                 image.isPublished = !image.isPublished;
                 ImageResource.publish({id: image.id}, Util.log);
@@ -65,7 +65,7 @@
                 ImageResource.markAsPoster({id: image.id}, Util.log);
             };
             $scope.isPoster = function (image) {
-                if($scope.project.poster)
+                if ($scope.project.poster)
                     return image.id === $scope.project.poster.id;
             };
             $scope.remove = function (image) {

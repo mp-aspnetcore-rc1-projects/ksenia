@@ -22,6 +22,7 @@ use Symfony\Component\Routing\Generator\UrlGenerator;
  * @property \Symfony\Component\Serializer\Serializer serializer
  * @property \Monolog\Logger logger
  * @property \Service\Menu menuService
+ * @property \Service\Link linkService
  */
 class App extends Application
 {

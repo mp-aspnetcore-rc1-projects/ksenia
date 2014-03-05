@@ -10,7 +10,9 @@
     box-sizing: border-box;
     border-radius: 0 0;
 }
-
+footer.container{
+    margin-top:200px;
+}
 body {
     font-family: 'PT Sans', Helvetica, sans-serif;
 }

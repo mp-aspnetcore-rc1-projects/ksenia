@@ -5,6 +5,7 @@ namespace Entity;
 use Doctrine\MongoDB\GridFSFile;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use JsonSerializable;
+use Doctrine\Common\Collections\ArrayCollection;
 use Mparaiso\SimpleRest\Model\IModel;
 use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -30,95 +31,90 @@ class Menu
     private $updatedAt;
     /** @ODM\ReferenceOne(targetDocument="\Entity\User",inversedBy="menus",simple=true) */
     private $owner;
+    /** @ODM\ReferenceMany(targetDocument="\Entity\Link",mappedBy="menu",simple=true,cascade="all") */
+    private $links;
 
-    function __construct()
-    {
-        $this->links = [];
+    function __construct() {
+        $this->links = new ArrayCollection;
     }
 
 
-    public function setCreatedAt($createdAt)
-    {
+    public function setCreatedAt($createdAt) {
         $this->createdAt = $createdAt;
     }
 
-    public function getCreatedAt()
-    {
+    public function getCreatedAt() {
         return $this->createdAt;
     }
 
-    public function setDescription($description)
-    {
+    public function setDescription($description) {
         $this->description = $description;
     }
 
-    public function getDescription()
-    {
+    public function getDescription() {
         return $this->description;
     }
 
-    public function setId($id)
-    {
+    public function setId($id) {
         $this->id = $id;
     }
 
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
-    public function setIsPublished($isPublished)
-    {
+    public function setIsPublished($isPublished) {
         $this->isPublished = $isPublished;
     }
 
-    public function getIsPublished()
-    {
+    public function getIsPublished() {
         return $this->isPublished;
     }
 
-    public function setLinks($links)
-    {
-        $this->links = $links;
+    public function addLinks(\Entity\Link $links) {
+        $links->setMenu($this);
+        $this->links->add($links);
     }
 
-    public function getLinks()
-    {
-        return $this->links;
+    public function removeLinks($links) {
+        $this->links->remove($links);
     }
 
-    public function setOwner($owner)
-    {
+    /**
+     * @param Link[] $links
+     */
+    public function setLinks($links) {
+        $this->links=$links;
+    }
+
+    /**
+     * @return Link[]
+     */
+    public function getLinks() {
+        return $this->links->toArray();
+    }
+
+    public function setOwner($owner) {
         $this->owner = $owner;
     }
 
-    public function getOwner()
-    {
+    public function getOwner() {
         return $this->owner;
     }
 
-    public function setTitle($title)
-    {
+    public function setTitle($title) {
         $this->title = $title;
     }
 
-    public function getTitle()
-    {
+    public function getTitle() {
         return $this->title;
     }
 
-    public function setUpdatedAt($updatedAt)
-    {
+    public function setUpdatedAt($updatedAt) {
         $this->updatedAt = $updatedAt;
     }
 
-    public function getUpdatedAt()
-    {
+    public function getUpdatedAt() {
         return $this->updatedAt;
     }
-
-    /** @ODM\ReferenceMany(targetDocument="\Entity\Link",mappedBy="menu",simple=true) */
-    private $links;
-
-
 }

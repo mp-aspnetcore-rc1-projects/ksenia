@@ -24,10 +24,10 @@ $templates['layout'] = <<<HERE
 				<h1>{{app.title}}</h1>
 				{%block content%}{%endblock%}
 			</main>
-			<footer class="container">
 			{%block footer%}
+            <footer class="container">
+            </footer>
 			{%endblock%}
-			</footer>
 			{% block scripts %}
 			{% endblock %}
 		</body>
@@ -61,9 +61,11 @@ $templates['admin_layout'] = <<<HERE
 		</section>
 	{% endblock %}
 	{%block footer%}
-	    &copy; {{"now"|date("Y")}} mparaiso mparaiso@online.fr
-		{% block admin_footer %}
-		{% endblock %}
+        <footer class="container">
+            &copy; {{"now"|date("Y")}} mparaiso mparaiso@online.fr
+            {% block admin_footer %}
+            {% endblock %}
+        </footer>
 	{% endblock %}
 	{% block scripts %}
 		{# jQuery (necessary for Bootstrap's JavaScript plugins) #}
@@ -715,10 +717,10 @@ $templates['menu_update'] = <<<HERE
     {%endblock%}
 HERE;
 $templates['menu_form'] = <<<HERE
-        {{form_start(form,{attr:{class:'col-md-12'}})}}
+        {{form_start(form,{attr:{class:'col-md-12','ng-app':'MenuForm','ng-controller':'MenuFormCtrl'}})}}
             <fieldset>
                 <legend>Edit a new menu</legend>
-                {{form_row(form['links'],{attr:{id:'links'}})}}
+                {#{{form_row(form['links'],{attr:{id:'links'}})}}#}
                 {%for field in form %}
                 <div class="form-group">
                     {{form_row(field,{attr:{class:'form-control'}})}}
@@ -726,82 +728,82 @@ $templates['menu_form'] = <<<HERE
                 {%endfor%}
                 {%include 'menu-link-widget'%}
                 <div class="form-group">
-                    <button clas="btn btn-default"  type="reset">Reset</button>
-                    <button clas="btn btn-default" type="submit">Save</button>
+                    <button class="btn btn-default" type="reset">Reset</button>
+                    <button class="btn btn-default" ng-click='sendForm()' type="submit">Save</button>
                 </div>
             </fieldset>
         {{form_end(form)}}
 HERE;
-
 $templates['menu-link-widget'] = <<<HERE
-<script type="text/javascript">
-    var Config={
-        projectResource:"{{path('mp_simplerest_project_index')}}",
-        pageResource:"{{path('mp_simplerest_page_index')}}"
-    }
-</script>
-{%raw%}
-<section class="row" ng-app="MenuForm" ng-controller="MenuFormCtrl">
-    <article class="col-md-6">
-        <h4 class="text-muted">Links</h4>
-        <!-- Nav tabs -->
-        <ul class="nav nav-tabs">
-          <li class="{{isActive('Pages')}}"><a href='' ng-click="activate('Pages')" >Pages</a></li>
-          <li class="{{isActive('Projects')}}"><a href='' ng-click="activate('Projects')">Projects</a></li>
-          <li class="{{isActive('Images')}}"><a href='' ng-click="activate('Images')" >Images</a></li>
-          <li class="{{isActive('Custom')}}"><a href='' ng-click="activate('Custom')">Custom</a></li>
-        </ul>
-        <!-- Tab panes -->
-        <div class="tab-content">
-            <div class="tab-pane {{isActive('Pages')}}">
-                <header class="lead">Drag and drop pages into the menu</header>
+    <script type="text/javascript">
+        var Config={
+            projectResource:"{{path('mp_simplerest_project_index')}}",
+            pageResource:"{{path('mp_simplerest_page_index')}}"
+        }
+    </script>
+    {%raw%}
+    <section class="row">
+        <article class="col-md-6">
+            <h4 class="text-muted">Links</h4>
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs">
+                <li ng-repeat="(key,item) in items" class="{{isActive(key)}}">
+                    <a href='' ng-click="activate(key)" >{{key}}</a>
+                </li>
+            </ul>
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div class="tab-pane {{isActive(key)}}" ng-repeat="(key,items) in items">
+                    <header class="lead">Drag and drop {{key}} into the menu</header>
+                        <ul class="list-group">
+                            <li class="list-group-item" data="item" my-draggable
+                            ng-repeat="item in items" title="drag me and drop me on the right! ">
+                                <button type="button" class="close" ng-click="addLink(item)">+</button>
+                                {{item.title}}
+                            </li>
+                        </ul>
+                </div>
+                <!--
+                <div class="tab-pane {{isActive('Projects')}}">
+                    <header class="lead">Drag and drop projects into the menu</header>
                     <ul class="list-group">
-                        <li class="list-group-item" data="page" my-draggable
-                        ng-repeat="page in pages" title="drag me and drop me on the right! ">
-                            {{page.title}}
+                        <li class="list-group-item" data="project" my-draggable
+                        ng-repeat="project in projects">
+                            <button type="button" class="close" aria-hidden="true">+</button>
+                            {{project.title}}
                         </li>
                     </ul>
+                </div>
+                <div class="tab-pane {{isActive('Images')}}">Images</div>
+                <div class="tab-pane {{isActive('Custom')}}">Custom</div>
+                -->
             </div>
-            <div class="tab-pane {{isActive('Projects')}}">
-                <header class="lead">Drag and drop projects into the menu</header>
-                <ul class="list-group">
-                    <li class="list-group-item" data="project" my-draggable
-                    ng-repeat="project in projects">
-                        {{project.title}}
-                    </li>
+        </article>
+        <article class="col-md-6">
+            <h4 class="text-muted">Menu</h4>
+            <div title="Drop some content here to create a link">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#">Links</a></li>
                 </ul>
-            </div>
-            <div class="tab-pane {{isActive('Images')}}">Images</div>
-            <div class="tab-pane {{isActive('Custom')}}">Custom</div>
-        </div>
-    </article>
-    <article class="col-md-6">
-        <h4 class="text-muted">Menu</h4>
-        <div title="Drop some content here to create a link">
-            <ul class="nav nav-tabs">
-                <li class="active"><a href="#">Links</a></li>
-            </ul>
-            <div class="tab-content active">
-                <div class="lead">&nbsp;</div>
-                 <ul class="list-group">
-                    <li my-drop="drop" class="list-group-item  text-muted drop-zone lead">Drop items right here!</li>
-                </ul>
-                <ul class="list-group">
-                    <li class="list-group-item"
-                        ng-repeat="link in Link.links">
-                        <button type="button" class="close" ng-click="removeLink(link)">&times;</button>
-                        {{link.title}} - <span class="text-muted">{{link.type}}</span>
+                <div class="tab-content active">
+                    <div class="lead">&nbsp;</div>
+                     <ul class="list-group">
+                        <li my-drop="drop" class="list-group-item  text-muted drop-zone lead">Drop items right here!</li>
+                    </ul>
+                    <ul class="list-group">
+                        <li class="list-group-item"
+                            ng-repeat="link in links">
+                            <button type="button" class="close" ng-click="removeLink(link)">&times;</button>
+                            {{link.title}} - <span class="text-muted">{{link.type}}</span>
+                        </li>
+                    </ul>
 
-                    </li>
-                </ul>
-
+                </div>
             </div>
-        </div>
-    </article>
-</section>
-{%endraw%}
+        </article>
+    </section>
+    {%endraw%}
 HERE;
-
 /**
  * UTITITLES
  */

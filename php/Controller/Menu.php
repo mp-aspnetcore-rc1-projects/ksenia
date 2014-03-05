@@ -16,19 +16,18 @@ use Symfony\Component\HttpFoundation\Response;
 
 class Menu implements ControllerProviderInterface
 {
-    function index(App $app, Request $req)
-    {
+    function index(App $app, Request $req) {
         $menus = $app->menuService->findAll();
         return $app->twig->render('menu_index', array('menus' => $menus));
     }
 
-    function read(App $app, Request $req, $id)
-    {
-
+    function read(App $app, Request $req, $id) {
+        $menu = $app->menuService->find($id);
+        if (!$menu) $app->abort(404);
+        return $app->twig->render('menu_read', array('menu' => $menu));
     }
 
-    function create(App $app, Request $req)
-    {
+    function create(App $app, Request $req) {
         $menu = new \Entity\Menu;
         $form = $app->formFactory->create(new \Form\Menu, $menu);
         if ($req->getMethod() == "POST") {
@@ -40,14 +39,14 @@ class Menu implements ControllerProviderInterface
         return $app->twig->render('menu_create', array('form' => $form->createView()));
     }
 
-    function update(App $app, Request $req, $id)
-    {
+    function update(App $app, Request $req, $id) {
+
         $menu = $app->menuService->find($id);
         if (!$menu) $app->abort(404);
         $form = $app->formFactory->create(new \Form\Menu, $menu);
         if ($req->getMethod() == "POST") {
             if ($form->handleRequest($req)->isValid()) {
-                $app->menuService->create($menu);
+                $app->menuService->update($menu);
                 return $app->redirect($app->url_generator->generate('menu_index'));
             }
         }
@@ -55,16 +54,14 @@ class Menu implements ControllerProviderInterface
 
     }
 
-    function delete(App $app, Request $req, $id)
-    {
+    function delete(App $app, Request $req, $id) {
 
     }
 
     /**
      * @inheritdoc
      */
-    public function connect(Application $app)
-    {
+    public function connect(Application $app) {
         /* @var \Silex\ControllerCollection $menuCtrl */
         $menuCtrl = $app['controllers_factory'];
         $menuCtrl->get('/', array($this, 'index'))

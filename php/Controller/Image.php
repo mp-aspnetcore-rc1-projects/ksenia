@@ -149,7 +149,6 @@ class Image implements ControllerProviderInterface
                         $image->setBasename($file->getClientOriginalName());
                         $image->setExtension($file->getClientOriginalExtension());
                         $project->addImage($image);
-                        $image->setProject($project);
                         $app->imageService->update($image);
                     }
                     $app->projectService->update($project);

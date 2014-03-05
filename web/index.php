@@ -11,8 +11,7 @@ return false;
 $vendor = require __DIR__.'/../vendor/autoload.php';
 $vendor->add('',__DIR__.'/../php');
 /* application bootstrap */
-//$debug = getenv('PHP_ENV')==='production'?false:true;
-$debug=false;
+$debug = getenv('PHP_ENV')==='production'?false:true;
 $app = new \App(array('debug'=>$debug));
 Request::enableHttpMethodParameterOverride();
 $app['http_cache']->run();

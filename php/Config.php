@@ -108,6 +108,9 @@ class Config implements ServiceProviderInterface
         $app['menuService'] = $app->share(function ($app) {
             return new \Service\Menu($app['odm.dm']);
         });
+        $app['linkService'] = $app->share(function ($app) {
+            return new \Service\Link($app['odm.dm']);
+        });
         /** REST CONTROLLERS */
         $app['imageRestController'] = $app->share(function ($app) {
             return new RestController(array(

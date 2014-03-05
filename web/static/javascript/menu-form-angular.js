@@ -8,7 +8,6 @@
  */
 (function () {
     "use strict";
-
     angular.module('MenuForm', ['ngAnimate', 'ngResource'])
         .directive('myDrop', function () {
             return {
@@ -90,23 +89,31 @@
         })
         .factory('PageResource', function (Config, $resource) {
             return $resource(Config.pageResource, {}, {
-                query: {method: 'GET', isArray: true, transformResponse: function (string) {
-                    return angular.fromJson(string).pages.map(function (p) {
-                        p.type = "page";
-                        return p;
-                    });
-                }}
+                query: {
+                    method: 'GET',
+                    isArray: true,
+                    transformResponse: function (string) {
+                        return angular.fromJson(string).pages.map(function (p) {
+                            p.type = "page";
+                            return p;
+                        });
+                    }
+                }
             });
         })
         .factory('ProjectResource', function (Config, $resource) {
             return $resource(Config.projectResource, {}, {
-                query: {method: 'GET', isArray: true, transformResponse: function (string) {
-                    return angular.fromJson(string).projects.map(function (p) {
-                        p.type = "project";
-                        return p;
-                    });
+                query: {
+                    method: 'GET',
+                    isArray: true,
+                    transformResponse: function (string) {
+                        return angular.fromJson(string).projects.map(function (p) {
+                            p.type = "project";
+                            return p;
+                        });
 
-                }}
+                    }
+                }
             });
         })
         .factory('Page', function (PageResource) {
@@ -115,23 +122,52 @@
         .factory('Project', function (ProjectResource) {
             return ProjectResource.query();
         })
-        .factory('Link', function () {
-            return {links: []};
+        .factory('Link', function ($document, $log) {
+            var $menuLinks, links;
+            $menuLinks = $document.find('#menu_links');
+            links = angular.fromJson($menuLinks.val() || "[]");
+            return {
+                links: links,
+                $updateForm: function (linkCollection) {
+                    var links = angular.toJson(linkCollection);
+                    $menuLinks.val(links);
+                    $log.info("link", links);
+                    $log.info("$menuLinks.val", $menuLinks.val());
+                },
+                $sendForm: function () {
+                    $document.find('form').submit();
+                }
+            };
         })
-        .controller('MenuFormCtrl', function (Project, Page, Link, $scope, $log) {
-            $scope.activeTab = "Projects";
-            $scope.projects = Project;
-            $scope.pages = Page;
-            $scope.Link = Link;
+        .controller('MenuFormCtrl', function (Project, Page, Link, $scope, $log, $filter) {
+            $scope.links = Link.links;
+            $scope.items = {
+                projects: Project,
+                pages: Page
+            };
+            $scope.activeTab = Object.keys($scope.items)[0];
+            $scope.$watchCollection('links', function (newValue) {
+                $scope.menu_links = $filter('json')(newValue);
+            });
+            $scope.sendForm = function () {
+                Link.$updateForm($scope.links);
+                Link.$sendForm();
+            };
+            $scope.addLink = function (item) {
+                $scope.links.unshift({
+                    type: item.type,
+                    title: item.title,
+                    description: item.description,
+                    itemId: item.id
+                });
+            };
             $scope.removeLink = function (link) {
-                $scope.Link.links = $scope.Link.links.filter(function (l) {
+                $scope.links = $scope.links.filter(function (l) {
                     return !(l === link);
                 });
             };
             $scope.drop = function (item) {
-                $scope.Link.links.unshift(
-                    {type: item.type, title: item.title, description: item.description, itemId: item.id}
-                );
+                $scope.addLink(item);
                 $scope.$apply('Link');
             };
             $scope.activate = function (tab) {

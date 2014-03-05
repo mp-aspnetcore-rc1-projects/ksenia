@@ -14,10 +14,14 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  * @package Entity
  * @ODM\Document
  */
-class Link
+class Link implements \JsonSerializable
 {
     /** @ODM\Id */
     private $id;
+    /** @ODM\String */
+    private $itemId;
+    /** @ODM\String */
+    private $type;
     /** @ODM\String */
     private $title;
     /** @ODM\String */
@@ -101,5 +105,43 @@ class Link
         return $this->updatedAt;
     }
 
+    public function setItemId($itemId)
+    {
+        $this->itemId = $itemId;
+    }
 
+    public function getItemId()
+    {
+        return $this->itemId;
+    }
+
+    public function setType($type)
+    {
+        $this->type = $type;
+    }
+
+    public function getType()
+    {
+        return $this->type;
+    }
+
+
+    /**
+     * (PHP 5 &gt;= 5.4.0)<br/>
+     * Specify data which should be serialized to JSON
+     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     */
+    public function jsonSerialize()
+    {
+        return array(
+            "id" => $this->id,
+            "title" => $this->title,
+            "description" => $this->description,
+            "createAt" => $this->createdAt,
+            "type" => $this->type,
+            "itemId" => $this->itemId
+        );
+    }
 }

@@ -19,9 +19,21 @@ $templates['layout'] = <<<HERE
 			{% block styles %}{% endblock %}
 		</head>
 		<body>
+			<nav class="navbar navbar-inverse">
+                <div class="container">
+                    <section class="navbar-header">
+                        <a class="navbar-brand" href="/">{{ app.ksu.title | upper }} | Administration </a>
+                    </section>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="{{path('index')}}">Home</a></li>
+                        <li><a href="#">Services</a></li>
+                        <li><a href="#">Clients</a></li>
+                        <li><a href="#">About me</a></li>
+                    </ul>p
+                </div>
+            </nav>
 			<main class='container'>
 				<noscript><h2 class="alert alert-warning">Please Enable Javascript!</h2></noscript>
-				<h1>{{app.ksu.title}}</h1>
 				{%block content%}{%endblock%}
 			</main>
 			{%block footer%}
@@ -140,7 +152,7 @@ $templates['project_index'] = <<<HERE
 					<td>{{project.images|length}}</td>
 					<td>{{project.description[:50]~"..."}}</td>
 					<td><a class="btn btn-link"  href="{{path('project_read',{id:project.id}) }}">Manage Images</a></td>
-					<td>
+					{#<td>
 					    <form class="inline" action="{{path('project_clone',{id:project.id}) }}" method="POST">
 					    <button class="btn btn-link" type="submit">Clone</button>
 					    </form>
@@ -149,7 +161,7 @@ $templates['project_index'] = <<<HERE
 						    <input type="hidden" name="_method" id="_method" value="DELETE"/>
 						    <button class="btn btn-link" type="submit">Remove</a>
 						</form>
-					</td>
+					</td>#}
 				</tr>
 				{% endfor %}
 			</tbody>

@@ -12,7 +12,13 @@
         <link rel='stylesheet' href='//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css'>
         {# Optional theme #}
         {#<link rel='stylesheet' href='//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css'>#}
-
+        {# google font #}
+        <link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css'>
+        <style type="text/css">
+            body{
+                font-family: 'PT Sans', sans-serif;
+            }
+        </style>
     {% endblock %}
 </head>
 <body>
@@ -21,8 +27,12 @@
         <section class="navbar-header">
             <a class="navbar-brand" href="/">{{ app.ksu.title | upper }}</a>
         </section>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="#">Services</a></li>
+            <li><a href="#">Clients</a></li>
+            <li><a href="#">About me</a></li>
+        </ul>
     </div>
-
 </nav>
 <main class='container'>
     <noscript><h2 class="alert alert-warning">Please Enable Javascript!</h2></noscript>

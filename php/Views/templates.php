@@ -128,8 +128,8 @@ $templates['project_index'] = <<<HERE
 			<thead>
 				<tr>
 					<th>Title</th>
-					<th></th>
-					<th></th>
+					<th>Images</th>
+					<th>Description</th>
 					<th class="col-md-3"></th>
 				</tr>
 			</thead>
@@ -137,6 +137,7 @@ $templates['project_index'] = <<<HERE
 				{% for project in projects %}
 				<tr>
 					<td><a href="{{ path('project_read',{id:project.id}) }}">{{project.title}}</a></td>
+					<td>{{project.images|length}}</td>
 					<td>{{project.description[:50]~"..."}}</td>
 					<td><a class="btn btn-link"  href="{{path('project_read',{id:project.id}) }}">Manage Images</a></td>
 					<td>
@@ -227,6 +228,8 @@ $templates['project_read'] = <<<HERE
                 <dd>{{project.description}}</dd>
                 <dt>Client</dt>
                 <dd>{{project.client}}</dd>
+                <dt>Published</dt>
+                <dd>{{project.isPublished ? "Yes" : "No"}}</dd>
                 <dt>Tags</dt>
                 <dd>{{ project.tags | join(', ')}}</dd>
                 <dt>Poster</dt>
@@ -487,7 +490,7 @@ $templates['image_upload'] = <<<HERE
             <li class="active">Upload Images</li>
         </ol>
     </header>
-    <div class="row drop-zone">
+    <div class="row drop-zone" style="height:500px">
         <div class="lead strong no-select background-text">Drop Some Image Files Here</div>
     </div>
     <h3>&nbsp;</h3>

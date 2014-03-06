@@ -1,23 +1,24 @@
 {% extends 'layout.twig' %}
 {% block content %}
-    <div class="row">
-        <h2>Latest projects</h2>
-    </div>
-    <section class="row">
+    <header class="lead text-muted">
+        Latest projects
+    </header>
+    <article>
         {% for project in projects %}
-            <article>
-                <header class="lead">{{ project.title }}</header>
-                <div class="row">
-                    {% for image in project.images %}
-                    <div class="col-xs-3">
+            <header class="lead">{{ project.title }}</header>
+            <div class="text-muted">{{ project.client }}</div>
+            <section class="row">
+                {% for image in project.images[:8] %}
+                    <div class="col-sm-3">
                         <figure class="thumbnail">
-                            <img style="height:150px;" src="{{ path('image_load',{projectId:project.id,imageId:image.id}) }}" alt="{{ image.title }}"/>
+                            <img style="height:150px;"
+                                 src="{{ path('image_load',{projectId:project.id,imageId:image.id}) }}"
+                                 alt="{{ image.title }}"/>
+                            <figcaption>{{ image.title }}</figcaption>
                         </figure>
                     </div>
-                    {% endfor %}
-                </div>
-            </article>
+                {% endfor %}
+            </section>
         {% endfor %}
-    </section>
-
+    </article>
 {% endblock %}

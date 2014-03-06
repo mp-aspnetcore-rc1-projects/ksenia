@@ -103,6 +103,14 @@ class EntityMenuHydrator implements HydratorInterface
         }
         $this->class->reflFields['links']->setValue($document, $return);
         $hydratedData['links'] = $return;
+
+        /** @Field(type="string") */
+        if (isset($data['language'])) {
+            $value = $data['language'];
+            $return = (string) $value;
+            $this->class->reflFields['language']->setValue($document, $return);
+            $hydratedData['language'] = $return;
+        }
         return $hydratedData;
     }
 }

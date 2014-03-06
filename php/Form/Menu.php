@@ -20,7 +20,9 @@ class Menu extends AbstractType
         parent::buildForm($builder, $options);
         $builder
             ->add("title", "text")
-            ->add('isPublished', 'choice', array('choices' => array('no', 'yes'), "data" => "yes"))
+            ->add('language', 'choice', array('data' => 'en',
+                'choices' => array('en' => 'English', 'ru' => 'Russian')))
+            ->add('isPublished', 'choice', array('choices' => array('no', 'yes'), "data" => 1))
             ->add('description', 'textarea')
             ->add(
                 $builder->create('links', 'hidden', array(

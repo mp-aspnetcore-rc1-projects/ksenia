@@ -735,6 +735,7 @@ $templates['menu_form'] = <<<HERE
         {{form_end(form)}}
 HERE;
 $templates['menu-link-widget'] = <<<HERE
+    <!-- angular widget for links management -->
     <script type="text/javascript">
         var Config={
             projectResource:"{{path('mp_simplerest_project_index')}}",
@@ -742,19 +743,21 @@ $templates['menu-link-widget'] = <<<HERE
         }
     </script>
     {%raw%}
+    <!-- WIDGET -->
     <section class="row">
         <article class="col-md-6">
             <h4 class="text-muted">Links</h4>
-            <!-- Nav tabs -->
+            <!-- TAB HEADERS -->
             <ul class="nav nav-tabs">
                 <li ng-repeat="(key,item) in items" class="{{isActive(key)}}">
                     <a href='' ng-click="activate(key)" >{{key}}</a>
                 </li>
             </ul>
-            <!-- Tab panes -->
+            <!-- TAB PANES -->
             <div class="tab-content">
                 <div class="tab-pane {{isActive(key)}}" ng-repeat="(key,items) in items">
                     <header class="lead">Drag and drop {{key}} into the menu</header>
+                        <progress ng-show="items.length<=0" class="text-muted">Loading items,please wait</progress>
                         <ul class="list-group">
                             <li class="list-group-item" data="item" my-draggable
                             ng-repeat="item in items" title="drag me and drop me on the right! ">
@@ -763,43 +766,34 @@ $templates['menu-link-widget'] = <<<HERE
                             </li>
                         </ul>
                 </div>
-                <!--
-                <div class="tab-pane {{isActive('Projects')}}">
-                    <header class="lead">Drag and drop projects into the menu</header>
-                    <ul class="list-group">
-                        <li class="list-group-item" data="project" my-draggable
-                        ng-repeat="project in projects">
-                            <button type="button" class="close" aria-hidden="true">+</button>
-                            {{project.title}}
-                        </li>
-                    </ul>
-                </div>
-                <div class="tab-pane {{isActive('Images')}}">Images</div>
-                <div class="tab-pane {{isActive('Custom')}}">Custom</div>
-                -->
             </div>
         </article>
+        <!-- MENU -->
         <article class="col-md-6">
+            <!-- HEADER -->
             <h4 class="text-muted">Menu</h4>
-            <div title="Drop some content here to create a link">
+            <section title="Drop some content here to create a link">
                 <ul class="nav nav-tabs">
                     <li class="active"><a href="#">Links</a></li>
                 </ul>
                 <div class="tab-content active">
                     <div class="lead">&nbsp;</div>
+                    <!-- TEMP DROP ZONE -->
                      <ul class="list-group">
-                        <li my-drop="drop" class="list-group-item  text-muted drop-zone lead">Drop items right here!</li>
+                        <li my-drop="drop" ng-show="links.length <=0"  class="list-group-item text-muted drop-zone lead">
+                            Drop items right here!
+                        </li>
                     </ul>
+                    <!-- LINKS -->
                     <ul class="list-group">
-                        <li class="list-group-item"
-                            ng-repeat="link in links">
+                        <li class="list-group-item" my-draggable data="link" my-drop="onDropLink" title="drag and drop to reorder links"
+                            ng-repeat="link in links" ng-init="link.order=\$index">
                             <button type="button" class="close" ng-click="removeLink(link)">&times;</button>
                             {{link.title}} - <span class="text-muted">{{link.type}}</span>
                         </li>
                     </ul>
-
                 </div>
-            </div>
+            </section>
         </article>
     </section>
     {%endraw%}

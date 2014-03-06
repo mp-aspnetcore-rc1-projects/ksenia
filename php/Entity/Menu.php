@@ -14,14 +14,15 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  * Class Image
  * @package Entity
  * @ODM\Document
+ * @ODM\HasLifecycleCallbacks
  */
 class Menu
 {
     /** @ODM\Id */
     private $id;
-    /** @ODM\String */
+    /** @ODM\String @var string */
     private $title;
-    /** @ODM\String */
+    /** @ODM\String @var string */
     private $description;
     /** @ODM\Boolean */
     private $isPublished;
@@ -33,6 +34,8 @@ class Menu
     private $owner;
     /** @ODM\ReferenceMany(targetDocument="\Entity\Link",mappedBy="menu",simple=true,cascade="all") */
     private $links;
+    /** @ODM\String  @var string */
+    private $language;
 
     function __construct() {
         $this->links = new ArrayCollection;
@@ -84,7 +87,7 @@ class Menu
      * @param Link[] $links
      */
     public function setLinks($links) {
-        $this->links=$links;
+        $this->links = $links;
     }
 
     /**
@@ -116,5 +119,22 @@ class Menu
 
     public function getUpdatedAt() {
         return $this->updatedAt;
+    }
+
+    public function setLanguage($language) {
+        $this->language = $language;
+    }
+
+    public function getLanguage() {
+        return $this->language;
+    }
+
+
+    /** @ODM\PrePersist */
+    public function prePersist() {
+        $this->setUpdatedAt(new \DateTime);
+        if (!$this->getCreatedAt()) {
+            $this->setCreatedAt(new \DateTime);
+        }
     }
 }

@@ -716,6 +716,33 @@ $templates['menu_update'] = <<<HERE
         <script type="text/javascript" src="/static/javascript/menu-form-angular.js"></script>
     {%endblock%}
 HERE;
+$templates['menu_read']=<<<HERE
+        {%extends 'admin_layout'%}
+        {%block admin_content%}
+        <div class="row">
+            <header class="lead">
+                <ol class="breadcrumb">
+                    <li><a href="{{path('menu_index') }}">Menus</a></li>
+                    <li class="active">{{menu.title}}</li>
+                </ol>
+            </header>
+            <dl class="dl-horizontal">
+            <dt>Description</dt>
+            <dd>{{menu.description}}</dd>
+            <dt>Published</dt>
+            <dd>{% if menu.isPublished %}yes{%else%}no{%endif%}</dd>
+            <dt>Links</dt>
+            {%for link in menu.links%}
+            <dd>{{link.title}} - <span class="text-muted">{{link.type}}</span></dd>
+            {%endfor%}
+            </dl>
+            <a href="{{path('menu_update',{id:menu.id})}}" class="btn btn-default">
+                Edit Menu
+            </a>
+        </div>
+
+        {%endblock%}
+HERE;
 $templates['menu_form'] = <<<HERE
         {{form_start(form,{attr:{class:'col-md-12','ng-app':'MenuForm','ng-controller':'MenuFormCtrl'}})}}
             <fieldset>

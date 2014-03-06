@@ -27,7 +27,6 @@ class LinksToJsonString implements DataTransformerInterface
             //file_put_contents('php://stdout',$value);
             $links = array_map(function ($item) {
                 $link = new \Entity\Link;
-                // isset($item['id']) and $link->setId(new \MongoId($item['id']));
                 isset($item['itemId']) and $link->setItemId(new \MongoId($item['itemId']));
                 isset($item['type']) and  $link->setType($item['type']);
                 isset($item['title']) and $link->setTitle($item['title']);

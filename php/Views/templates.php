@@ -10,7 +10,7 @@ $templates['layout'] = <<<HERE
 	<!doctype html>
 	<html lang='{{app.locale}}'>
 		<head>
-			<title>{{app.title}}</title>
+			<title>{{app.ksu.title}}</title>
 			{% block metas %}
 				<meta charset='UTF-8' />
 				<meta http-equiv='X-UA-Compatible' content='IE=edge'/>
@@ -21,7 +21,7 @@ $templates['layout'] = <<<HERE
 		<body>
 			<main class='container'>
 				<noscript><h2 class="alert alert-warning">Please Enable Javascript!</h2></noscript>
-				<h1>{{app.title}}</h1>
+				<h1>{{app.ksu.title}}</h1>
 				{%block content%}{%endblock%}
 			</main>
 			{%block footer%}

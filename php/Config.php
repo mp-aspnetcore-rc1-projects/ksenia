@@ -34,17 +34,21 @@ class Config implements ServiceProviderInterface
      *
      * @param Application $app An Application instance
      */
-    public function register(Application $app)
-    {
+    public function register(Application $app) {
         /**
          * constants
          */
         $app['ksenia_connection_string'] = getenv('KSENIA_MONGODB');
         $app['ksenia_dbname'] = "ksenia-portfolio";
+        $app['ksenia_version'] = "0.0.1";
         $app['ksenia_cache_images_locally'] = true;
         $app['ksenia_image_cache_path'] = __DIR__ . "/../web/static/images/cache/";
         $app['temp'] = __DIR__ . "/../temp";
-        $app['title'] = "ksenia - porfolio";
+        /* hard coded configuration */
+        $app['ksu'] = array(
+            'title' => "ksenia - porfolio",
+            'template' => 'default',
+        );
 
         /**
          * silex core services
@@ -56,6 +60,7 @@ class Config implements ServiceProviderInterface
             'monolog.logfile' => $app['temp'] . '/' . date('Y-m-d') . '.txt'
         ));
         $app->register(new TwigServiceProvider(), array(
+            'twig.path' => array(__DIR__ . '/../templates/' . $app['ksu']['template']),
             'twig.templates' => require(__DIR__ . '/Views/templates.php'),
             'twig.options' => array('cache' => $app['temp'] . '/twig'
             )));
@@ -155,8 +160,7 @@ class Config implements ServiceProviderInterface
      * and should be used for "dynamic" configuration (whenever
      * a service must be requested).
      */
-    public function boot(Application $app)
-    {
+    public function boot(Application $app) {
         /**
          * routing
          */

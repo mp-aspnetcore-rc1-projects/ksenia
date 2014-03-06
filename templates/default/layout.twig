@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang='{{ app.locale }}'>
+<head>
+    <title>{{ app.ksu.title }}</title>
+    {% block metas %}
+        <meta charset='UTF-8'/>
+        <meta http-equiv='X-UA-Compatible' content='IE=edge'/>
+        <meta name='viewport' content='width=device-width, initial-scale=1'/>
+    {% endblock %}
+    {% block styles %}
+        {# Latest compiled and minified CSS #}
+        <link rel='stylesheet' href='//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css'>
+        {# Optional theme #}
+        {#<link rel='stylesheet' href='//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css'>#}
+
+    {% endblock %}
+</head>
+<body>
+<nav class="navbar navbar-inverse">
+    <div class="container">
+        <section class="navbar-header">
+            <a class="navbar-brand" href="/">{{ app.ksu.title | upper }}</a>
+        </section>
+    </div>
+
+</nav>
+<main class='container'>
+    <noscript><h2 class="alert alert-warning">Please Enable Javascript!</h2></noscript>
+    {% block content %}{% endblock %}
+</main>
+{% block footer %}
+    <footer class="container">
+    </footer>
+{% endblock %}
+{% block scripts %}
+{% endblock %}
+</body>
+</html>

@@ -217,7 +217,6 @@
                 $scope.$apply('Link');
             };
             $scope.onDropLink = function (item) {
-                console.log(item);
                 $scope.addLinkAt(item, this.$index);
                 $scope.$apply('Link');
             };

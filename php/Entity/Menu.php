@@ -36,6 +36,8 @@ class Menu
     private $links;
     /** @ODM\String  @var string */
     private $language;
+    /** @ODM\Boolean  @var boolean */
+    private $isMain;
 
     function __construct() {
         $this->links = new ArrayCollection;
@@ -136,5 +138,14 @@ class Menu
         if (!$this->getCreatedAt()) {
             $this->setCreatedAt(new \DateTime);
         }
+    }
+
+    public function getIsMain(){
+        return $this->isMain;
+    }
+    
+    public function setIsMain($isMain){
+         $this->isMain=$isMain;
+         return $this;
     }
 }

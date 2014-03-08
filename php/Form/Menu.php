@@ -22,6 +22,7 @@ class Menu extends AbstractType
             ->add("title", "text")
             ->add('language', 'choice', array('data' => 'en',
                 'choices' => array('en' => 'English', 'ru' => 'Russian')))
+            ->add('isMain', 'checkbox',array('attr'=>array('class'=>"checkbox")))
             ->add('isPublished', 'choice', array('choices' => array('no', 'yes'), "data" => 1))
             ->add('description', 'textarea')
             ->add(

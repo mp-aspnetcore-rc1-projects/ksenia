@@ -238,7 +238,7 @@ class Project implements JsonSerializable
         }
         /** if no poster and project has images, set first image as poster */
         if (null == $this->getPoster()) {
-            if ($this->getImages()->count() > 0) {
+            if ($this->getImages() and $this->getImages()->count() > 0) {
                 $this->setPoster($this->getImages()->first());
             }
         }

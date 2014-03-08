@@ -111,6 +111,14 @@ class EntityMenuHydrator implements HydratorInterface
             $this->class->reflFields['language']->setValue($document, $return);
             $hydratedData['language'] = $return;
         }
+
+        /** @Field(type="boolean") */
+        if (isset($data['isMain'])) {
+            $value = $data['isMain'];
+            $return = (bool) $value;
+            $this->class->reflFields['isMain']->setValue($document, $return);
+            $hydratedData['isMain'] = $return;
+        }
         return $hydratedData;
     }
 }

@@ -14,6 +14,20 @@ class Menu extends Base
         parent::__construct($dm, '\Entity\Menu');
     }
 
+    function markAsMain(\Entity\Menu $menu) {
+        $menu->setIsMain(true);
+        $this->getDm()->persist($menu);
+        $qb = $this->getDm()->createQueryBuilder('\Entity\Menu');
+        $result = $qb->update()
+            ->multiple(true)
+            ->field('id')->notEqual($menu->getId())
+            ->field('isMain')->set(false)
+            ->getQuery()
+            ->execute();
+        $this->getDm()->flush();
+        return $result;
+    }
+
     function update($model, array $where = null, $flush = true) {
         $linksToRemove = $this->getDm()->getRepository('\Entity\Link')->findBy(array("menu" => $model->getId()));
         //remove all the links that own a menu id eual to the current menu model id
@@ -29,6 +43,10 @@ class Menu extends Base
             $link->setMenu($model);
         }
         parent::create($model, $flush);
+        if ($model->getIsMain()) {
+            //mark as main,unmark other menus as main
+            $this->markAsMain($model);
+        }
     }
 
 

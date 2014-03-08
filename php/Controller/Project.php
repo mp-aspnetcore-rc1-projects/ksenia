@@ -32,7 +32,7 @@ class Project implements ControllerProviderInterface
                 return $app->redirect($app->url_generator->generate('project_read', array('id' => $project->getId())));
             }
         }
-        return $app->twig->render('project_new', array('form' => $form->createView()));
+        return $app->twig->render('project_create', array('form' => $form->createView()));
     }
 
     function projectUpdate(App $app, Request $req, $id)
@@ -93,12 +93,7 @@ class Project implements ControllerProviderInterface
         $projectController->get('/', array($this, 'projectIndex'))
             ->bind('project_index');
         $projectController->match('/new', array($this, 'projectNew'))
-            ->bind('project_new');
-        /*
-        $projectController->get('/{id}.{_format}', array($this, 'projectRead'))
-            ->assert('_format', 'json')
-            ->bind('project_read_json');
-        */
+            ->bind('project_create');
         $projectController->get('/{id}', array($this, 'projectRead'))
             ->bind('project_read');
         $projectController->match('/{id}/update', array($this, 'projectUpdate'))

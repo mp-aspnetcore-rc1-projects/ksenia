@@ -18,9 +18,27 @@ class Index implements ControllerProviderInterface
 {
 
     function index(App $app) {
-        $projects = $app->projectService->findBy(array('isPublished' => true),array('createdAt'=>-1));
+        $projects = $app->projectService->findBy(array('isPublished' => true), array('createdAt' => -1));
         return $app->twig->render('index.twig', array('projects' => $projects));
     }
+
+    function project(App $app, $projectId) {
+        $project = $app->projectService->find($projectId) or $app->abort(404);
+        return $app->twig->render('project.twig', array('project' => $project));
+    }
+
+    function image(App $app, $projectId, $imageId) {
+        /** @var \Entity\Project $project */
+        $project = $app->projectService->find($projectId) or $app->abort(404);
+        $image = $project->getImageById($imageId) or $app->abort(404);
+        return $app->twig->render('image.twig', array('image' => $image, 'project'=> $project));
+    }
+
+    function page(App $app, $pageId) {
+        $page = $app->pageService->find($pageId) or $app->abort(404);
+        return $app->twig->render('page.twig', array('page' => $page));
+    }
+
 
     /**
      * Load an image stored on grid fs
@@ -34,8 +52,8 @@ class Index implements ControllerProviderInterface
         /** @var \Entity\Image $image */
         $image = $app->imageService->find($imageId);
         if (!$image) $app->abort(404);
-        $dir = $app['ksenia_image_cache_path'];
-        $doCache = $app['ksenia_cache_images_locally'];
+        $dir = $app['ksu_image_cache_path'];
+        $doCache = $app['ksu_cache_images_locally'];
         $r = $app->stream(function () use ($image, $imageId, $dir, $doCache) {
             $file = $image->getFile();
             $r = $file->getMongoGridFSFile()->getResource();
@@ -72,6 +90,12 @@ class Index implements ControllerProviderInterface
         $portfolioController = $app['controllers_factory'];
         $portfolioController->get('/', array($this, 'index'))
             ->bind('index');
+        $portfolioController->get('/project/{projectId}', array($this, 'project'))
+            ->bind('project');
+        $portfolioController->get('/project/{projectId}/image/{imageId}', array($this, 'image'))
+            ->bind('image');
+        $portfolioController->get('/page/{pageId}}', array($this, 'page'))
+            ->bind('page');
         $portfolioController->get('/static/images/cache/{imageId}.{extension}', array($this, 'imageLoad'))
             ->value("extension", "jpg")
             ->bind('image_load');

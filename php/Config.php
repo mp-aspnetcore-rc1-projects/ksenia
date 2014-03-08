@@ -12,6 +12,7 @@ use Mparaiso\SimpleRest\Controller\Controller as RestController;
 use Silex\Application;
 use Silex\Provider\HttpCacheServiceProvider;
 use Silex\Provider\MonologServiceProvider;
+use Silex\Provider\SecurityServiceProvider;
 use Silex\Provider\SerializerServiceProvider;
 use Silex\Provider\ServiceControllerServiceProvider;
 use Silex\Provider\SessionServiceProvider;
@@ -38,11 +39,11 @@ class Config implements ServiceProviderInterface
         /**
          * constants
          */
-        $app['ksenia_connection_string'] = getenv('KSENIA_MONGODB');
-        $app['ksenia_dbname'] = "ksenia-portfolio";
-        $app['ksenia_version'] = "0.0.1";
-        $app['ksenia_cache_images_locally'] = true;
-        $app['ksenia_image_cache_path'] = __DIR__ . "/../web/static/images/cache/";
+        $app['ksu_connection_string'] = getenv('KSENIA_MONGODB');
+        $app['ksu_dbname'] = "ksenia-portfolio";
+        $app['ksu_version'] = "0.0.1";
+        $app['ksu_cache_images_locally'] = true;
+        $app['ksu_image_cache_path'] = __DIR__ . "/../web/static/images/cache/";
         $app['temp'] = __DIR__ . "/../temp";
         /* hard coded configuration */
         $app['ksu'] = array(
@@ -55,6 +56,13 @@ class Config implements ServiceProviderInterface
          */
         $app->register(new ServiceControllerServiceProvider);
         $app->register(new SessionServiceProvider);
+        /*
+        $app->register(new SecurityServiceProvider(),array(
+            'security.firewalls'=>array(
+                "secured"=>array()
+            )
+        ));
+        */
         $app->register(new SerializerServiceProvider());
         $app->register(new MonologServiceProvider, array(
             'monolog.logfile' => $app['temp'] . '/' . date('Y-m-d') . '.txt'
@@ -75,8 +83,12 @@ class Config implements ServiceProviderInterface
          */
         /** form factory helper */
         $app->register(new  DoctrineODMMongoDBServiceProvider(), array(
-            'odm.connection.server' => $app['ksenia_connection_string'],
-            'odm.connection.dbname' => $app['ksenia_dbname'],
+            'odm.connection.server' => function ($app) {
+                return $app['ksu_connection_string'];
+            },
+            'odm.connection.dbname' => function ($app) {
+                return $app['ksu_dbname'];
+            },
             'odm.connection.options' => array('connect' => true),
             'odm.proxy_dir' => __DIR__ . '/Proxy',
             'odm.hydrator_dir' => __DIR__ . '/Hydrator',

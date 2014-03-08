@@ -5,6 +5,9 @@
  * all rights reserved
  * this code was open sourced for educational purpose only.
  */
+$vars = array(
+    'table_class'=>'table table-hover'
+);
 $templates = array();
 $templates['layout'] = <<<HERE
 	<!doctype html>
@@ -93,7 +96,7 @@ $templates['admin_nav'] = <<<HERE
 			<strong>PROJECTS</strong>
 		</li>
 		<li class="list-group-item"><a href="{{path('project_index')}}">Manage Projects</a></li>
-		<li class="list-group-item"><a href="{{path('project_new')}}">Create a new project</a></li>
+		<li class="list-group-item"><a href="{{path('project_create')}}">Create a new project</a></li>
 	    <li class="list-group-item text-muted uppercase">
 			<strong>PAGES</strong>
 		</li>
@@ -130,18 +133,22 @@ HERE;
 $templates['project_index'] = <<<HERE
 	{% extends 'admin_layout' %}
 	{% block admin_content %}
-				<header class="lead">
+	    <header class="lead">
             <ol class="breadcrumb">
                 <li class="active">Projects</li>
             </ol>
         </header>
+        <p>
+            <a href="{{path('project_create')}}" class="btn btn-default">Create a new project</a>
+        </p>
 		{% if projects and projects|length > 0 %}
-		<table class="table">
+		<table class="$vars[table_class]">
 			<thead>
 				<tr>
 					<th>Title</th>
 					<th>Images</th>
 					<th>Description</th>
+					<th>Published</th>
 					<th class="col-md-3"></th>
 				</tr>
 			</thead>
@@ -151,24 +158,25 @@ $templates['project_index'] = <<<HERE
 					<td><a href="{{ path('project_read',{id:project.id}) }}">{{project.title}}</a></td>
 					<td>{{project.images|length}}</td>
 					<td>{{project.description[:50]~"..."}}</td>
+					<td>{{project.isPublished?'Yes':'No'}}</td>
 					<td><a class="btn btn-link"  href="{{path('project_read',{id:project.id}) }}">Manage Images</a></td>
-					{#<td>
-					    <form class="inline" action="{{path('project_clone',{id:project.id}) }}" method="POST">
-					    <button class="btn btn-link" type="submit">Clone</button>
+					<td>
+					    {#<form class="inline" action="{{path('project_clone',{id:project.id}) }}" method="POST">
+					    <button class="btn btn-link" type="submit">Clone</button>#}
 					    </form>
 						<a class="btn btn-link" href="{{ path('project_update',{id:project.id}) }}">Edit</a>
 						<form class="inline" action="{{ path('project_delete',{id:project.id}) }}" method="POST">
 						    <input type="hidden" name="_method" id="_method" value="DELETE"/>
 						    <button class="btn btn-link" type="submit">Remove</a>
 						</form>
-					</td>#}
+					</td>
 				</tr>
 				{% endfor %}
 			</tbody>
 		</table>
 		{% else %}
 			<h3 class="text-warning">No Project found</h3>
-			<p><a href="{{path('project_new')}}">Create a project</a></p>
+			<p><a href="{{path('project_create')}}">Create a project</a></p>
 		{% endif %}
 	{% endblock%}
 HERE;
@@ -186,7 +194,7 @@ $templates['project_form'] = <<<HERE
 	{{form_end(form)}}
 HERE;
 /* create a new project */
-$templates['project_new'] = <<<HERE
+$templates['project_create'] = <<<HERE
 	{%extends 'admin_layout' %}
 	{% block admin_content %}
 		<header class="lead">
@@ -376,13 +384,13 @@ $templates['image_index'] = <<<HERE
         </header>
         <a class="btn btn-default" href="{{path('image_create',{projectId:project.id})}}">Add New</a>
         {%if  project.images|length>0%}
-        <table class="table">
+        <table class="$vars[table_class]">
             <thead>
                 <tr>
-                <td></td>
-                <td>Title</td>
-                <td>Description</td>
-                <td></td>
+                <th></th>
+                <th>Title</th>
+                <th>Description</th>
+                <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -538,12 +546,12 @@ $templates['page_index'] = <<<HERE
         </header>
         <a class="btn btn-default" href="{{path('page_create')}}">Add New</a>
         {%if  pages|length>0%}
-        <table class="table">
+        <table class="$vars[table_class]">
             <thead>
                 <tr>
-                <td>Title</td>
-                <td>Description</td>
-                <td style="width:30%"></td>
+                <th>Title</th>
+                <th>Description</th>
+                <th style="width:30%"></th>
                 </tr>
             </thead>
             <tbody>
@@ -644,29 +652,33 @@ HERE;
 $templates['menu_index'] = <<<HERE
     {%extends 'admin_layout'%}
     {%block admin_content%}
-       <header class="lead">
+       <header class="row lead">
             <ol class="breadcrumb">
                 <li  class="active">Menus</a></li>
             </ol>
         </header>
         <section class="row">
             {% if menus|length>0%}
-            <table class="table col-md-12">
+            <table class="$vars[table_class] col-md-12">
                 <thead>
                     <tr>
-                    <td>Title</td>
-                    <td>Description</td>
-                    <td style="width:30%"></td>
+                    <th>#</th>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Main</th>
+                    <th style="width:30%"></th>
                     </tr>
                 </thead>
                 <tbody>
                 {%for menu in menus%}
                 <tr>
+                    <td>{{loop.index}}</td>
                     <td>
                         <a href="{{path('menu_read',{id:menu.id})}}">
                             {{menu.title}}
                         </a>
                     <td>{{menu.description}}</td>
+                    <td>{{menu.isMain ? 'yes' }}</td>
                     <td>
                     <a class="btn btn-link" href="{{path('menu_update',{id:menu.id}) }}">Edit</a>
                     <form class="inline"
@@ -765,7 +777,11 @@ $templates['menu_form'] = <<<HERE
                 {#{{form_row(form['links'],{attr:{id:'links'}})}}#}
                 {%for field in form %}
                 <div class="form-group">
-                    {{form_row(field,{attr:{class:'form-control'}})}}
+                    {% if not field.vars.attr  %}
+                        {{form_row(field,{attr:{class:'form-control'}})}}
+                    {% else%}
+                        {{form_row(field)}}
+                    {% endif %}
                 </div>
                 {%endfor%}
                 {%include 'menu-link-widget'%}

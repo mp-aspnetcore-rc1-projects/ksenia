@@ -661,6 +661,9 @@ $templates['menu_index'] = <<<HERE
                 <li  class="active">Menus</a></li>
             </ol>
         </header>
+        <div class="row">
+        <a href="{{path('menu_create')}}" class="btn btn-default">Add new menu</a>
+        </div>
         <section class="row">
             {% if menus|length>0%}
             <table class="$vars[table_class] col-md-12">

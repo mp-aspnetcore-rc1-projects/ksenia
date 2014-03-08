@@ -6,7 +6,7 @@
  * this code was open sourced for educational purpose only.
  */
 $vars = array(
-    'table_class'=>'table table-hover'
+    'table_class' => 'table table-hover'
 );
 $templates = array();
 $templates['layout'] = <<<HERE
@@ -148,6 +148,7 @@ $templates['project_index'] = <<<HERE
 					<th>Title</th>
 					<th>Images</th>
 					<th>Description</th>
+					<th>Language</th>
 					<th>Published</th>
 					<th class="col-md-3"></th>
 				</tr>
@@ -158,6 +159,7 @@ $templates['project_index'] = <<<HERE
 					<td><a href="{{ path('project_read',{id:project.id}) }}">{{project.title}}</a></td>
 					<td>{{project.images|length}}</td>
 					<td>{{project.description[:50]~"..."}}</td>
+					<td>{{project.language}}</td>
 					<td>{{project.isPublished?'Yes':'No'}}</td>
 					<td><a class="btn btn-link"  href="{{path('project_read',{id:project.id}) }}">Manage Images</a></td>
 					<td>
@@ -551,6 +553,7 @@ $templates['page_index'] = <<<HERE
                 <tr>
                 <th>Title</th>
                 <th>Description</th>
+                <th>Language</th>
                 <th style="width:30%"></th>
                 </tr>
             </thead>
@@ -561,7 +564,8 @@ $templates['page_index'] = <<<HERE
                     <a href="{{path('page_read',{id:page.id})}}">
                         {{page.title}}
                     </a>
-                <td>{{page.description}}</td>
+                <td>{{page.description[:50]~"..."}}</td>
+                <td>{{page.language}}</td>
                 <td>
                 <a class="btn btn-link" href="{{path('page_update',{id:page.id}) }}">Edit</a>
                 <form class="inline"
@@ -664,6 +668,7 @@ $templates['menu_index'] = <<<HERE
                     <tr>
                     <th>#</th>
                     <th>Title</th>
+                    <th>Language</th>
                     <th>Description</th>
                     <th>Main</th>
                     <th style="width:30%"></th>
@@ -678,6 +683,7 @@ $templates['menu_index'] = <<<HERE
                             {{menu.title}}
                         </a>
                     <td>{{menu.description}}</td>
+                    <td>{{menu.language}}</td>
                     <td>{{menu.isMain ? 'yes' }}</td>
                     <td>
                     <a class="btn btn-link" href="{{path('menu_update',{id:menu.id}) }}">Edit</a>
@@ -743,7 +749,7 @@ $templates['menu_update'] = <<<HERE
         <script type="text/javascript" src="/static/javascript/menu-form-angular.js"></script>
     {%endblock%}
 HERE;
-$templates['menu_read']=<<<HERE
+$templates['menu_read'] = <<<HERE
         {%extends 'admin_layout'%}
         {%block admin_content%}
         <div class="row">

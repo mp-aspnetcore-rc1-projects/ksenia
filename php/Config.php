@@ -136,8 +136,7 @@ class Config implements ServiceProviderInterface
                 "resourcePluralize" => "images",
                 "model" => '\Entity\Image',
                 "service" => $app["imageService"],
-                "criteria" => array('project'),
-                //"allows"=>array('list','read','update','delete')
+                "criteria" => array('project','language'),
             ));
         });
         $app['projectRestController'] = $app->share(function ($app) {
@@ -148,7 +147,8 @@ class Config implements ServiceProviderInterface
                 "model" => '\Entity\Project',
                 "service" => $app["projectService"],
                 "logger" => $app['logger'],
-                "allows" => array('list', 'read')
+                "allows" => array('list', 'read'),
+                "criteria"=>array('language')
             ));
         });
         $app['pageRestController'] = $app->share(function ($app) {
@@ -159,7 +159,20 @@ class Config implements ServiceProviderInterface
                 "model" => '\Entity\Page',
                 "service" => $app['pageService'],
                 "logger" => $app['logger'],
-                "allows" => array('list', 'read')
+                "allows" => array('list', 'read'),
+                'criteria'=>array('language')
+            ));
+        });
+        $app['menuRestController'] = $app->share(function ($app) {
+            return new RestController(array(
+                "debug" => $app['debug'],
+                "resource" => "menu",
+                "resourcePluralize" => "menus",
+                "model" => '\Entity\Menu',
+                "service" => $app['menuService'],
+                "logger" => $app['logger'],
+                "allows" => array('list', 'read'),
+                "criteria"=>array('isMain','language')
             ));
         });
 

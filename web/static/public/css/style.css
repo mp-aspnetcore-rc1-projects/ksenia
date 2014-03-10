@@ -17,21 +17,26 @@ figure img{
 }
 
 hr{
-	border-style: dashed;
-	border-color:#DDD;
+	border-style: dotted;
+	border-color:#555;
+	border-width: 1px;
+	border-top-width: 0;
+	border-collapse: collapse;
+	height:0;
 }
-h4{
+.center{
 	font-weight:lighter;
 }
 header{
 	font-size: 0.8em;
 	margin-top:50px;
-	color:#444;
+	color:#FAFAFA;
 	font-family: "Hammersmith One",sans-serif;
 	/** @note @css border opacity @link http://stackoverflow.com/questions/4062001/css3-border-opacity */
-	border:6px solid rgba(100, 100, 100, .3);
+	border:3px solid rgba(100, 100, 100, .3);
 	/* font-variant: small-caps; */
-	background: #F5F5F5;
+	/*box-shadow:2px 2px;*/
+	background: #1A1A1A;
 	padding:10px 15px;
 	display:inline-block;
 	text-align: center;

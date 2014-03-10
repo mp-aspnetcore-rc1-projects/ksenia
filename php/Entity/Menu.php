@@ -9,14 +9,15 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Mparaiso\SimpleRest\Model\IModel;
 use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-
+use Symfony\Component\Serializer\Normalizer\NormalizableInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 /**
  * Class Image
  * @package Entity
  * @ODM\Document
  * @ODM\HasLifecycleCallbacks
  */
-class Menu implements \JsonSerializable
+class Menu implements \JsonSerializable,NormalizableInterface
 {
     /** @ODM\Id */
     private $id;
@@ -157,6 +158,10 @@ class Menu implements \JsonSerializable
     public function setIsMain($isMain) {
         $this->isMain = $isMain;
         return $this;
+    }
+
+    public function normalize(NormalizerInterface $normalizer, $format = null, array $context = array()){
+        return $this->jsonSerialize();
     }
 
     public function jsonSerialize() {

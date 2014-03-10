@@ -110,7 +110,7 @@
                     method: 'GET',
                     isArray: true,
                     transformResponse: function (string) {
-                        return angular.fromJson(string).pages.map(function (p) {
+                        return angular.fromJson(string).map(function (p) {
                             p.type = "page";
                             return p;
                         });
@@ -124,7 +124,7 @@
                     method: 'GET',
                     isArray: true,
                     transformResponse: function (string) {
-                        return angular.fromJson(string).projects.map(function (p) {
+                        return angular.fromJson(string).map(function (p) {
                             p.type = "project";
                             return p;
                         });
@@ -160,7 +160,7 @@
         })
         .controller('MenuFormCtrl', function (Project, Page, Link, $scope, $filter) {
             /**
-             *
+             * Menu Form Widget, allow drag and droping and re-ordering items in menu 
              * @param Project projects
              * @param Page pages
              * @param Link links
@@ -179,13 +179,16 @@
             $scope.$watchCollection('links', function (newValue) {
                 $scope.menu_links = $filter('json')(newValue);
             });
+            /** submit form */
             $scope.sendForm = function () {
                 Link.$updateForm($scope.links);
                 Link.$sendForm();
             };
+            /** add links */
             $scope.addLink = function (item) {
                 $scope.addLinkAt(item, $scope.links.length);
             };
+            /** add link at specified index */
             $scope.addLinkAt = function (item, index) {
                 var _item;
                 if (item.cid) {/*remove link from links and get it */
@@ -195,6 +198,7 @@
                 }
                 $scope.links.splice(index, 0, _item);
             };
+            /* create a new link from data */
             $scope.createLink = function (item) {
                 return  {cid: _.uniqueId('links_'),
                     type: item.type,
@@ -203,6 +207,7 @@
                     itemId: item.id
                 };
             };
+            /* remove link from menu */
             $scope.removeLink = function (link) {
                 if (link.cid) {
                     var _item = $scope.links.filter(function (i) {

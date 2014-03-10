@@ -2,11 +2,13 @@
 /*global jQuery,_,Statesman,Config */
 /**
  * @copyright mparaiso <mparaiso@online.fr>
- * @dependencies jquery , underscore , jquery.observable
+ * @license   All rights reserved
+ * @version 0.0.1
+ * @dependencies jquery , underscore , jquery.Stateman
  */
 "use strict";
 jQuery(function($) {
-	var model, command, mediator, view, util, constant, template, $log;
+	var model, command, mediator, view, util, constant, $log;
 	util = {
 		getImageSrc: function(id, extension) {
 			return constant.imagePath.replace(/(\:\w+)/g, function(match) {
@@ -29,15 +31,13 @@ jQuery(function($) {
 			img.src = src;
 		}
 	};
-	template = {
-
-	};
 	constant = {
 		debug: true,
 		config: Config,
 		imageResource: '/api/image',
 		projectResource: '/api/project',
 		pageResource: '/api/page',
+		menuResource:'/api/menu',
 		imagePath: '/static/images/cache/:id.:extension'
 	};
 	/** manage application state */
@@ -57,6 +57,19 @@ jQuery(function($) {
 	});
 	/** controller */
 	command = {
+		initMenu: {
+			execute: function() {
+				model.get('mainMenu').links.forEach(function(link, i, a) {
+					console.log(link);
+					view.$menu.append($('<li>').html($('<a>',{href:'#/link/'+link.type+'/'+link.itemId}).html(link.title)));
+					if (i < a.length-1) {
+						view.$menu.append($('<li>', {
+							class: "separator"
+						}).html("&nbsp;"));
+					}
+				});
+			}
+		},
 		initGallery: {
 			execute: function() {
 				var src, img;
@@ -84,16 +97,25 @@ jQuery(function($) {
 		},
 		initPage: {
 			execute: function() {
-				view.$summary.css({left: "-30%",width:view.$header.width()});
+				view.$summary.css({
+					left: "-30%"
+				});
 				view.$container.addClass('hidden');
 				view.$galleryContainer.hide();
 				$.when(
 					$.getJSON(constant.imageResource),
-					$.getJSON(constant.projectResource)
-				).done(function(images, projects) {
+					$.getJSON(constant.projectResource),
+					$.getJSON(constant.menuResource)
+				).done(function(images, projects, menu) {
 					model.set('images', images[0]);
 					model.set('projects', projects[0]);
-					mediator.trigger('load.assets');
+					model.set('mainMenu', menu[0]);
+					view.$container.removeClass('hidden');
+					command.hideSpinner.execute();
+					command.initMenu.execute();
+					/* ajust summary size to the header size,now that the header has a menu */
+					view.$summary.width(view.$header.width());
+					command.initGallery.execute();
 				});
 			}
 		},
@@ -178,7 +200,8 @@ jQuery(function($) {
 		$next: $('.next'),
 		$previous: $('.previous'),
 		$summary: $('.summary'),
-		$header:$('header')
+		$header: $('header'),
+		$menu: $('#main-menu')
 	};
 	/** dispatch event between layers of application */
 	mediator = $({}).on({
@@ -189,11 +212,6 @@ jQuery(function($) {
 				command.hideSpinner.execute();
 			}
 		},
-		'load.assets': function() {
-			view.$container.removeClass('hidden');
-			command.hideSpinner.execute();
-			command.initGallery.execute();
-		},
 		'click.previous': function() {
 			command.showPreviousImage.execute();
 		},
@@ -203,7 +221,7 @@ jQuery(function($) {
 	});
 	/** log function,can be turned off */
 	$log = function() {
-		if(typeof(console)!==undefined){
+		if (typeof(console) !== undefined) {
 			//console.log.apply(console, [].slice.call(arguments));
 		}
 	};

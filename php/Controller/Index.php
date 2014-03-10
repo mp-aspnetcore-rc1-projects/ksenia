@@ -39,6 +39,11 @@ class Index implements ControllerProviderInterface
         return $app->twig->render('page.twig', array('page' => $page));
     }
 
+    function menuResource(App $app,$_format){
+        $menu=$app->menuService->findOneBy(array('isMain'=>true)) or $app->abort(404);
+        return new Response($app->serializer->serialize($menu,$_format));
+    }
+
 
     /**
      * Load an image stored on grid fs
@@ -104,8 +109,11 @@ class Index implements ControllerProviderInterface
             ->bind('image_load_flush');
         $portfolioController->mount('/api/',$app['projectRestController']->connect($app));
         $portfolioController->mount('/api/',$app['imageRestController']->connect($app));
+        /** api endpoint to the main menu */
+        $portfolioController->get('/api/menu.{_format}',array($this,'menuResource'))
+            ->value('_format','json')
+            ->bind('menu_public_api');
         //$portfolioController->mount('/api/',$app['pageRestController']);
-        //$portfolioController->mount('/api/',$app['menuRestController']);
         return $portfolioController;
     }
 }

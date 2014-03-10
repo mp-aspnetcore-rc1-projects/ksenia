@@ -38,10 +38,10 @@
 			<article class="summary">
 				<h3 role="title" class='primary'>:title</h3>
 				<hr>
-				<p class="detail text-muted">
-				Project: <span role="project">:project.title</span><br>
-				Client: <span role="client">:client</span><br>
-				<span class="text-muted" role="description">:description</span>
+				<p class="detail">
+				Project: <a href="#"><span role="project">:project.title</span></a><br>
+				Client: <a href="#"><span role="client">:client</span></a><br>
+				<span role="description">:description</span>
 				</p>
 			</article>
 			<div id="gallery" class="gallery">
@@ -51,11 +51,12 @@
 		<section id="container" class=" hidden">
 			<hgroup class="container">
 				<header>
-					<h1 class="primary">{{app.ksu.title}}</h1>
+					<h1 >{{app.ksu.title}}</h1>
 					<hr>
-					<h3 class="center text-muted">
+					<h3 class="center  primary">
 						{{app.ksu.subtitle}}<br>
 					</h3>
+					<ul id="main-menu" class="nav"></ul>
 				</header>
 			</hgroup>
 			<footer><section class="container">programming - marc paraiso <mparaiso@online.fr></section></footer>

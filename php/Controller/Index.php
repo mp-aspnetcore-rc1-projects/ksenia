@@ -102,6 +102,10 @@ class Index implements ControllerProviderInterface
         $portfolioController->get('/static/images/cache/flush/{imageId}.{extension}', array($this, 'imageLoad'))
             ->value("extension", "jpg")
             ->bind('image_load_flush');
+        $portfolioController->mount('/api/',$app['projectRestController']->connect($app));
+        $portfolioController->mount('/api/',$app['imageRestController']->connect($app));
+        //$portfolioController->mount('/api/',$app['pageRestController']);
+        //$portfolioController->mount('/api/',$app['menuRestController']);
         return $portfolioController;
     }
 }

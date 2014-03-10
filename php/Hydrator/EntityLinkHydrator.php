@@ -67,6 +67,14 @@ class EntityLinkHydrator implements HydratorInterface
             $hydratedData['description'] = $return;
         }
 
+        /** @Field(type="string") */
+        if (isset($data['url'])) {
+            $value = $data['url'];
+            $return = (string) $value;
+            $this->class->reflFields['url']->setValue($document, $return);
+            $hydratedData['url'] = $return;
+        }
+
         /** @Field(type="boolean") */
         if (isset($data['isPublished'])) {
             $value = $data['isPublished'];

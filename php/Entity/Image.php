@@ -8,6 +8,8 @@ use JsonSerializable;
 use Mparaiso\SimpleRest\Model\IModel;
 use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Serializer\Normalizer\NormalizableInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Class Image
@@ -15,7 +17,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  * @ODM\Document
  * @ODM\HasLifecycleCallbacks
  */
-class Image implements JsonSerializable, IModel
+class Image implements JsonSerializable,NormalizableInterface
 {
     /** @ODM\Id */
     private $id;
@@ -208,6 +210,9 @@ class Image implements JsonSerializable, IModel
         $this->extension = $extension;
     }
 
+    public function normalize(NormalizerInterface $normalizer, $format = null, array $context = array()){
+        return $this->jsonSerialize();
+    }
     /**
      * (PHP 5 &gt;= 5.4.0)<br/>
      * Specify data which should be serialized to JSON
@@ -224,8 +229,8 @@ class Image implements JsonSerializable, IModel
             "description" => $this->getDescription(),
             "createdAt" => $this->getCreatedAt(),
             "updatedAt" => $this->getUpdatedAt(),
+            "basename"=>$this->getBasename(),
             "filename" => $this->getFilename(),
-            "basename" => $this->getBasename(),
             "extension"=>$this->getExtension(),
             "project" => $this->project ? array(
                 "id" => $this->getProject()->getId(),
@@ -236,9 +241,9 @@ class Image implements JsonSerializable, IModel
     }
 
     /**
-     * @ODM\PrePersist
+     * @ODM\PreUpdate
      */
-    function beforeSave()
+    function preUpdate()
     {
         if (null == $this->getCreatedAt()) {
             $this->setCreatedAt(new \DateTime());

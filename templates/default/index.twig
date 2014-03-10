@@ -1,27 +1,10 @@
 {% extends 'layout.twig' %}
 {% block content %}
-    <header class="lead text-muted">
-        Latest projects
-    </header>
-    <article>
-        {% for project in projects %}
-            <header class="lead"><a href="{{ path('project',{projectId:project.id}) }}">{{ project.title }}</a></header>
-            <div class="text-muted">{{ project.client }}</div>
-            <section class="row">
-                {% for image in project.images[:8] %}
-                    <div class="col-sm-3">
-                        <a href="{{ path('image',{projectId:project.id,imageId:image.id}) }}">
-                            <figure class="thumbnail">
-                                <img style="height:150px;"
-                                     src="{{ path('image_load',{projectId:project.id,imageId:image.id}) }}"
-                                     alt="{{ image.title }}"/>
-
-                            </figure>
-                            <figcaption>{{ image.title }}</figcaption>
-                        </a>
-                    </div>
-                {% endfor %}
-            </section>
-        {% endfor %}
-    </article>
+<main id="main"></main>
+{% endblock %}
+{% block scripts %}
+<script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="/static/public/javascript/jquery.observable.min.js"></script>
+<script src="/static/public/javascript/index.js"></script>
 {% endblock %}

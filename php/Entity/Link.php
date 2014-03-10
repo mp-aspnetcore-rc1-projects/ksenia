@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  * Class Image
  * @package Entity
  * @ODM\Document
+ * @ODM\HasLifecycleCallbacks
  */
 class Link implements \JsonSerializable
 {
@@ -26,6 +27,8 @@ class Link implements \JsonSerializable
     private $title;
     /** @ODM\String */
     private $description;
+    /** @ODM\String */
+    private $url;
     /** @ODM\Boolean */
     private $isPublished;
     /** @ODM\Date */
@@ -35,96 +38,85 @@ class Link implements \JsonSerializable
     /** @ODM\ReferenceOne(targetDocument="\Entity\Menu",inversedBy="links",simple=true) */
     private $menu;
 
-    public function setCreatedAt($createdAt)
-    {
+    public function setCreatedAt($createdAt) {
         $this->createdAt = $createdAt;
     }
 
-    public function getCreatedAt()
-    {
+    public function getCreatedAt() {
         return $this->createdAt;
     }
 
-    public function setId($id)
-    {
+    public function setId($id) {
         $this->id = $id;
     }
 
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
-    public function setDescription($description)
-    {
+    public function setDescription($description) {
         $this->description = $description;
     }
 
-    public function getDescription()
-    {
+    public function getDescription() {
         return $this->description;
     }
 
-    public function setIsPublished($isPublished)
-    {
+    public function setIsPublished($isPublished) {
         $this->isPublished = $isPublished;
     }
 
-    public function getIsPublished()
-    {
+    public function getIsPublished() {
         return $this->isPublished;
     }
 
-    public function setMenu($menu)
-    {
+    public function setMenu($menu) {
         $this->menu = $menu;
     }
 
-    public function getMenu()
-    {
+    public function getMenu() {
         return $this->menu;
     }
 
-    public function setTitle($title)
-    {
+    public function setTitle($title) {
         $this->title = $title;
     }
 
-    public function getTitle()
-    {
+    public function getTitle() {
         return $this->title;
     }
 
-    public function setUpdatedAt($updatedAt)
-    {
+    public function setUpdatedAt($updatedAt) {
         $this->updatedAt = $updatedAt;
     }
 
-    public function getUpdatedAt()
-    {
+    public function getUpdatedAt() {
         return $this->updatedAt;
     }
 
-    public function setItemId($itemId)
-    {
+    public function setItemId($itemId) {
         $this->itemId = $itemId;
     }
 
-    public function getItemId()
-    {
+    public function getItemId() {
         return $this->itemId;
     }
 
-    public function setType($type)
-    {
+    public function setType($type) {
         $this->type = $type;
     }
 
-    public function getType()
-    {
+    public function getType() {
         return $this->type;
     }
 
+    public function setUrl($url) {
+        $this->url = $url;
+    }
+
+    public function getUrl() {
+        return $this->url;
+    }
 
     /**
      * (PHP 5 &gt;= 5.4.0)<br/>
@@ -133,15 +125,25 @@ class Link implements \JsonSerializable
      * @return mixed data which can be serialized by <b>json_encode</b>,
      * which is a value of any type other than a resource.
      */
-    public function jsonSerialize()
-    {
+    public function jsonSerialize() {
         return array(
             "id" => $this->id,
             "title" => $this->title,
             "description" => $this->description,
             "createAt" => $this->createdAt,
             "type" => $this->type,
-            "itemId" => $this->itemId
+            "itemId" => $this->itemId,
+            "isPublished" => $this->isPublished,
+            "url" => $this->url,
         );
+    }
+
+    /**
+     * @ODM\PreUpdate
+     */
+    function preUpdate() {
+        if (!$this->getCreatedAt()) {
+            $this->setCreatedAt(new \DateTime());
+        }
     }
 }

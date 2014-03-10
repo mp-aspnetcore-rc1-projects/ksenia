@@ -1,0 +1,104 @@
+body{
+	background: #1f1f1f;
+	overflow: hidden;
+	width:100%;
+	height: 100%;
+	color:#E9E9E9;
+	font-family: sans-serif;
+}
+figure{
+	margin:0 auto;
+	text-align: center;
+}
+
+figure img{
+	max-width:100%;
+	min-width: 80%;
+}
+
+hr{
+	border-style: dashed;
+	border-color:#DDD;
+}
+h4{
+	font-weight:lighter;
+}
+header{
+	font-size: 0.8em;
+	margin-top:50px;
+	color:#444;
+	font-family: "Hammersmith One",sans-serif;
+	/** @note @css border opacity @link http://stackoverflow.com/questions/4062001/css3-border-opacity */
+	border:6px solid rgba(100, 100, 100, .3);
+	/* font-variant: small-caps; */
+	background: #F5F5F5;
+	padding:10px 15px;
+	display:inline-block;
+	text-align: center;
+}
+
+.gallery-controls{
+	overflow: hidden;
+}
+.gallery-controls button{
+	opacity:0.5;
+	border:0;
+	transition:.2s all ease-out;
+}
+.previous{
+	text-decoration: none;
+	position:fixed;
+	left:0;
+	top:50%;
+	display:block;
+	width:41px;
+	height:35px;
+	background: url('/static/public/images/prev_pic.png');
+}
+.next{
+	text-decoration: none;
+	position:fixed;
+	right:0;
+	top:50%;
+	display:block;
+	opacity:0.8;
+	width:41px;
+	height:35px;
+	background: url('/static/public/images/next_pic.png');
+	z-index: 100;
+}
+.next:hover,.previous:hover{
+	opacity: 1;
+	background-position: 0 -35px;
+}
+.text-muted{
+	color:#AAA;
+}
+.container{
+	transition: 1s opacity;
+	margin: auto auto;
+	width:90%;
+}
+.gallery{
+	overflow: hidden;
+	position: fixed;
+	z-index: -1;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.spinner{
+	position: absolute;
+	top:0;
+	left:0;
+	width: 100%;
+	height: 100%;
+	/* @note @css center background in the page*/
+	background: url('/static/public/images/gallLoader.gif') 50% 50% no-repeat ;
+	transition: 1s opacity;
+}
+.hidden{
+	opacity:0;
+}

@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  * @ODM\Document
  * @ODM\HasLifecycleCallbacks
  */
-class Menu
+class Menu implements \JsonSerializable
 {
     /** @ODM\Id */
     private $id;
@@ -26,9 +26,13 @@ class Menu
     private $description;
     /** @ODM\Boolean */
     private $isPublished;
-    /** @ODM\Date */
+    /** @ODM\Date
+     * @var \Datetime
+     */
     private $createdAt;
-    /** @ODM\Date */
+    /** @ODM\Date
+     * @var \Datetime
+     */
     private $updatedAt;
     /** @ODM\ReferenceOne(targetDocument="\Entity\User",inversedBy="menus",simple=true) */
     private $owner;
@@ -48,6 +52,9 @@ class Menu
         $this->createdAt = $createdAt;
     }
 
+    /**
+     * @return \DateTime
+     */
     public function getCreatedAt() {
         return $this->createdAt;
     }
@@ -115,6 +122,9 @@ class Menu
         return $this->title;
     }
 
+    /**
+     * @return \DateTime
+     */
     public function setUpdatedAt($updatedAt) {
         $this->updatedAt = $updatedAt;
     }
@@ -132,20 +142,35 @@ class Menu
     }
 
 
-    /** @ODM\PrePersist */
-    public function prePersist() {
-        $this->setUpdatedAt(new \DateTime);
+    /** @ODM\PreUpdate */
+    public function preUpdate() {
+        $this->setUpdatedAt(new \DateTime());
         if (!$this->getCreatedAt()) {
-            $this->setCreatedAt(new \DateTime);
+            $this->setCreatedAt(new \DateTime());
         }
     }
 
-    public function getIsMain(){
+    public function getIsMain() {
         return $this->isMain;
     }
-    
-    public function setIsMain($isMain){
-         $this->isMain=$isMain;
-         return $this;
+
+    public function setIsMain($isMain) {
+        $this->isMain = $isMain;
+        return $this;
+    }
+
+    public function jsonSerialize() {
+        return array(
+            "id" => $this->id,
+            "title" => $this->title,
+            "description" => $this->description,
+            "isPublished" => $this->isPublished,
+            "createdAt" => $this->getCreatedAt(),
+            "updatedAt" => $this->updatedAt,
+            "owner" => $this->owner,
+            "links" => $this->getLinks(),
+            "language" => $this->language,
+            "isMain" => $this->isMain,
+        );
     }
 }

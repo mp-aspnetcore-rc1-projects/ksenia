@@ -41,14 +41,15 @@ class Config implements ServiceProviderInterface
          */
         $app['ksu_connection_string'] = getenv('KSENIA_MONGODB');
         $app['ksu_dbname'] = "ksenia-portfolio";
-        $app['ksu_version'] = "0.0.1";
         $app['ksu_cache_images_locally'] = true;
         $app['ksu_image_cache_path'] = __DIR__ . "/../web/static/images/cache/";
         $app['temp'] = __DIR__ . "/../temp";
         /* hard coded configuration */
         $app['ksu'] = array(
-            'title' => "ksenia - porfolio",
-            'template' => 'default',
+            'title' => "KSENIA PYROVSKIKH",
+            'subtitle'=>'Interior and Graphic Designer',
+            "version"=>"0.0.1",
+            'template' => 'html5',
         );
 
         /**
@@ -137,6 +138,7 @@ class Config implements ServiceProviderInterface
                 "model" => '\Entity\Image',
                 "service" => $app["imageService"],
                 "criteria" => array('project','language'),
+                "logger"=>$app['logger']
             ));
         });
         $app['projectRestController'] = $app->share(function ($app) {
@@ -193,6 +195,7 @@ class Config implements ServiceProviderInterface
         $app->mount('/private/api/', $app['imageRestController']);
         $app->mount('/private/api/', $app['projectRestController']);
         $app->mount('/private/api/', $app['pageRestController']);
+        $app->mount('/private/api/', $app['menuRestController']);
         $app->mount('/', new Index());
     }
 }

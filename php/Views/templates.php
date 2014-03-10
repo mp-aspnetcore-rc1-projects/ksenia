@@ -674,6 +674,7 @@ $templates['menu_index'] = <<<HERE
                     <th>Language</th>
                     <th>Description</th>
                     <th>Main</th>
+                    <th>Published</th>
                     <th style="width:30%"></th>
                     </tr>
                 </thead>
@@ -688,6 +689,7 @@ $templates['menu_index'] = <<<HERE
                     <td>{{menu.description}}</td>
                     <td>{{menu.language}}</td>
                     <td>{{menu.isMain ? 'yes' }}</td>
+                    <td>{{menu.isPublished ? 'yes' :'no' }}</td>
                     <td>
                     <a class="btn btn-link" href="{{path('menu_update',{id:menu.id}) }}">Edit</a>
                     <form class="inline"

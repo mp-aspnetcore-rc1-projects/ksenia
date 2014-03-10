@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="{{app.locale}}">
+<head>
+	<meta charset="UTF-8">
+	<title>{{app.ksu.title}}</title>
+	{# STYLES #}
+	<link href='http://fonts.googleapis.com/css?family=Hammersmith+One' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="/static/public/css/reset.css">
+	<link rel="stylesheet" href="/static/public/css/style.css">
+	{# SCRIPTS #}
+	<script defer src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
+	<script defer src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+	<script defer src="/static/public/javascript/Statesman.min.js"></script>
+	<script defer src="/static/public/javascript/index.js"></script>
+	<script>
+	var Config={
+		version:"{{app.ksu.version}}",
+		title:"{{app.ksu.title}}"
+	}
+	</script>	
+</head>
+<body>
+	<section>
+		<noscript><h1>Please enable javascript to view this page.</h1></noscript>
+		<div id="spinner" class="spinner"></div>
+		{#contains gallery widget #}
+		<section id="gallery-container">
+			<div class="gallery-controls">
+				<button class="previous"> </button>
+				<button class="next"> </button>
+			</div>
+			<div id="gallery" class="gallery">
+				<figure></figure>
+			</div>
+		</section>
+		<main id="container" class="container hidden">
+			<header>
+				<h2>{{app.ksu.title}}</h2>
+				<hr>
+				<h4 class="text-muted">{{app.ksu.subtitle}}</h4>
+			</header>
+		</main>
+	</section>
+</body>
+</html>

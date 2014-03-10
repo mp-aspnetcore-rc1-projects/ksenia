@@ -7,6 +7,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use JsonSerializable;
+use Symfony\Component\Serializer\Normalizer\NormalizableInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+
 
 /**
  * Class Project
@@ -16,7 +19,7 @@ use JsonSerializable;
  * @ODM\Document
  * @ODM\HasLifecycleCallbacks
  */
-class Project implements JsonSerializable
+class Project implements JsonSerializable,NormalizableInterface
 {
     /** @ODM\Id */
     private $id;
@@ -244,6 +247,9 @@ class Project implements JsonSerializable
         }
     }
 
+    public function normalize(NormalizerInterface $normalizer, $format = null, array $context = array()){
+        return $this->jsonSerialize();
+    }
     /**
      * (PHP 5 &gt;= 5.4.0)<br/>
      * Specify data which should be serialized to JSON

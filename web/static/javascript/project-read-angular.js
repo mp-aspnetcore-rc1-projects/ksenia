@@ -33,10 +33,10 @@
                     },
                     query: {
                         method: 'GET',
-                        isArray: true,
+                        isArray: true/*,
                         transformResponse: function (string) {
                             return angular.fromJson(string).images;
-                        }
+                        }*/
                     }
                 });
         })
@@ -44,10 +44,10 @@
             return $resource(Config.posterResource + "/:id", {id: "@id"}, {
                 get: {
                     method: "GET",
-                    url: Config.projectResource,
+                    url: Config.projectResource/*,
                     transformResponse: function (string) {
                         return angular.fromJson(string).project;
-                    }
+                    }*/
                 }
             });
         })

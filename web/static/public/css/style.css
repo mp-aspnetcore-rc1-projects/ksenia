@@ -13,6 +13,7 @@ figure{
 
 figure img{
 	width:100%;
+	height: auto;
 	/* max-width:100%; */
 	/* min-width: 80%; */
 }
@@ -36,31 +37,44 @@ header{
 	z-index: 100;
 	font-family: "Source Sans Pro",sans-serif;
 	/** @note @css border opacity @link http://stackoverflow.com/questions/4062001/css3-border-opacity */
-	border:3px solid rgba(100, 100, 100, .3);
+	/* border:3px solid rgba(100, 100, 100, .8); */
 	/* font-variant: small-caps; */
-	background: #1A1A1A;
+	background: rgba(25,25,25,.8);
 	padding:10px 15px;
 	display:inline-block;
 	text-align: center;
 }
-
-h1,h2{
+h1{
+}
+.primary{
+	color:#F90;
+}
+h1,h2,h3{
 	font-family: "Georgia",sans-serif;
 	font-style: italic;
-
 }
 header:hover{
 	opacity: 0.3;
 	color: #111;
 	background:#F5F5F5;
 }
-
+.browsehappy{
+	font-size: 30px;
+	position: absolute;
+	top:0;
+	left: 0;
+	z-index: 100;
+	background: #FAA;
+	color: #A00;
+	border: 10px solid #A00;
+}
 .gallery-controls{
 	overflow: hidden;
 }
 .gallery-controls button{
 	opacity:1;
-	border:0;
+	border-collapse: collapse;
+	border: none;
 	transition:.2s all ease-out;
 	z-index: 10;
 	width:41px;
@@ -98,13 +112,13 @@ header:hover{
 }
 .summary{
 	position: absolute;
-	top:400px;
+	top:50%;
 	left:5%;
 	transition:0.4s opacity,color,background;
-	background: #111;
+	background: rgba(25,25,25,.8);
 	color:#F5F5F5;
-	padding: 14px;
-	border:3px solid rgba(100, 100, 100, .3);
+	padding: 0 10px;
+	/* border:3px solid rgba(100, 100, 100, 1); */
 }
 .summary:hover{
 	opacity: 0.2;
@@ -114,6 +128,9 @@ header:hover{
 
 .summary h1{
 	/*min-width: 300px;*/
+}
+.summary .detail{
+	font-size: 0.8em;
 }
 .gallery{
 	overflow: hidden;

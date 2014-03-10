@@ -70,21 +70,21 @@ jQuery(function($) {
 					view.$container
 						.fadeIn(1000);
 					view.$next.on('click', function() {
-						if(model.get('transition')==false)
-						mediator.trigger('click.next');
+						if (model.get('transition') === false) {
+							mediator.trigger('click.next');
+						}
 					});
 					view.$previous.on('click', function() {
-						if(model.get('transition')==false)
-						mediator.trigger('click.previous');
+						if (model.get('transition') === false) {
+							mediator.trigger('click.previous');
+						}
 					});
 				});
 			}
 		},
 		initPage: {
 			execute: function() {
-				view.$summary.css({
-					left: "-30%"
-				});
+				view.$summary.css({left: "-30%",width:view.$header.width()});
 				view.$container.addClass('hidden');
 				view.$galleryContainer.hide();
 				$.when(
@@ -177,7 +177,8 @@ jQuery(function($) {
 		$galleryContainer: $('#gallery-container'),
 		$next: $('.next'),
 		$previous: $('.previous'),
-		$summary: $('.summary')
+		$summary: $('.summary'),
+		$header:$('header')
 	};
 	/** dispatch event between layers of application */
 	mediator = $({}).on({
@@ -202,7 +203,9 @@ jQuery(function($) {
 	});
 	/** log function,can be turned off */
 	$log = function() {
-		console.log.apply(console, [].slice.call(arguments));
+		if(typeof(console)!==undefined){
+			//console.log.apply(console, [].slice.call(arguments));
+		}
 	};
 	/** start the application */
 	(function init() {

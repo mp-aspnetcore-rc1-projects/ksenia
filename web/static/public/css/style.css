@@ -31,7 +31,7 @@ hr{
 header{
 	transition:.5s opacity ease-out;
 	font-size: 0.7em;
-	margin-top:50px;
+	/*margin-top:50px;*/
 	color:#FAFAFA;
 	z-index: 100;
 	font-family: "Source Sans Pro",sans-serif;
@@ -44,7 +44,7 @@ header{
 	text-align: center;
 }
 
-h1{
+h1,h2{
 	font-family: "Georgia",sans-serif;
 	font-style: italic;
 
@@ -103,6 +103,7 @@ header:hover{
 	transition:0.4s opacity,color,background;
 	background: #111;
 	color:#F5F5F5;
+	padding: 14px;
 	border:3px solid rgba(100, 100, 100, .3);
 }
 .summary:hover{
@@ -110,13 +111,7 @@ header:hover{
 	color: #111;
 	background:#F5F5F5;
 }
-.summary >*{
-	padding:15px;
-	margin:0;
-	display:inline-block;
-	float: left;
-	clear:left;
-}
+
 .summary h1{
 	/*min-width: 300px;*/
 }

@@ -70,9 +70,11 @@ jQuery(function($) {
 					view.$container
 						.fadeIn(1000);
 					view.$next.on('click', function() {
+						if(model.get('transition')==false)
 						mediator.trigger('click.next');
 					});
 					view.$previous.on('click', function() {
+						if(model.get('transition')==false)
 						mediator.trigger('click.previous');
 					});
 				});
@@ -80,6 +82,9 @@ jQuery(function($) {
 		},
 		initPage: {
 			execute: function() {
+				view.$summary.css({
+					left: "-30%"
+				});
 				view.$container.addClass('hidden');
 				view.$galleryContainer.hide();
 				$.when(
@@ -176,7 +181,7 @@ jQuery(function($) {
 	};
 	/** dispatch event between layers of application */
 	mediator = $({}).on({
-		'load.image': function(e,isTransition) {
+		'load.image': function(e, isTransition) {
 			if (isTransition) {
 				command.showSpinner.execute();
 			} else {

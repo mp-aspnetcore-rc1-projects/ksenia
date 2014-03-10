@@ -4,7 +4,7 @@ body{
 	width:100%;
 	height: 100%;
 	color:#E9E9E9;
-	font-family: sans-serif;
+	font-family: "Source Sans Pro",sans-serif;
 }
 figure{
 	margin:0 auto;
@@ -12,8 +12,9 @@ figure{
 }
 
 figure img{
-	max-width:100%;
-	min-width: 80%;
+	width:100%;
+	/* max-width:100%; */
+	/* min-width: 80%; */
 }
 
 hr{
@@ -28,27 +29,42 @@ hr{
 	font-weight:lighter;
 }
 header{
-	font-size: 0.8em;
+	transition:.5s opacity ease-out;
+	font-size: 0.7em;
 	margin-top:50px;
 	color:#FAFAFA;
-	font-family: "Hammersmith One",sans-serif;
+	z-index: 100;
+	font-family: "Source Sans Pro",sans-serif;
 	/** @note @css border opacity @link http://stackoverflow.com/questions/4062001/css3-border-opacity */
 	border:3px solid rgba(100, 100, 100, .3);
 	/* font-variant: small-caps; */
-	/*box-shadow:2px 2px;*/
 	background: #1A1A1A;
 	padding:10px 15px;
 	display:inline-block;
 	text-align: center;
 }
 
+h1{
+	font-family: "Georgia",sans-serif;
+	font-style: italic;
+
+}
+header:hover{
+	opacity: 0.3;
+	color: #111;
+	background:#F5F5F5;
+}
+
 .gallery-controls{
 	overflow: hidden;
 }
 .gallery-controls button{
-	opacity:0.5;
+	opacity:1;
 	border:0;
 	transition:.2s all ease-out;
+	z-index: 10;
+	width:41px;
+	height:35px;
 }
 .previous{
 	text-decoration: none;
@@ -56,8 +72,7 @@ header{
 	left:0;
 	top:50%;
 	display:block;
-	width:41px;
-	height:35px;
+	opacity:0.8;
 	background: url('/static/public/images/prev_pic.png');
 }
 .next{
@@ -67,10 +82,7 @@ header{
 	top:50%;
 	display:block;
 	opacity:0.8;
-	width:41px;
-	height:35px;
 	background: url('/static/public/images/next_pic.png');
-	z-index: 100;
 }
 .next:hover,.previous:hover{
 	opacity: 1;
@@ -83,6 +95,30 @@ header{
 	transition: 1s opacity;
 	margin: auto auto;
 	width:90%;
+}
+.summary{
+	position: absolute;
+	top:400px;
+	left:5%;
+	transition:0.4s opacity,color,background;
+	background: #111;
+	color:#F5F5F5;
+	border:3px solid rgba(100, 100, 100, .3);
+}
+.summary:hover{
+	opacity: 0.2;
+	color: #111;
+	background:#F5F5F5;
+}
+.summary >*{
+	padding:15px;
+	margin:0;
+	display:inline-block;
+	float: left;
+	clear:left;
+}
+.summary h1{
+	/*min-width: 300px;*/
 }
 .gallery{
 	overflow: hidden;
@@ -100,10 +136,28 @@ header{
 	left:0;
 	width: 100%;
 	height: 100%;
+	z-index: -1;
 	/* @note @css center background in the page*/
 	background: url('/static/public/images/gallLoader.gif') 50% 50% no-repeat ;
-	transition: 1s opacity;
+	transition: .5s opacity;
 }
 .hidden{
 	opacity:0;
+}
+footer{
+	position: absolute;
+	bottom:0;
+	background: #000;
+	overflow: hidden;
+	width:100%;
+	padding: 7px;
+	z-index: 10;
+	opacity: .8;
+	border-top:3px solid rgba(100, 100, 100, .3);
+}
+footer section{
+	margin:0 auto;
+	width:90%;
+	font-weight: lighter;
+	font-variant: small-caps;
 }

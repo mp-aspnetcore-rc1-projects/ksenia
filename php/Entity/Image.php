@@ -235,6 +235,7 @@ class Image implements JsonSerializable,NormalizableInterface
             "project" => $this->project ? array(
                 "id" => $this->getProject()->getId(),
                 "title" => $this->getProject()->getTitle(),
+                "client" => $this->getProject()->getClient(),
                 "owner"=>$this->getProject()->getOwner()
             ) : null
         );

@@ -4,7 +4,7 @@
 	<meta charset="UTF-8">
 	<title>{{app.ksu.title}}</title>
 	{# STYLES #}
-	<link href='http://fonts.googleapis.com/css?family=Hammersmith+One' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" href="/static/public/css/reset.css">
 	<link rel="stylesheet" href="/static/public/css/style.css">
 	{# SCRIPTS #}
@@ -29,19 +29,30 @@
 				<button class="previous"> </button>
 				<button class="next"> </button>
 			</div>
+			<article class="summary">
+				<h1 role="title">:title</h1>
+				<section>
+					<div>Project: <span role="project">:project.title</span></div>
+					<div>Client: <span role="client">:client</span></div>
+					<div role="description">:description</div>
+				</section>
+			</article>
 			<div id="gallery" class="gallery">
 				<figure></figure>
 			</div>
 		</section>
-		<main id="container" class="container hidden">
-			<header>
-				<h1>{{app.ksu.title}}</h1>
-				<hr>
-				<p class="center text-muted">
-					{{app.ksu.subtitle}}<br>
-				</p>
-			</header>
-		</main>
+		<section id="container" class=" hidden">
+			<hgroup class="container">
+				<header>
+					<h1>{{app.ksu.title}}</h1>
+					<hr>
+					<h3 class="center text-muted">
+						{{app.ksu.subtitle}}<br>
+					</h3>
+				</header>
+			</hgroup>
+			<footer><section class="container">programming - marc paraiso <mparaiso@online.fr></section></footer>
+		</section>
 	</section>
 </body>
 </html>

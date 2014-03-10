@@ -37,15 +37,16 @@ hr{
 }
 header{
 	transition:.5s opacity ease-out;
+	-moz-transition:.5s opacity ease-out;
 	font-size: 0.7em;
 	/*margin-top:50px;*/
 	color:#FAFAFA;
 	z-index: 100;
 	font-family: "Source Sans Pro",sans-serif;
 	/** @note @css border opacity @link http://stackoverflow.com/questions/4062001/css3-border-opacity */
-	/* border:3px solid rgba(100, 100, 100, .8); */
+	 border:2px solid rgba(100, 100, 100, .8); 
 	/* font-variant: small-caps; */
-	background: rgba(25,25,25,.8);
+	background: rgba(25,25,25,1);
 	padding:10px 15px;
 	display:inline-block;
 	text-align: center;
@@ -139,10 +140,10 @@ header:hover{
 	top:50%;
 	left:5%;
 	transition:0.4s opacity,color,background;
-	background: rgba(25,25,25,.8);
+	background: rgba(25,25,25,1);
 	color:#F5F5F5;
 	padding: 0 10px;
-	/* border:3px solid rgba(100, 100, 100, 1); */
+	 border:2px solid rgba(100, 100, 100, 1); 
 }
 .summary:hover{
 	opacity: 0.7;

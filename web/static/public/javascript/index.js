@@ -71,17 +71,20 @@ jQuery(function($) {
 			}
 		},
 		initGallery: {
+			/** init image gallery */
 			execute: function() {
 				var src, img;
 				img = model.get('images[0]');
 				src = util.getImageSrc(img.id, img.extension);
+				/* load first image */
 				util.loadImage(src, function(err, img) {
 					model.set('imageIndex', 0);
 					view.$galleryContainer.fadeIn(100, function(argument) {
+						/** show first image */
 						command.showImage.execute(img);
 					});
-					view.$container
-						.fadeIn(1000);
+					view.$container.fadeIn(1000);
+					/** add click handlers to buttons */
 					view.$next.on('click', function() {
 						if (model.get('transition') === false) {
 							mediator.trigger('click.next');
@@ -98,7 +101,7 @@ jQuery(function($) {
 		initPage: {
 			execute: function() {
 				view.$summary.css({
-					left: "-30%"
+					left: "150%"
 				});
 				view.$container.addClass('hidden');
 				view.$header.addClass('hidden');
@@ -125,7 +128,7 @@ jQuery(function($) {
 			execute: function() {
 				var deferred = $.Deferred();
 				view.$summary.animate({
-					left: "120%"
+					left: "-50%"
 				});
 				view.$galleryContainer.find('figure').fadeOut(500, function() {
 					model.set('transition', true);
@@ -145,7 +148,7 @@ jQuery(function($) {
 					view.$summary.find('[role=project]').text(model.get('currentImage').project.title);
 					view.$summary.find('[role=client]').text(model.get('currentImage').project.client);
 					view.$summary.css({
-						left: "-30%"
+						left: "150%"
 					}).animate({
 						left: "5%"
 					});

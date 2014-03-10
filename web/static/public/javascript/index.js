@@ -101,6 +101,7 @@ jQuery(function($) {
 					left: "-30%"
 				});
 				view.$container.addClass('hidden');
+				view.$header.addClass('hidden');
 				view.$galleryContainer.hide();
 				$.when(
 					$.getJSON(constant.imageResource),
@@ -111,6 +112,7 @@ jQuery(function($) {
 					model.set('projects', projects[0]);
 					model.set('mainMenu', menu[0]);
 					view.$container.removeClass('hidden');
+					view.$header.removeClass('hidden');
 					command.hideSpinner.execute();
 					command.initMenu.execute();
 					/* ajust summary size to the header size,now that the header has a menu */

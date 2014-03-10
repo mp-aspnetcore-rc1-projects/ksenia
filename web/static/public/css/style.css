@@ -59,27 +59,28 @@ h1,h2,h3{
 	font-family: "Georgia",sans-serif;
 	font-style: italic;
 }
-/*
+
 header:hover{
-	opacity: 0.3;
-	color: #111;
-	background:#F5F5F5;
+	opacity: 0.9;
+	/* color: #111; */
+	/* background:#F5F5F5; */
 }
-*/
+
 .nav{
 	padding-left:0;
 	list-style: none;
-	display: inline;
-	text-align: left;
 }
 .nav li{
 	font-family: Georgia;
 	font-weight: bold;
 	display:inline-block;
 }
+.nav li a:hover{
+	color:#FFF !important;
+}
 .nav .separator{
 	margin:0 5px;
-	border-left:1px dotted #EEE;
+	border-left:1px dotted rgba(200,200,200,0.8);
 }
 .browsehappy{
 	font-size: 30px;

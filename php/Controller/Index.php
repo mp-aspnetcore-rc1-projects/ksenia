@@ -39,9 +39,13 @@ class Index implements ControllerProviderInterface
         return $app->twig->render('page.twig', array('page' => $page));
     }
 
+    /**
+     * Returns all menu serialized
+     * @return Response  json or xml response
+     */
     function menuResource(App $app,$_format){
-        $menu=$app->menuService->findOneBy(array('isMain'=>true)) or $app->abort(404);
-        return new Response($app->serializer->serialize($menu,$_format));
+        $menus=$app->menuService->findAll();
+        return new Response($app->serializer->serialize($menus,$_format));
     }
 
 

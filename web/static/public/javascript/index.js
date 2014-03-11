@@ -1,15 +1,25 @@
 /*jslint browser:true*/
-/*global jQuery,_,Statesman,Config */
+/*global jQuery,_,Statesman,Config,Backbone */
 /**
  * @copyright mparaiso <mparaiso@online.fr>
  * @license   All rights reserved
  * @version 0.0.1
- * @dependencies jquery , underscore , jquery.Stateman
+ * @dependencies jquery , underscore , Stateman, Backbone
  */
 "use strict";
 jQuery(function($) {
 	var model, command, mediator, view, util, constant, $log;
 	util = {
+		findMainMenu: function(menus) {
+			/* extract main menu*/
+			var menu = menus.filter(function(m) {
+				return m.isMain;
+			}).pop();
+			if (!menu) {
+				menu = menus[0];
+			}
+			return menu;
+		},
 		getImageSrc: function(id, extension) {
 			return constant.imagePath.replace(/(\:\w+)/g, function(match) {
 				switch (match) {
@@ -37,13 +47,16 @@ jQuery(function($) {
 		imageResource: '/api/image',
 		projectResource: '/api/project',
 		pageResource: '/api/page',
-		menuResource:'/api/menu',
+		menuResource: '/api/menu',
 		imagePath: '/static/images/cache/:id.:extension'
 	};
 	/** manage application state */
 	model = new Statesman({
 		imageIndex: 0,
-		images: []
+		images: [],
+		menus: [],
+		pages: [],
+		projects: []
 	});
 	model.compute('currentImage', {
 		triggers: ['imageIndex', 'images'],
@@ -57,19 +70,30 @@ jQuery(function($) {
 	});
 	/** controller */
 	command = {
+		/* initialize main menu */
 		initMenu: {
 			execute: function() {
 				model.get('mainMenu').links.forEach(function(link, i, a) {
-					console.log(link);
-					view.$menu.append($('<li>').html($('<a>',{href:'#/link/'+link.type+'/'+link.itemId}).html(link.title)));
-					if (i < a.length-1) {
-						view.$menu.append($('<li>', {
-							class: "separator"
-						}).html("&nbsp;"));
+					/* create link */
+					var $link = $('<li>', {
+						'data-id': link.id,
+						'data-item-id': link.itemId,
+						'data-type': link.type
+					}).html(
+						$('<a href="#/link/' + link.type + '/' + link.itemId + '">' + link.title + '</a>')
+					).click(function() {
+						mediator.trigger('click.link', [$link.data]);
+					});
+					/* append link to menu */
+					view.$menu.append($link);
+					/*append separator between each link unless last link*/
+					if (i < a.length - 1) {
+						view.$menu.append('<li class="separator">&nbsp;</li>');
 					}
 				});
 			}
 		},
+		/*initialize gallery */
 		initGallery: {
 			/** init image gallery */
 			execute: function() {
@@ -98,6 +122,7 @@ jQuery(function($) {
 				});
 			}
 		},
+		/* first command executed , initialize the front page */
 		initPage: {
 			execute: function() {
 				view.$summary.css({
@@ -105,15 +130,17 @@ jQuery(function($) {
 				});
 				view.$container.addClass('hidden');
 				view.$header.addClass('hidden');
+				command.hideSubNav.execute();
 				view.$galleryContainer.hide();
 				$.when(
 					$.getJSON(constant.imageResource),
 					$.getJSON(constant.projectResource),
 					$.getJSON(constant.menuResource)
-				).done(function(images, projects, menu) {
+				).done(function(images, projects, menus) {
 					model.set('images', images[0]);
 					model.set('projects', projects[0]);
-					model.set('mainMenu', menu[0]);
+					model.set('mainMenu', util.findMainMenu(menus[0]));
+					model.set('menus', menus[0]);
 					view.$container.removeClass('hidden');
 					view.$header.removeClass('hidden');
 					command.hideSpinner.execute();
@@ -124,6 +151,7 @@ jQuery(function($) {
 				});
 			}
 		},
+		/* hide gallery image */
 		hideImage: {
 			execute: function() {
 				var deferred = $.Deferred();
@@ -137,6 +165,7 @@ jQuery(function($) {
 				return deferred.promise();
 			}
 		},
+		/* show gallery image */
 		showImage: {
 			execute: function(img) {
 				$log(img.src);
@@ -155,6 +184,7 @@ jQuery(function($) {
 				});
 			}
 		},
+		/* move to next image */
 		showNextImage: {
 			execute: function() {
 				var image;
@@ -168,6 +198,7 @@ jQuery(function($) {
 
 			}
 		},
+		/* move to previous image */
 		showPreviousImage: {
 			execute: function() {
 				var image, index;
@@ -184,14 +215,38 @@ jQuery(function($) {
 				});
 			}
 		},
+		/* show loading spinner */
 		showSpinner: {
 			execute: function() {
 				view.$spinner.removeClass('hidden');
 			}
 		},
+		/* hide loading spinner */
 		hideSpinner: {
 			execute: function() {
 				view.$spinner.addClass('hidden');
+			}
+		},
+		/* show subnav */
+		showSubNav: {
+			execute: function() {
+				if (model.get('subNav.hidden')) {
+					view.$subNav.show();
+					model.set('subNav.hidden', false);
+				}
+			}
+		},
+		hideSubNav: {
+			execute: function() {
+				if (!model.get('subNav.hidden')) {
+					view.$subNav.hide();
+					model.set('subNav.hidden', true);
+				}
+			}
+		},
+		buildSubNav: {
+			execute: function(link) {
+				console.log('building subnav', link);
 			}
 		}
 	};
@@ -206,7 +261,9 @@ jQuery(function($) {
 		$previous: $('.previous'),
 		$summary: $('.summary'),
 		$header: $('header'),
-		$menu: $('#main-menu')
+		$menu: $('#main-menu'),
+		$subNav: $('.nav-sub')
+
 	};
 	/** dispatch event between layers of application */
 	mediator = $({}).on({
@@ -222,13 +279,25 @@ jQuery(function($) {
 		},
 		'click.next': function() {
 			command.showNextImage.execute();
+		},
+		'click.link': function(event, linkData) {
+			var link = model.get('menus').filter(function(link) {
+				return link.id === linkData.id;
+			}).pop();
+			if (link) {
+				switch (link.type) {
+					case 'menu':
+						command.showSubNav.execute();
+						command.buildSubNav.execute(link);
+						break;
+
+				}
+			}
 		}
 	});
 	/** log function,can be turned off */
-	$log = function() {
-		if (typeof(console) !== undefined) {
-			//console.log.apply(console, [].slice.call(arguments));
-		}
+	$log = function() { /*@TODO*/
+		return;
 	};
 	/** start the application */
 	(function init() {

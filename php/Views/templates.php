@@ -807,8 +807,10 @@ $templates['menu-link-widget'] = <<<HERE
     <!-- angular widget for links management -->
     <script type="text/javascript">
         var Config={
+            menu:{{menu|json_encode|raw}},
             projectResource:"{{path('mp_simplerest_project_index')}}",
-            pageResource:"{{path('mp_simplerest_page_index')}}"
+            pageResource:"{{path('mp_simplerest_page_index')}}",
+            menuResource:"{{path('mp_simplerest_menu_index')}}"
         }
     </script>
     {%raw%}
@@ -828,10 +830,11 @@ $templates['menu-link-widget'] = <<<HERE
                     <header class="lead">Drag and drop {{key}} into the menu</header>
                         <progress ng-show="items.length<=0" class="text-muted">Loading items,please wait</progress>
                         <ul class="list-group">
-                            <li class="list-group-item" data="item" my-draggable
+                            <!--LINK-->
+                            <li class="list-group-item" data="item" my-draggable 
                             ng-repeat="item in items" title="drag me and drop me on the right! ">
                                 <button type="button" class="close" ng-click="addLink(item)">+</button>
-                                {{item.title}}
+                                <span ng-bind="item.title"></span>
                             </li>
                         </ul>
                 </div>
@@ -858,7 +861,7 @@ $templates['menu-link-widget'] = <<<HERE
                         <li class="list-group-item" my-draggable data="link" my-drop="onDropLink" title="drag and drop to reorder links"
                             ng-repeat="link in links" ng-init="link.order=\$index">
                             <button type="button" class="close" ng-click="removeLink(link)">&times;</button>
-                            {{link.title}} - <span class="text-muted">{{link.type}}</span>
+                            <span contenteditable ng-model="link.title"></span> - <span class="text-muted">{{link.type}}</span>
                         </li>
                     </ul>
                 </div>

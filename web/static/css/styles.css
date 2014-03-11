@@ -24,7 +24,8 @@ body {
     display: inline;
 }
 
-.no-select, [draggable],.drop-zone {
+.no-select,.drop-zone {
+    /*
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -32,10 +33,34 @@ body {
     -ms-user-select: none;
     user-select: none;
     /* Required to make elements draggable in old WebKit */
+    /*
     -khtml-user-drag: element;
     -webkit-user-drag: element;
+    */
 }
+[contenteditable]:hover{
+    border:1px solid rgba(200,200,200,1);
 
+}
+[contenteditable]{
+    cursor: text;
+    display:inline-block;
+    border:1px solid rgba(200,200,200,.5);
+    padding:1px 3px;
+    /*
+    -webkit-touch-callout: all;
+    -webkit-user-select: all;
+    -khtml-user-select: all;
+    -moz-user-select: all;
+    -ms-user-select: all;
+    user-select: all;
+    */
+    /* Required to make elements draggable in old WebKit */
+    /*
+    -khtml-user-drag: element;
+    -webkit-user-drag: element;
+    */
+}
 [draggable] {
     cursor: move;
 }

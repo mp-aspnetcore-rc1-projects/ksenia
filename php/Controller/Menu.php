@@ -36,7 +36,7 @@ class Menu implements ControllerProviderInterface
                 return $app->redirect($app->url_generator->generate('menu_index'));
             }
         }
-        return $app->twig->render('menu_create', array('form' => $form->createView()));
+        return $app->twig->render('menu_create', array('mnenu'=>$menu,'form' => $form->createView()));
     }
 
     function update(App $app, Request $req, $id) {

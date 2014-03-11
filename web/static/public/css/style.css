@@ -5,6 +5,7 @@ body{
 	height: 100%;
 	color:#E9E9E9;
 	font-family: "Source Sans Pro",sans-serif;
+	font-size: 100%;
 }
 figure{
 	margin:0 auto;
@@ -42,7 +43,7 @@ header{
 	transition:.5s opacity,width,height ease-out;
 	-moz-transition:.5s opacity,width,height ease-out;
 	-webkit-transition:.5s opacity,width,height ease-out;
-	font-size: 0.7em;
+	font-size: 0.8em;
 	color:#FAFAFA;
 	z-index: 100;
 	font-family: "Georgia",sans-serif;
@@ -88,10 +89,13 @@ h1,h2,h3{
 }
 .nav-sub{
 	list-style:none;
-	/*font-size: 1.2em;*/
+	font-size: 1em;
 	text-align: left;
 	font-family: inherit;
-	padding-left:0;
+	padding-left:10px;
+}
+.nav-sub li{
+	line-height: 18px;
 }
 .browsehappy{
 	font-size: 30px;

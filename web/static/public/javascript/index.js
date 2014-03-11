@@ -8,8 +8,24 @@
  */
 "use strict";
 jQuery(function($) {
-	var model, command, mediator, view, util, constant, $log;
+	var model, command, Router, mediator, view, util, constant, $log;
 	util = {
+		/**
+		 * build a jQuery object from a link
+		 * @param  {Object} link
+		 * @return {jQuery.Object}
+		 */
+		buildLink: function(link) {
+			return $('<li>', {
+				'data-id': link.id,
+				'data-item-id': link.itemId,
+				'data-type': link.type
+			}).html(
+				$('<a href="#' + link.type + '/' + link.itemId + '">' + link.title + '</a>')
+			).click(function() {
+				mediator.trigger('click.link', [$(this).data()]);
+			});
+		},
 		findMainMenu: function(menus) {
 			/* extract main menu*/
 			var menu = menus.filter(function(m) {
@@ -68,22 +84,20 @@ jQuery(function($) {
 	model.observe('transition', function(isTransition) {
 		mediator.trigger('load.image', [isTransition]);
 	});
-	/** controller */
+	/** application controller */
 	command = {
+		/* start router */
+		startRouter: {
+			execute: function() {
+				Backbone.history.start();
+			}
+		},
 		/* initialize main menu */
 		initMenu: {
 			execute: function() {
 				model.get('mainMenu').links.forEach(function(link, i, a) {
 					/* create link */
-					var $link = $('<li>', {
-						'data-id': link.id,
-						'data-item-id': link.itemId,
-						'data-type': link.type
-					}).html(
-						$('<a href="#/link/' + link.type + '/' + link.itemId + '">' + link.title + '</a>')
-					).click(function() {
-						mediator.trigger('click.link', [$link.data]);
-					});
+					var $link = $(util.buildLink(link));
 					/* append link to menu */
 					view.$menu.append($link);
 					/*append separator between each link unless last link*/
@@ -148,6 +162,7 @@ jQuery(function($) {
 					/* ajust summary size to the header size,now that the header has a menu */
 					view.$summary.width(view.$header.width());
 					command.initGallery.execute();
+					command.startRouter.execute();
 				});
 			}
 		},
@@ -231,7 +246,7 @@ jQuery(function($) {
 		showSubNav: {
 			execute: function() {
 				if (model.get('subNav.hidden')) {
-					view.$subNav.show();
+					view.$subNav.show(400);
 					model.set('subNav.hidden', false);
 				}
 			}
@@ -239,14 +254,23 @@ jQuery(function($) {
 		hideSubNav: {
 			execute: function() {
 				if (!model.get('subNav.hidden')) {
-					view.$subNav.hide();
+					view.$subNav.hide(400);
 					model.set('subNav.hidden', true);
 				}
 			}
 		},
-		buildSubNav: {
-			execute: function(link) {
-				console.log('building subnav', link);
+		toggleSubNav: {
+			execute: function(menu) {
+				if (model.get('subNav.hidden')) {
+					command.showSubNav.execute();
+				} else {
+					command.hideSubNav.execute();
+				}
+				view.$subNav.html(menu.links.map(
+					function(link) {
+						$log(link);
+						return util.buildLink(link);
+					}));
 			}
 		}
 	};
@@ -263,7 +287,6 @@ jQuery(function($) {
 		$header: $('header'),
 		$menu: $('#main-menu'),
 		$subNav: $('.nav-sub')
-
 	};
 	/** dispatch event between layers of application */
 	mediator = $({}).on({
@@ -295,16 +318,34 @@ jQuery(function($) {
 			}
 		}
 	});
+	Router = Backbone.Router.extend({
+		routes: {
+			"": "index",
+			":type/:id": "resource",
+		},
+		resource: function(type, id) {
+			command.hideSubNav.execute();
+			switch (type) {
+				case "menu":
+					command.toggleSubNav.execute(_(model.get('menus')).find(function(menu) {
+						return menu.id === id;
+					}));
+					break;
+			};
+		}
+	});
 	/** log function,can be turned off */
 	$log = function() { /*@TODO*/
-		return;
+		console.log.apply(console, arguments);
 	};
 	/** start the application */
 	(function init() {
-		if (constant.debug === true) {
-			$log("version", constant.config.version);
+		if (!constant.test) {
+			if (constant.debug === true) {
+				$log("version", constant.config.version);
+			}
+			var router = new Router();
+			command.initPage.execute();
 		}
-		command.initPage.execute();
 	}());
-
 });

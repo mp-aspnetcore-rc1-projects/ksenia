@@ -153,7 +153,7 @@ jQuery(function($) {
 		hideSummary: {
 			execute: function() {
 				var deferred = $.Deferred();
-				view.$summary.slideDown(700, function() {
+				view.$summary.slideUp(500, function() {
 					deferred.resolve();
 				});
 				return deferred.promise();
@@ -260,7 +260,7 @@ jQuery(function($) {
 					view.$gallery.find('figure').fadeIn(500, function() {
 						view.$summary.html(template.summary(model.get('currentImage')));
 						command.initSummary.execute();
-						view.$summary.show(700);
+						view.$summary.slideDown(500);
 						model.set('transition', false);
 						model.set('imageHidden', false);
 					});

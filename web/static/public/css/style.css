@@ -183,6 +183,7 @@ details{
 	transition:0.5 all ease-out;
 	position: relative;
 	z-index: 3;
+	font-size: 0.8em;
 }
 .summary{
 	font-family: "Georgia",sans-serif;

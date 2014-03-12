@@ -93,7 +93,7 @@ jQuery(function($) {
 		/* start router */
 		startRouter: {
 			execute: function() {
-				Backbone.history.start();
+				Backbone.history.start({pushState:true});
 			}
 		},
 		/* initialize main menu */

@@ -141,6 +141,24 @@ jQuery(function($) {
 				view.$zoom.click(mediator.trigger.bind(mediator, 'click.zoom'));
 			}
 		},
+		showSummary: {
+			execute: function() {
+				var deferred = $.Deferred();
+				view.$summary.show(700, function() {
+					deferred.resolve();
+				});
+				return deferred.promise();
+			}
+		},
+		hideSummary: {
+			execute: function() {
+				var deferred = $.Deferred();
+				view.$summary.slideDown(700, function() {
+					deferred.resolve();
+				});
+				return deferred.promise();
+			}
+		},
 		/* init model */
 		initModel: {
 			execute: function(images, projects, pages, menus) {
@@ -216,13 +234,14 @@ jQuery(function($) {
 		hideImage: {
 			execute: function() {
 				var deferred = $.Deferred();
-				
-				view.$summary.hide(700);
+
 				if (model.get('imageHidden') === false) {
-					view.$gallery.find('figure').fadeOut(500, function() {
-						model.set('transition', true);
-						model.set('imageHidden', true);
-						deferred.resolve();
+					command.hideSummary.execute().done(function() {
+						view.$gallery.find('figure').fadeOut(500, function() {
+							model.set('transition', true);
+							model.set('imageHidden', true);
+							deferred.resolve();
+						});
 					});
 				} else {
 					setTimeout(deferred.resolve.bind(deferred), 1);

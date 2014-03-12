@@ -3,3 +3,4 @@
 - Wed Mar 12 13:00:07 GMT 2014 : 
 - Wed Mar 12 13:38:29 GMT 2014 : 
 - Wed Mar 12 18:04:28 GMT 2014 : menu links now direct to resources
+- Wed Mar 12 18:08:33 GMT 2014 : showImage is not a function error

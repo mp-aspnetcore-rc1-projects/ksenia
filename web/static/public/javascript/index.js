@@ -51,6 +51,11 @@ jQuery(function($) {
 				return callback(e);
 			};
 			img.src = src;
+		},
+		getProjectById: function(id) {
+			return model.get('projects').filter(function(project) {
+				return project.id === id;
+			}).pop();
 		}
 	};
 	constant = {
@@ -232,8 +237,8 @@ jQuery(function($) {
 		/* show gallery image */
 		showImage: {
 			execute: function(img) {
-				$log(img, img.src);
 				view.$img = $(img);
+				command.showSpinner.execute();
 				command.hideImage.execute().pipe(command.showGallery.execute()).done(function() {
 					command.toggleZoom.execute();
 					view.$gallery.find('figure').html(img);
@@ -319,7 +324,6 @@ jQuery(function($) {
 				}
 				view.$subNav.html(menu.links.map(
 					function(link) {
-						$log(link);
 						return util.buildLink(link);
 					}));
 			}
@@ -356,8 +360,8 @@ jQuery(function($) {
 				if (resource) {
 					command.hideResource.execute();
 					view.$page.html(template[type](resource));
-					view.$page.removeClass('hidden');
 					model.set('pageVisible', true);
+					view.$page.removeClass('hidden');
 				}
 			}
 		},
@@ -450,12 +454,21 @@ jQuery(function($) {
 			switch (type) {
 				case 'image':
 					command.loadImageById.execute(id).done(function(img) {
-						console.log(img);
 						command.showImage.execute(img);
 					});
 					break;
-				case 'page':
 				case 'project':
+					var project;
+					command.hideSubNav.execute();
+					command.showResource.execute(type, id);
+					project = util.getProjectById(id);
+					if (project) {
+						command.loadImageById.execute(project.images[0].id).done(function(img) {
+							command.showImage.execute(img);
+						});
+					}
+					break;
+				case 'page':
 					command.hideSubNav.execute();
 					command.showResource.execute(type, id);
 					break;

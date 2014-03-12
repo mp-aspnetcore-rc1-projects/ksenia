@@ -2,3 +2,4 @@
 - Wed Mar 12 12:58:47 GMT 2014 : clean up index.twig
 - Wed Mar 12 13:00:07 GMT 2014 : 
 - Wed Mar 12 13:38:29 GMT 2014 : 
+- Wed Mar 12 18:04:28 GMT 2014 : menu links now direct to resources

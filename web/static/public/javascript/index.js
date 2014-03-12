@@ -114,7 +114,7 @@ jQuery(function($) {
 					model.set('imageIndex', 0);
 					command.showGallery.execute().done(function() {
 						/** add click handlers to buttons */
-						command.showImage(img);
+						command.showImage.execute(img);
 						view.$next.on('click', function() {
 							mediator.trigger('click.next');
 						});

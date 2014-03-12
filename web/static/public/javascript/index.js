@@ -76,7 +76,7 @@ jQuery(function($) {
 		menus: [],
 		pages: [],
 		projects: [],
-		zoom: true
+		zoom: false
 	});
 	model.compute('currentImage', {
 		triggers: ['imageIndex', 'images'],

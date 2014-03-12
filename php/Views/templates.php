@@ -493,7 +493,7 @@ $templates['image_update'] = <<<HERE
         </header>
 		<div class="row">
 		<a class="thumbnail col-md-5"
-          target="_blank" href="{{path('image_load',{imageId:image.id,image.extension})}}">
+          target="_blank" href="{{path('image_load',{imageId:image.id,extension:image.extension})}}">
             <img title="{{image.title}}"
             src="{{path('image_load',{imageId:image.id,extension:image.extension})}}"
             alt="{{image.title}}"/>

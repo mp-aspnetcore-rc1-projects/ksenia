@@ -207,7 +207,7 @@ figure img{
 	border:2px solid rgba(100, 100, 100, 0.3); 
 }
 .summary:hover{
-	background:rgba(256,256,256,0.1);
+	background:rgba(25,25,25,0.4);
 }
 .summary h1{
 	/*min-width: 300px;*/
@@ -217,16 +217,18 @@ figure img{
 }
 .zoom{
 	/* &nharr; */
-	position: absolute;
+	/* position: absolute; */
+	display: inline;
 	border:none;
 	background: none;
 	color:inherit;
 	font-family: inherit;
 	opacity: 0.9;
-	top:5px;
-	right:7px;
+	font-size: 0.8em;
+	/* top:5px; */
+	/* right:7px; */
 }
-
+/*  */
 .spinner{
 	position: absolute;
 	top:0;
@@ -264,3 +266,6 @@ footer section{
 /**
  * HELPERS
  */
+.inline{
+	display: inline-block;
+}

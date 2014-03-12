@@ -3,9 +3,9 @@ test:
 commit:
 	@git add .
 	@git commit -am"$(message) `date`" | :
-	@if [ $message ]; then
+	ifdef 
 	@echo "- `date` $(message)" >> CHANGELOG ;
-	@fi
+	endif
 push: commit
 	@git push origin master
 run:

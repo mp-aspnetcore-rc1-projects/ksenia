@@ -4,7 +4,7 @@ commit:
 	@git add .
 	@git commit -am"$(message) `date`" | :
 	@if [ $message ]; then
-	@echo "- `date` $(message)" >> CHANGELOG
+	@echo "- `date` $(message)" >> CHANGELOG ;
 	@fi
 push: commit
 	@git push origin master

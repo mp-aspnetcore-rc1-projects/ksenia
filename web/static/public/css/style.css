@@ -30,7 +30,6 @@ hr{
  */
 header{
 	transition:.5s opacity,width,height ease-out;
-	font-size: 0.75em;
 	color:#FAFAFA;
 	font-family: "Georgia",sans-serif;
 	/** @note @css border opacity @link http://stackoverflow.com/questions/4062001/css3-border-opacity */
@@ -62,6 +61,7 @@ h2,h3{
 	transition: 1s opacity;
 	margin: auto;
 	width:90%;
+	font-size: 0.8em;
 }
 /**
  * NAVIGATION
@@ -183,16 +183,13 @@ details{
 	transition:0.5 all ease-out;
 	position: relative;
 	z-index: 3;
-	font-size: 0.8em;
+	font-size: inherit;
 }
 .summary{
 	font-family: "Georgia",sans-serif;
 	position: absolute;
-	/*top:50%;*/
 	bottom:0;
-	left:0;
 	width:100%;
-	/* left:5%; */
 	transition:0.4s opacity,color,background;
 	background: rgba(25,25,25,.8);
 	color:#F5F5F5;
@@ -202,12 +199,6 @@ details{
 }
 .summary:hover{
 	background:rgba(25,25,25,0.4);
-}
-.summary h1{
-	/*min-width: 300px;*/
-}
-.summary .detail{
-	font-size: 0.8em;
 }
 .zoom{
 	/* &nharr; */
@@ -255,7 +246,6 @@ footer section{
 .resource{
 	transition:2s all;
 	-webkit-transition:2s all;
-	font-size: 0.75em;
 	color:#FAFAFA;
 	font-family: "Georgia",sans-serif;
 	/** @note @css border opacity @link http://stackoverflow.com/questions/4062001/css3-border-opacity */

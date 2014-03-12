@@ -7,3 +7,4 @@
 - Wed Mar 12 18:41:45 GMT 2014 : spinner showing up
 - Wed Mar 12 19:26:11 GMT 2014 : image summary is now on the bottom
 - Wed Mar 12 19:33:17 GMT 2014 : image summary slideDown
+- Wed Mar 12 19:36:05 GMT 2014 : image summary slideUp slideDown and font reduced

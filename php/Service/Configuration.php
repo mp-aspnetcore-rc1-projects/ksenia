@@ -16,7 +16,7 @@ class Configuration extends Base
         parent::__construct($dm,'\Entity\Configuration');
     }
 
-    function find(){
+    function find($id=null){
     	$configuration=$this->findOneBy(array());
     	if($configuration==null){
     		$configuration=new \Entity\Configuration;

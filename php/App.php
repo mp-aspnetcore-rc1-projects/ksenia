@@ -23,6 +23,7 @@ use Symfony\Component\Routing\Generator\UrlGenerator;
  * @property \Monolog\Logger logger
  * @property \Service\Menu menuService
  * @property \Service\Link linkService
+ * @property \Service\Configuration configurationService
  * @property array ksu
  */
 class App extends Application

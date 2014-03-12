@@ -112,8 +112,8 @@ $templates['admin_nav'] = <<<HERE
 		<li class="list-group-item text-muted uppercase"><strong>USERS</strong></li>
 		<li class="list-group-item"><a href="#">Manage Users</a></li>
 
-	    <li class="list-group-item text-muted uppercase"><strong>CONFIGURATION</strong></li>
-		<li class="list-group-item"><a href="#">Manage Configuration</a></li>
+	    <li class="list-group-item text-muted uppercase"><strong>SETTINGS</strong></li>
+		<li class="list-group-item"><a href="{{path('configuration_update')}}">Manage Settings</a></li>
 
 	</ul>
 HERE;
@@ -871,6 +871,28 @@ $templates['menu-link-widget'] = <<<HERE
         </article>
     </section>
     {%endraw%}
+HERE;
+/** CONFIGURATION */
+$templates['configuration_update'] = <<<HERE
+	{%extends 'admin_layout' %}
+	{% block admin_content %}
+        <header class="lead">
+        <ol class="breadcrumb">
+            <li class="active">Configuration</li>
+        </ol>
+        </header>
+		Update settings</a>
+		{{form_start(form)}}
+		    {% for field in form %}
+		    <div class="form-group">
+		        {{form_row(field,{attr:{class:'form-control'}})}}
+		    </div>
+		    {%endfor%}
+		    <div class="form-group">
+		        <button type="submit" class="btn bt-default">Save</button>
+		    </div>
+		{{form_end(form)}}
+	{% endblock %}
 HERE;
 /**
  * UTITITLES

@@ -20,8 +20,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class Administration implements ControllerProviderInterface
 {
-    function index(App $app)
-    {
+    function index(App $app) {
         return $app->twig->render('admin_index');
     }
 
@@ -33,8 +32,7 @@ class Administration implements ControllerProviderInterface
      *
      * @return ControllerCollection A ControllerCollection instance
      */
-    public function connect(Application $app)
-    {
+    public function connect(Application $app) {
 
         $projectController = new Project;
         /**
@@ -47,8 +45,10 @@ class Administration implements ControllerProviderInterface
         $adminController->mount('/project', $projectController->connect($app));
         $page = new Page();
         $adminController->mount('/page', $page->connect($app));
-        $menu=new Menu();
-        $adminController->mount('/menu',$menu->connect($app));
+        $menu = new Menu();
+        $adminController->mount('/menu', $menu->connect($app));
+        $configuration = new Configuration();
+        $adminController->mount('/configuration', $configuration->connect($app));
         return $adminController;
     }
 }

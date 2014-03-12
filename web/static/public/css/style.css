@@ -2,7 +2,6 @@ body{
 	background: #1f1f1f;
 	/* overflow: hidden; */
 	width:100%;
-	/* height: 100%; */
 	color:#E9E9E9;
 	font-family: "Source Sans Pro",sans-serif;
 	font-size: 100%;
@@ -131,7 +130,6 @@ h2,h3{
 	z-index: auto;
 	/* left: 0; */
 	/* top: 0; */
-	width: 100%;
 	height: 768px;
 }
 .gallery-controls{
@@ -174,27 +172,25 @@ h2,h3{
 .text-muted{
 	color:#AAA;
 }
+.gallery{
+}
 figure{
 	margin:0 auto;
 	text-align: center;
 	height: 768px;
+	vertical-align: middle;
 	overflow: hidden;
 }
 
 figure img{
-	transition:1s all;
-	-moz-transition:1s all;
-	-webkit-transition:1s all;
-	-o-transition:1s all;
-	-ms-transition:1s all;
-	width:100%;
-	/*height: 100%;*/
-	/* max-width:100%; */
-	/* min-width: 80%; */
+	transition:.5s all;
 }
 /**
  * SUMMARY
  */
+details{
+	transition:0.5 all ease-out;
+}
 .summary{
 	font-family: "Georgia",sans-serif;
 	position: absolute;

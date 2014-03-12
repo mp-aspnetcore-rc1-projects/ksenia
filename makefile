@@ -3,6 +3,7 @@ test:
 commit:
 	@git add .
 	@git commit -am"$(message) `date`" | :
+	echo "- `date` $(message)" >> CHANGELOG
 push: commit
 	@git push origin master
 run:

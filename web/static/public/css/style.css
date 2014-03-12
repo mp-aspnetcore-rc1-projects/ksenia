@@ -1,5 +1,5 @@
 body{
-	background: #1f1f1f;
+	background: #222;
 	/* overflow: hidden; */
 	width:100%;
 	color:#E9E9E9;
@@ -34,7 +34,6 @@ header{
 	color:#FAFAFA;
 	font-family: "Georgia",sans-serif;
 	/** @note @css border opacity @link http://stackoverflow.com/questions/4062001/css3-border-opacity */
-	border:2px solid rgba(100, 100, 100, .8); 
 	background: rgba(25,25,25,0.9);
 	padding:10px 15px;
 	display:inline-block;
@@ -44,9 +43,7 @@ header{
 }
 header:hover{
 	opacity: 0.9;
-	background: rgba(25,25,25,0.5);
-	/* color: #111; */
-	/* background:#F5F5F5; */
+	background: rgba(25,25,25,0.6);
 }
 header nav{
 	text-align: justify;
@@ -126,14 +123,12 @@ h2,h3{
  */
 .gallery{
 	z-index: auto;
-	max-height: 768px;
 }
 .gallery-controls{
 	overflow: hidden;
 }
 .gallery-controls button{
-	opacity:0.5;
-	border-collapse: collapse;
+	opacity: inherit;
 	border: none;
 	transition:.2s all ease-out;
 	z-index: 10;
@@ -169,7 +164,7 @@ h2,h3{
 	color:#AAA;
 }
 
-figure{
+.gallery figure{
 	margin:0 auto;
 	text-align: center;
 	height: 768px;
@@ -177,7 +172,7 @@ figure{
 	overflow: hidden;
 }
 
-figure img{
+.gallery figure img{
 	transition:.5s all;
 }
 /**
@@ -195,7 +190,6 @@ details{
 	background: rgba(25,25,25,.8);
 	color:#F5F5F5;
 	padding: 0 15px;
-	border:2px solid rgba(100, 100, 100, 0.3); 
 }
 .summary:hover{
 	background:rgba(25,25,25,0.4);
@@ -231,22 +225,16 @@ details{
 	background: url('/static/public/images/gallLoader.gif') 50% 50% no-repeat ;
 	transition: .5s opacity;
 }
-.hidden{
-	opacity:0;
-}
+
 /**
  * FOOTER
  */
 footer{
-	/*position: absolute;*/
 	bottom:0;
-	background: #000;
 	overflow: hidden;
 	width:100%;
-	padding: 7px;
 	z-index: 10;
 	opacity: .8;
-	border-top:3px solid rgba(100, 100, 100, .3);
 }
 footer section{
 	margin:0 auto;
@@ -254,9 +242,48 @@ footer section{
 	font-weight: lighter;
 	font-variant: small-caps;
 }
+/** main */
+.resource{
+	transition:2s all;
+	-webkit-transition:2s all;
+	font-size: 0.75em;
+	color:#FAFAFA;
+	font-family: "Georgia",sans-serif;
+	/** @note @css border opacity @link http://stackoverflow.com/questions/4062001/css3-border-opacity */
+	background: rgba(25,25,25,0.7);
+	padding:10px 15px 10px 15px;
+	display:inline-block;
+	top:5%;
+	right:5%;
+	position: absolute;
+	width: 50%;
+}
+pre{
+	font-family: inherit;
+	font-size: inherit;
+}
+.project figure{
+	width:50px;
+	height: 50px;
+	overflow: hidden;
+	display:inline-block;
+	margin-right:10px;
+	background-color: #000;
+	text-align: center;
+	border:1px solid #111;
+}
+.project figure:hover{
+	border:1px solid #BBB;
+}
+.project figure img{
+	height: 100%;
+}
 /**
  * HELPERS
  */
 .inline{
 	display: inline-block;
+}
+.hidden{
+	opacity:0;
 }

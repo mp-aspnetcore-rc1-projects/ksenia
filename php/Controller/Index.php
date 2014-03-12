@@ -113,6 +113,7 @@ class Index implements ControllerProviderInterface
             ->bind('image_load_flush');
         $portfolioController->mount('/api/',$app['projectRestController']->connect($app));
         $portfolioController->mount('/api/',$app['imageRestController']->connect($app));
+        $portfolioController->mount('/api/',$app['pageRestController']->connect($app));
         /** api endpoint to the main menu */
         $portfolioController->get('/api/menu.{_format}',array($this,'menuResource'))
             ->value('_format','json')

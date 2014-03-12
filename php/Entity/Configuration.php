@@ -13,7 +13,6 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Class Configuration
- * @package Entity
  * @ODM\Document
  * @ODM\HasLifecycleCallbacks
  */

@@ -49,7 +49,7 @@ class Config implements ServiceProviderInterface
         $app['temp'] = __DIR__ . "/../temp";
         /* hard coded configuration */
         $app['ksu'] = array(
-            'title' => "KSENIA PYROVSKIKH",
+            'title' => "KSENIA PIROVSKIKH",
             'subtitle'=>'Interior and Graphic Designer',
             "version"=>"0.0.1",
             'template' => 'html5',

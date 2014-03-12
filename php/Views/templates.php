@@ -27,12 +27,14 @@ $templates['layout'] = <<<HERE
                     <section class="navbar-header">
                         <a class="navbar-brand" href="/">{{ app.ksu.title | upper }} | Administration </a>
                     </section>
+                    {# 
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="{{path('index')}}">Home</a></li>
                         <li><a href="#">Services</a></li>
                         <li><a href="#">Clients</a></li>
                         <li><a href="#">About me</a></li>
-                    </ul>p
+                    </ul>
+                    #}
                 </div>
             </nav>
 			<main class='container'>
@@ -671,8 +673,8 @@ $templates['menu_index'] = <<<HERE
                     <tr>
                     <th>#</th>
                     <th>Title</th>
-                    <th>Language</th>
                     <th>Description</th>
+                    <th>Language</th>
                     <th>Main</th>
                     <th>Published</th>
                     <th style="width:30%"></th>

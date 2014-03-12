@@ -1,23 +1,13 @@
 body{
 	background: #1f1f1f;
-	overflow: hidden;
+	/* overflow: hidden; */
 	width:100%;
-	height: 100%;
+	/* height: 100%; */
 	color:#E9E9E9;
 	font-family: "Source Sans Pro",sans-serif;
 	font-size: 100%;
 }
-figure{
-	margin:0 auto;
-	text-align: center;
-}
 
-figure img{
-	width:100%;
-	height: auto;
-	/* max-width:100%; */
-	/* min-width: 80%; */
-}
 a{
 	color:inherit;
 	text-decoration: none;
@@ -27,7 +17,7 @@ a:hover{
 }
 hr{
 	border-style: dotted;
-	border-color:#999;
+	border-color:#777;
 	border-width: 1px;
 	border-top-width: 0;
 	border-collapse: collapse;
@@ -41,11 +31,8 @@ hr{
  */
 header{
 	transition:.5s opacity,width,height ease-out;
-	-moz-transition:.5s opacity,width,height ease-out;
-	-webkit-transition:.5s opacity,width,height ease-out;
-	font-size: 0.8em;
+	font-size: 0.75em;
 	color:#FAFAFA;
-	z-index: 100;
 	font-family: "Georgia",sans-serif;
 	/** @note @css border opacity @link http://stackoverflow.com/questions/4062001/css3-border-opacity */
 	border:2px solid rgba(100, 100, 100, .8); 
@@ -53,50 +40,78 @@ header{
 	padding:10px 15px;
 	display:inline-block;
 	text-align: center;
+	top:5%;
+	position: absolute;
 }
 header:hover{
 	opacity: 0.9;
+	background: rgba(25,25,25,0.5);
 	/* color: #111; */
 	/* background:#F5F5F5; */
+}
+header nav{
+	text-align: justify;
 }
 h1{
 }
 .primary{
 	color:#F8D113;
 }
-h1,h2,h3{
-
+h2,h3{
 	font-style: italic;
+}
+/**
+ * CONTAINER
+ */
+.container{
+	transition: 1s opacity;
+	margin: auto;
+	width:90%;
 }
 /**
  * NAVIGATION
  */
+/**
+ * justify menu
+ * @link http://code.jelmerdemaat.nl/2012/perfectly-justified-css-grid-technique-using-inline-block/
+ */
 .nav{
-	padding-left:0;
+	width: 100%;
 	list-style: none;
+	text-align: justify;
+	padding-left: 0;
+	margin-bottom: 0;
+}
+.nav:after{
+	content:"";
+	line-height: 0;
+	width:100%;
+	height: 0;
+	display:inline-block;
 }
 .nav li{
 	font-family: Georgia;
 	font-weight: bold;
-	display:inline-block;
+	display:inline;
+}
+.nav .separator{
+	border-right:1px dotted #999;
 }
 .nav li a:hover{
 	color:#FFF !important;
 }
-.nav .separator{
-	margin:0 5px;
-	border-left:1px dotted rgba(200,200,200,0.8);
-}
+
 .nav-sub{
 	list-style:none;
 	font-size: 1em;
 	text-align: left;
 	font-family: inherit;
-	padding-left:10px;
+	padding-left:0;
 }
 .nav-sub li{
 	line-height: 18px;
 }
+
 .browsehappy{
 	font-size: 30px;
 	position: absolute;
@@ -107,17 +122,32 @@ h1,h2,h3{
 	color: #A00;
 	border: 10px solid #A00;
 }
+/**
+ * GALLERY
+ */
+.gallery{
+	/* overflow: hidden; */
+	/* position: fixed; */
+	z-index: auto;
+	/* left: 0; */
+	/* top: 0; */
+	width: 100%;
+	height: 768px;
+}
 .gallery-controls{
 	overflow: hidden;
 }
 .gallery-controls button{
-	opacity:1;
+	opacity:0.5;
 	border-collapse: collapse;
 	border: none;
 	transition:.2s all ease-out;
 	z-index: 10;
 	width:41px;
 	height:35px;
+}
+.gallery-controls button:hover{
+	opacity:1;
 }
 .previous{
 	text-decoration: none;
@@ -144,10 +174,23 @@ h1,h2,h3{
 .text-muted{
 	color:#AAA;
 }
-.container{
-	transition: 1s opacity;
-	margin: auto auto;
-	width:90%;
+figure{
+	margin:0 auto;
+	text-align: center;
+	height: 768px;
+	overflow: hidden;
+}
+
+figure img{
+	transition:1s all;
+	-moz-transition:1s all;
+	-webkit-transition:1s all;
+	-o-transition:1s all;
+	-ms-transition:1s all;
+	width:100%;
+	/*height: 100%;*/
+	/* max-width:100%; */
+	/* min-width: 80%; */
 }
 /**
  * SUMMARY
@@ -160,29 +203,28 @@ h1,h2,h3{
 	transition:0.4s opacity,color,background;
 	background: rgba(25,25,25,.8);
 	color:#F5F5F5;
-	padding: 0 10px;
-	border:2px solid rgba(100, 100, 100, 1); 
+	padding: 0 15px;
+	border:2px solid rgba(100, 100, 100, 0.3); 
 }
 .summary:hover{
-	opacity: 0.7;
-	color: #000 !important;
-	background:rgba(256,256,256,0.5);
+	background:rgba(256,256,256,0.1);
 }
-
 .summary h1{
 	/*min-width: 300px;*/
 }
 .summary .detail{
 	font-size: 0.8em;
 }
-.gallery{
-	overflow: hidden;
-	position: fixed;
-	z-index: -1;
-	left: 0;
-	top: 0;
-	width: 100%;
-	height: 100%;
+.zoom{
+	/* &nharr; */
+	position: absolute;
+	border:none;
+	background: none;
+	color:inherit;
+	font-family: inherit;
+	opacity: 0.9;
+	top:5px;
+	right:7px;
 }
 
 .spinner{
@@ -199,8 +241,11 @@ h1,h2,h3{
 .hidden{
 	opacity:0;
 }
+/**
+ * FOOTER
+ */
 footer{
-	position: absolute;
+	/*position: absolute;*/
 	bottom:0;
 	background: #000;
 	overflow: hidden;
@@ -216,3 +261,6 @@ footer section{
 	font-weight: lighter;
 	font-variant: small-caps;
 }
+/**
+ * HELPERS
+ */

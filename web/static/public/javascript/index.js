@@ -6,9 +6,9 @@
  * @version 0.0.1
  * @dependencies jquery , underscore , Stateman, Backbone
  */
-"use strict";
 jQuery(function($) {
-	var model, command, Router, mediator, view, util, constant, $log;
+	"use strict";
+	var model, command, template, Router, mediator, view, util, constant, $log;
 	util = {
 		/**
 		 * build a jQuery object from a link
@@ -16,14 +16,10 @@ jQuery(function($) {
 		 * @return {jQuery.Object}
 		 */
 		buildLink: function(link) {
-			return $('<li>', {
-				'data-id': link.id,
-				'data-item-id': link.itemId,
-				'data-type': link.type
-			}).html(
-				$('<a href="#' + link.type + '/' + link.itemId + '">' + link.title + '</a>')
-			).click(function() {
-				mediator.trigger('click.link', [$(this).data()]);
+			return $(template.link(link)).click(function() {
+				if (link.type === "menu") {
+					mediator.trigger('click.menu', [$(this).data()]);
+				}
 			});
 		},
 		findMainMenu: function(menus) {
@@ -57,6 +53,13 @@ jQuery(function($) {
 			img.src = src;
 		}
 	};
+	template = {
+		blockWidth: _.template("<li class='block-width'>&nbsp;</li>"),
+		link: _.template('<li data-id="<%-id%>"\
+		 data-item-id="<%-itemId%>" data-type="<%-type%>">\
+		 <a href="#<%-type%>/<%-itemId%>"><%-title%></a></li>'),
+		linkSeparator: '<li class="separator">&nbsp;</li>'
+	};
 	constant = {
 		debug: true,
 		config: Config,
@@ -72,7 +75,8 @@ jQuery(function($) {
 		images: [],
 		menus: [],
 		pages: [],
-		projects: []
+		projects: [],
+		zoom: true
 	});
 	model.compute('currentImage', {
 		triggers: ['imageIndex', 'images'],
@@ -95,16 +99,11 @@ jQuery(function($) {
 		/* initialize main menu */
 		initMenu: {
 			execute: function() {
-				model.get('mainMenu').links.forEach(function(link, i, a) {
-					/* create link */
-					var $link = $(util.buildLink(link));
-					/* append link to menu */
-					view.$menu.append($link);
-					/*append separator between each link unless last link*/
-					if (i < a.length - 1) {
-						view.$menu.append('<li class="separator">&nbsp;</li>');
-					}
-				});
+				view.$menu.append(model.get('mainMenu').links.map(function(link) {
+					return util.buildLink(link);
+				})).children().each(function(i) {
+					$(this).after(template.linkSeparator);
+				}).parent().children().last().remove();
 			}
 		},
 		/*initialize gallery */
@@ -159,10 +158,13 @@ jQuery(function($) {
 					view.$header.removeClass('hidden');
 					command.hideSpinner.execute();
 					command.initMenu.execute();
-					/* ajust summary size to the header size,now that the header has a menu */
-					view.$summary.width(view.$header.width());
 					command.initGallery.execute();
 					command.startRouter.execute();
+					/* ajust summary size to the header size,now that the header has a menu */
+					view.$summary.width(view.$header.width());
+					view.$zoom.click(function() {
+						mediator.trigger('click.zoom');
+					});
 				});
 			}
 		},
@@ -184,6 +186,8 @@ jQuery(function($) {
 		showImage: {
 			execute: function(img) {
 				$log(img.src);
+				view.$img = $(img);
+				command.toggleZoom.execute();
 				model.set('transition', false);
 				view.$galleryContainer.find('figure').html(img);
 				view.$galleryContainer.find('figure').fadeIn(500, function() {
@@ -251,6 +255,7 @@ jQuery(function($) {
 				}
 			}
 		},
+		/** hide subnav */
 		hideSubNav: {
 			execute: function() {
 				if (!model.get('subNav.hidden')) {
@@ -259,6 +264,7 @@ jQuery(function($) {
 				}
 			}
 		},
+		/** toggle subnav */
 		toggleSubNav: {
 			execute: function(menu) {
 				if (model.get('subNav.hidden')) {
@@ -272,6 +278,29 @@ jQuery(function($) {
 						return util.buildLink(link);
 					}));
 			}
+		},
+		toggleZoom: {
+			execute: function() {
+				if (model.get('zoom')) {
+					command.zoom.execute();
+				} else {
+					command.unzoom.execute();
+				}
+			}
+		},
+		zoom: {
+			execute: function() {
+				view.$img.width('100%');
+				view.$img.css('height', 'auto');
+				view.$zoom.html('[&nharr;]');
+			}
+		},
+		unzoom: {
+			execute: function() {
+				view.$img.width('auto');
+				view.$img.css('height', '100%');
+				view.$zoom.html('[&harr;]');
+			}
 		}
 	};
 	/** templates and dom components */
@@ -281,12 +310,14 @@ jQuery(function($) {
 		$spinner: $('#spinner'),
 		$container: $('#container'),
 		$galleryContainer: $('#gallery-container'),
+		$img: null,
 		$next: $('.next'),
 		$previous: $('.previous'),
 		$summary: $('.summary'),
 		$header: $('header'),
 		$menu: $('#main-menu'),
-		$subNav: $('.nav-sub')
+		$subNav: $('.nav-sub'),
+		$zoom: $('#zoom')
 	};
 	/** dispatch event between layers of application */
 	mediator = $({}).on({
@@ -297,25 +328,20 @@ jQuery(function($) {
 				command.hideSpinner.execute();
 			}
 		},
+		'click.zoom': function() {
+			model.set('zoom', !model.get('zoom'));
+			command.toggleZoom.execute();
+		},
 		'click.previous': function() {
 			command.showPreviousImage.execute();
 		},
 		'click.next': function() {
 			command.showNextImage.execute();
 		},
-		'click.link': function(event, linkData) {
-			var link = model.get('menus').filter(function(link) {
-				return link.id === linkData.id;
-			}).pop();
-			if (link) {
-				switch (link.type) {
-					case 'menu':
-						command.showSubNav.execute();
-						command.buildSubNav.execute(link);
-						break;
-
-				}
-			}
+		'click.menu': function(event, link) {
+			command.toggleSubNav.execute(_(model.get('menus')).find(function(menu) {
+				return menu.id === link.itemId;
+			}));
 		}
 	});
 	Router = Backbone.Router.extend({
@@ -324,14 +350,15 @@ jQuery(function($) {
 			":type/:id": "resource",
 		},
 		resource: function(type, id) {
-			command.hideSubNav.execute();
+			if (type !== 'menu') {
+				command.hideSubNav.execute();
+			}
 			switch (type) {
-				case "menu":
-					command.toggleSubNav.execute(_(model.get('menus')).find(function(menu) {
-						return menu.id === id;
-					}));
+				case 'page':
 					break;
-			};
+				case 'project':
+					break;
+			}
 		}
 	});
 	/** log function,can be turned off */

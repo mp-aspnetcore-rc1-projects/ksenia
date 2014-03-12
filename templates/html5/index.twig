@@ -38,8 +38,12 @@
                <button class="previous"> </button>
                <button class="next"> </button>
             </div>
+            <!-- SUMMARY-->
             <article class="summary">
-               <h3 role="title" class='primary'>:title</h3>
+               <button id="zoom" title="zoom in,zoom out" class="zoom">[&harr;]</button>
+               <h3 role="title" class='primary'>
+                  :title
+               </h3>
                <hr>
                <p class="detail">
                   Project: <a href="#">
@@ -49,8 +53,9 @@
                   <span role="description">:description</span>
                </p>
             </article>
+            <!--ENDSUMMARY-->
             <div id="gallery" class="gallery">
-               <figure></figure>
+               <figure><img ></figure>
             </div>
          </section>
          <section id="container" class=" hidden">
@@ -58,12 +63,14 @@
                <!--HEADER -->
                <header>
                   <h1 >{{app.ksu.title}}</h1>
-                  <hr>
                   <h3 class="center  primary">
                      {{app.ksu.subtitle}}<br>
                   </h3>
                   <hr>
-                  <ul id="main-menu" class="nav"></ul>
+                  <nav>
+                     <ul id="main-menu" class="nav">
+                     </ul>
+                  </nav>
                   <ul id="sub-menu" class="nav-sub">
                      <li>SubMenu</li>
                      <li>SubMenu</li>
@@ -72,6 +79,7 @@
                </header>
                <!-- ENDHEADER -->
             </hgroup>
+            <main id="main" class="container">&nbsp;</main>
             <footer>
                <section class="container">programming - marc paraiso <mparaiso@online.fr></section>
             </footer>

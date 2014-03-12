@@ -25,7 +25,7 @@ $templates['layout'] = <<<HERE
 			<nav class="navbar navbar-inverse">
                 <div class="container">
                     <section class="navbar-header">
-                        <a class="navbar-brand" href="/">{{ app.ksu.title | upper }} | Administration </a>
+                        <a class="navbar-brand" href="{{path('admin_index')}}">{{ app.ksu.title | upper }} | Administration </a>
                     </section>
                     {# 
                     <ul class="nav navbar-nav navbar-right">
@@ -114,6 +114,7 @@ $templates['admin_nav'] = <<<HERE
 
 	    <li class="list-group-item text-muted uppercase"><strong>SETTINGS</strong></li>
 		<li class="list-group-item"><a href="{{path('configuration_update')}}">Manage Settings</a></li>
+		<li class="list-group-item"><a href="{{path('configuration_update')}}">Manage Translations</a></li>
 
 	</ul>
 HERE;
@@ -130,7 +131,6 @@ $templates['admin_upload'] = <<<HERE
 	{% endblock %}
 HERE;
 /** Project management */
-
 /* list all projects */
 $templates['project_index'] = <<<HERE
 	{% extends 'admin_layout' %}

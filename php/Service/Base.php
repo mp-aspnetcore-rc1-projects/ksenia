@@ -82,6 +82,8 @@ class Base
         $lookup = $this->findOneBy($where);
         if ($lookup) {
             $this->create($model, $flush);
+        }else{
+            throw new \Exception('model for update not found');
         }
     }
 

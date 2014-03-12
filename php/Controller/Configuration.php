@@ -16,14 +16,16 @@ class Configuration implements ControllerProviderInterface
     /** update configuration settings */
     function update(App $app, Request $req) {
         /** @var \Entity\Configuration $configuration */
-        $configuration = $app->configurationService->find();
-        if (!$configuration) {
-            $app->abort(404);
-        }
+        $configuration = $app->configurationService->find() or  $app->abort(404);
         $form = $app->formFactory->create(new \Form\Configuration(), $configuration);
         if ('POST' === $req->getMethod()) {
             if ($form->handleRequest($req)->isValid()) {
-                $app->configurationService->update($configuration);
+                // update or create
+                if ($configuration->getId()) {
+                    $app->configurationService->update($configuration);
+                } else {
+                    $app->configurationService->create($configuration);
+                }
                 return $app->redirect($app->url_generator->generate('configuration_update'));
             }
         }

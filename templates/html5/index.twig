@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="{{app.locale}}">
+<html lang="{{app.settings.language}}">
    <head>
       <meta charset="UTF-8">
       <meta http-equiv="X-UA-Compatible" content="IE=edge">
-      <title>{{app.ksu.title}}</title>
-      <meta name="description" content="{{app.ksu.subtitle}}">
+      <title>{{app.settings.title}}</title>
+      <meta name="description" content="{{app.settings.subtitle}}">
       <meta name="viewport" content="width=device-width, initial-scale=1">
       {# STYLES #}
       <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400' rel='stylesheet' type='text/css'>
@@ -39,7 +39,7 @@
                <button class="next"> </button>
             </div>
             <!-- SUMMARY-->
-            <details class="summary">
+            <details class="summary" open>
                <summary>
                <h3 role="title" class='inline primary'>
                   :title
@@ -47,7 +47,7 @@
                <button id="zoom" title="zoom in,zoom out" class="zoom">[&harr;]</button>
                </summary>
                <hr>
-               <p class="detail">
+               <p>
                   Project: <a href="#">
                   <span role="project">:project.title</span></a><br>
                   Client: <a href="#">
@@ -64,9 +64,9 @@
             <hgroup class="container">
                <!--HEADER -->
                <header>
-                  <h1 >{{app.ksu.title}}</h1>
+                  <h1 >{{app.settings.title}}</h1>
                   <h3 class="center  primary">
-                     {{app.ksu.subtitle}}<br>
+                     {{app.settings.subtitle}}<br>
                   </h3>
                   <hr>
                   <nav>

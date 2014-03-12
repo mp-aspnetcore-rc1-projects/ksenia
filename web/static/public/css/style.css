@@ -125,12 +125,8 @@ h2,h3{
  * GALLERY
  */
 .gallery{
-	/* overflow: hidden; */
-	/* position: fixed; */
 	z-index: auto;
-	/* left: 0; */
-	/* top: 0; */
-	height: 768px;
+	max-height: 768px;
 }
 .gallery-controls{
 	overflow: hidden;
@@ -172,8 +168,7 @@ h2,h3{
 .text-muted{
 	color:#AAA;
 }
-.gallery{
-}
+
 figure{
 	margin:0 auto;
 	text-align: center;

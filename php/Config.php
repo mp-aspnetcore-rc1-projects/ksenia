@@ -54,6 +54,9 @@ class Config implements ServiceProviderInterface
             "version"=>"0.0.1",
             'template' => 'html5',
         );
+        $app['settings']=$app->share(function($app){
+            return $app->configurationService->find();
+        });
 
         /**
          * silex core services

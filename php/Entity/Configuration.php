@@ -105,9 +105,9 @@ class Configuration implements JsonSerializable, NormalizableInterface
     }
 
     /**
-     * @ODM\PreUpdate
+     * @ODM\PrePersist
      */
-    function preUpdate() {
+    function prePersist() {
         if (null == $this->getCreatedAt()) {
             $this->setCreatedAt(new \DateTime());
         }

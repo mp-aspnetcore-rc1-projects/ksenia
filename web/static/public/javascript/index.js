@@ -135,8 +135,8 @@ jQuery(function($) {
 			execute: function() {
 				//remove all event listeners
 				view.$summary.off();
-				/* ajust summary size to the header size,now that the header has a menu */
-				view.$summary.width(view.$header.width());
+				/* adjust summary size to the header size,now that the header has a menu */
+				//view.$summary.width(view.$header.width());
 				view.$zoom = view.$summary.find('zoom');
 				view.$zoom.click(mediator.trigger.bind(mediator, 'click.zoom'));
 			}
@@ -172,9 +172,6 @@ jQuery(function($) {
 		initPage: {
 			execute: function() {
 				command.hidePage.execute();
-				view.$summary.css({
-					left: "150%"
-				});
 				$.when(
 					$.getJSON(constant.imageResource),
 					$.getJSON(constant.pageResource),
@@ -219,9 +216,8 @@ jQuery(function($) {
 		hideImage: {
 			execute: function() {
 				var deferred = $.Deferred();
-				view.$summary.animate({
-					left: "-50%"
-				});
+				
+				view.$summary.hide(700);
 				if (model.get('imageHidden') === false) {
 					view.$gallery.find('figure').fadeOut(500, function() {
 						model.set('transition', true);
@@ -245,11 +241,7 @@ jQuery(function($) {
 					view.$gallery.find('figure').fadeIn(500, function() {
 						view.$summary.html(template.summary(model.get('currentImage')));
 						command.initSummary.execute();
-						view.$summary.css({
-							left: "150%"
-						}).animate({
-							left: "5%"
-						});
+						view.$summary.show(700);
 						model.set('transition', false);
 						model.set('imageHidden', false);
 					});
@@ -444,11 +436,25 @@ jQuery(function($) {
 	});
 	Router = Backbone.Router.extend({
 		routes: {
+			"project/:id": "project",
+			"project/:projectId/image/:imageId": "project",
 			":type/:id": "resource",
 			"(/:id)": "index",
 		},
 		index: function() {
 			command.initGallery.execute();
+		},
+		project: function(projectId, imageId) {
+			console.log(arguments);
+			var project;
+			project = util.getProjectById(projectId);
+			if (project) {
+				command.hideSubNav.execute();
+				command.showResource.execute("project", projectId);
+				command.loadImageById.execute(imageId || project.images[0].id).done(function(img) {
+					command.showImage.execute(img);
+				});
+			}
 		},
 		resource: function(type, id) {
 			switch (type) {
@@ -456,17 +462,6 @@ jQuery(function($) {
 					command.loadImageById.execute(id).done(function(img) {
 						command.showImage.execute(img);
 					});
-					break;
-				case 'project':
-					var project;
-					command.hideSubNav.execute();
-					command.showResource.execute(type, id);
-					project = util.getProjectById(id);
-					if (project) {
-						command.loadImageById.execute(project.images[0].id).done(function(img) {
-							command.showImage.execute(img);
-						});
-					}
 					break;
 				case 'page':
 					command.hideSubNav.execute();
@@ -488,13 +483,13 @@ jQuery(function($) {
 		project: _.template('<div class="project">\
 								<details open>\
 									<summary>\
-										<h2 class="primary inline"><%-title%></h2>\
+										<h4 class="primary inline"><%-title%></h4>\
 									</summary>\
 									<p><pre><%-description%></pre></p>\
 									<section>\
 										<% _.each(images,function(image){ %>\
 											<figure>\
-												<a href="#image/<%-image.id%>">\
+												<a href="#/project/<%-id%>/image/<%-image.id%>">\
 													<img src="/static/images/cache/<%-image.id%>.<%-image.extension%>"/>\
 												</a>\
 											</figure>\
@@ -503,7 +498,7 @@ jQuery(function($) {
 								</details>\
 							</div>'),
 		summary: _.template('<summary>\
-               					<h3 class="inline primary"><%-title%></h3>\
+               					<h4 class="inline primary"><%-title%></h4>\
                					<button id="zoom" title="zoom in,zoom out" class="zoom">[&harr;]</button>\
                				</summary>\
                				<hr>\
@@ -515,7 +510,9 @@ jQuery(function($) {
 	};
 	/** log function,can be turned off */
 	$log = function() { /*@TODO*/
-		console.log.apply(console, arguments);
+		if (constant.debug === true) {
+			console.log.apply(console, arguments);
+		}
 	};
 	/** start the application */
 	(function init() {

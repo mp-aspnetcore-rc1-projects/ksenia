@@ -32,33 +32,21 @@
          <noscript><h1>Please enable javascript to view this page.</h1></noscript>
          <div id="spinner" class="spinner"></div>
          {#contains gallery widget #}
-         <section id="gallery">
-            <div class="gallery-controls">
-               <button class="previous"> </button>
-               <button class="next"> </button>
-            </div>
-            <!-- SUMMARY-->
-            <details class="summary" open>
-               <summary>
-               <h3 role="title" class='inline primary'>
-                  :title
-               </h3>
-               <button id="zoom" title="zoom in,zoom out" class="zoom">[&harr;]</button>
-               </summary>
-               <hr>
-               <p>
-                  Project: <a href="#">
-                  <span role="project">:project.title</span></a><br>
-                  Client: <a href="#">
-                  <span role="client">:client</span></a><br>
-                  <span role="description">:description</span>
-               </p>
-            </details>
-            <!--ENDSUMMARY-->
-            <div class="gallery">
-               <figure><img ></figure>
-            </div>
-         </section>
+         <article class='container'>
+            <section id="gallery" class="gallery">
+               <div class="gallery-controls">
+                  <button class="previous"> </button>
+                  <button class="next"> </button>
+               </div>
+               <!-- SUMMARY-->
+               <details id="detail" class="summary" open>
+               </details>
+               <!--ENDSUMMARY-->
+               <div class="gallery">
+                  <figure><img ></figure>
+               </div>
+            </section>            
+         </article>
          <main id="main" class="main hidden">
          <!--HEADER -->
          <hgroup class="container">

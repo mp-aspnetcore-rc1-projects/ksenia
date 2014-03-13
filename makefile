@@ -3,7 +3,7 @@ test:
 commit:
 	@git add .
 	@git commit -am"$(message) `date`" | :
-	@if [ $message ]; then echo "- `date` : $(message)" >> CHANGELOG.md ;fi;
+	@if [ "$(message)" ]; then echo "- `date` : $(message)" >> CHANGELOG.md ;fi;
 push: commit
 	@git push origin master
 run:

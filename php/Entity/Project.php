@@ -33,6 +33,8 @@ class Project implements JsonSerializable,NormalizableInterface
     private $client;
     /** @ODM\Collection */
     private $tags;
+    /** @ODM\Boolean */
+    private $isMain;
     /**
      * @var ArrayCollection[\Entity\Image]
      * @ODM\ReferenceMany(name="images",targetDocument="\Entity\Image",cascade="all",mappedBy="project",simple=true)
@@ -230,6 +232,18 @@ class Project implements JsonSerializable,NormalizableInterface
     public function setUpdatedAt($updatedAt)
     {
         $this->updatedAt = $updatedAt;
+    }
+
+
+    public function getIsMain()
+    {
+        return $this->isMain;
+    }
+
+    public function setIsMain($isMain)
+    {
+        $this->isMain = $isMain;
+        return $this;
     }
 
     /** @ODM\PrePersist */

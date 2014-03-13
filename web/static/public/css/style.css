@@ -1,9 +1,7 @@
 body{
-	background: #222;
-	/* overflow: hidden; */
-	/* width:100%; */
-	color:#E9E9E9;
-	font-family: "Source Sans Pro",sans-serif;
+	background: #EFEFEF;
+	color:#555;
+	font-family: "Georgia",sans-serif;
 	font-size: 100%;
 }
 
@@ -22,35 +20,32 @@ hr{
 	border-collapse: collapse;
 	height:0;
 }
-.center{
-	font-weight:lighter;
-}
+
 /**
  * HEADER
  */
+.head{
+	/* background: #000; */
+	border-bottom:1px dotted rgba(0,0,0,0.3);
+}
 header{
-	transition:.5s opacity,width,height ease-out;
-	color:#FAFAFA;
-	font-family: "Georgia",sans-serif;
+	padding-top:10px;
 	/** @note @css border opacity @link http://stackoverflow.com/questions/4062001/css3-border-opacity */
-	background: rgba(25,25,25,0.9);
-	padding:10px 15px;
-	display:inline-block;
-	text-align: center;
-	top:5%;
-	position: absolute;
-	z-index: 4;
+	width: 100%;
+	overflow: hidden;
 }
-header:hover{
-	opacity: 0.9;
-	background: rgba(25,25,25,0.6);
-}
-header nav{
-	text-align: justify;
-}
-.primary{
-	color:#F8D113;
-}
+	header hgroup{
+		display: inline;
+	}
+	header  h1,header h4{
+		display: inline;
+		padding-right:20px;
+	}
+	header .nav{
+		float:right;
+		max-width:100%;
+	}
+
 h2,h3{
 	font-style: italic;
 }
@@ -58,10 +53,8 @@ h2,h3{
  * CONTAINER
  */
 .container{
-	transition: 1s opacity;
 	margin: auto;
 	width:90%;
-	font-size: 0.8em;
 }
 /**
  * NAVIGATION
@@ -70,41 +63,29 @@ h2,h3{
  * justify menu
  * @link http://code.jelmerdemaat.nl/2012/perfectly-justified-css-grid-technique-using-inline-block/
  */
-.nav{
-	width: 100%;
-	list-style: none;
-	text-align: justify;
+nav{
 	padding-left: 0;
-	margin-bottom: 0;
+	float:right;
 }
-.nav:after{
-	content:"";
-	line-height: 0;
-	width:100%;
-	height: 0;
-	display:inline-block;
-}
-.nav li{
-	font-family: Georgia;
-	font-weight: bold;
-	display:inline;
-}
-.nav .separator{
-	border-right:1px dotted #999;
-}
-.nav li a:hover{
-	color:#FFF !important;
-}
+	nav ul{
+		padding-left:0;
+	}
+		nav ul li{
+			color:#888;
+			display:inline;
+		}
+	nav li a:hover{
+		color:#222;
+		text-decoration: none;
+	}
 
+	nav .separator{
+		border-right:1px dotted #999;
+	}
 .nav-sub{
-	list-style:none;
-	font-size: 1em;
-	text-align: left;
-	font-family: inherit;
-	padding-left:0;
 }
 .nav-sub li{
-	line-height: 18px;
+	display: block;
 }
 
 .browsehappy{
@@ -112,7 +93,6 @@ h2,h3{
 	position: absolute;
 	top:0;
 	left: 0;
-	z-index: 100;
 	background: #FAA;
 	color: #A00;
 	border: 10px solid #A00;
@@ -121,27 +101,46 @@ h2,h3{
  * GALLERY
  */
 .gallery{
-	z-index: 2;
 	position: relative;
 	width:100%;
+	overflow: hidden;
+	background:url('/static/public/images/stripes.jpg') #111;
 }
+	.gallery figure{
+		margin:0 auto;
+		text-align: center;
+		height: 600px;
+		vertical-align: middle;
+		overflow: hidden;
+		background:#000;
+	}
+		.gallery figure img{
+			transition:.1s opacity;
+		}
+		.gallery details{
+			transition:.5s background;
+			background: rgba(0,0,0,.8);
+			color:#F5F5F5;
+		}
+		.gallery details:hover{
+			background: rgba(0,0,0,.1);
+		}
 .gallery-controls{
 	overflow: hidden;
 }
-.gallery-controls button{
-	opacity: inherit;
-	border: none;
-	transition:.2s all ease-out;
-	z-index: 10;
-	width:41px;
-	height:35px;
-}
-.gallery-controls button:hover{
-	opacity:1;
-}
+	.gallery-controls button{
+		opacity: inherit;
+		border: none;
+		transition:.2s all ease-out;
+		width:41px;
+		height:35px;
+	}
+	.gallery-controls button:hover{
+		opacity:1;
+	}
 .previous{
 	text-decoration: none;
-	position:fixed;
+	position:absolute;
 	left:0;
 	top:50%;
 	display:block;
@@ -150,7 +149,7 @@ h2,h3{
 }
 .next{
 	text-decoration: none;
-	position:fixed;
+	position:absolute;
 	right:0;
 	top:50%;
 	display:block;
@@ -164,45 +163,27 @@ h2,h3{
 .text-muted{
 	color:#AAA;
 }
-
-.gallery figure{
-	margin:0 auto;
-	text-align: center;
-	height: 768px;
-	vertical-align: middle;
-	overflow: hidden;
-}
-
-.gallery figure img{
-	transition:.5s all;
-}
 /**
  * SUMMARY
  */
 details{
-	transition:0.5 all ease-out;
+	/* transition:0.5 all ease-out; */
 	position: relative;
-	z-index: 3;
 	font-size: inherit;
-}
-.summary{
-	font-family: "Georgia",sans-serif;
+	z-index:4;
 	position: absolute;
 	bottom:0;
-	width:100%;
-	transition:0.4s opacity,color,background;
-	background: rgba(25,25,25,.8);
-	color:#F5F5F5;
+	width:90%;
+	/* transition:0.4s opacity,color,background; */
 }
-.summary > *{
-	padding: 0 15px;
-}
-.summary:hover{
-	background:rgba(25,25,25,0.4);
-}
+	details > *{
+		padding: 0 15px;
+	}
+	details:hover{
+		background:rgba(25,25,25,0.4);
+	}
+
 .zoom{
-	/* &nharr; */
-	/* position: absolute; */
 	display: inline;
 	border:none;
 	background: none;
@@ -210,19 +191,17 @@ details{
 	font-family: inherit;
 	opacity: 0.9;
 	font-size: 0.8em;
-	/* top:5px; */
-	/* right:7px; */
 }
 /*  */
 .spinner{
 	position: absolute;
+	z-index: -10;
 	top:0;
 	left:0;
 	width: 100%;
 	height: 100%;
-	z-index: 1;
 	/* @note @css center background in the page*/
-	background: url('/static/public/images/gallLoader.gif') 50% 50% no-repeat ;
+	background: url('/static/public/images/spinner.gif') 50% 50% no-repeat ;
 	transition: .5s opacity;
 }
 
@@ -233,35 +212,34 @@ footer{
 	bottom:0;
 	overflow: hidden;
 	width:100%;
-	z-index: 10;
 	opacity: .8;
 }
-footer section{
-	margin:0 auto;
-	width:90%;
-	font-weight: lighter;
-	font-variant: small-caps;
-}
+	footer section{
+		margin:0 auto;
+		width:90%;
+		font-weight: lighter;
+	}
 /** main */
 .resource{
-	transition:2s all;
-	-webkit-transition:2s all;
-	color:#FAFAFA;
-	font-family: "Georgia",sans-serif;
+	border-top:1px dotted rgba(256,256,256,0.3);
 	/** @note @css border opacity @link http://stackoverflow.com/questions/4062001/css3-border-opacity */
-	background: rgba(25,25,25,0.7);
-	padding:10px 15px 10px 15px;
-	display:inline-block;
-	top:5%;
-	right:5%;
-	position: absolute;
-	width: 30%;
-	z-index: 5;
+	padding:30px 0 10px 0;
+	width:100%;
+	min-height: 500px;
 }
 pre{
 	font-family: inherit;
-	font-size: inherit;
 }
+.page div{
+	width:700px;
+}
+
+.project h3,
+.project h2{
+	padding-bottom: 5px;
+	border-bottom: 1px dotted ;
+}
+
 .project figure{
 	width:50px;
 	height: 50px;
@@ -270,10 +248,10 @@ pre{
 	margin-right:10px;
 	background-color: #000;
 	text-align: center;
-	border:1px solid #111;
+	border:1px solid #AAA;
 }
 .project figure:hover{
-	border:1px solid #BBB;
+	border:1px solid #0AF;
 }
 .project figure img{
 	height: 100%;
@@ -285,5 +263,20 @@ pre{
 	display: inline-block;
 }
 .hidden{
-	opacity:0;
+	opacity: 0;
+}
+.center{
+	font-weight:lighter;
+}
+.min{
+	height:200px;
+}
+.primary{
+	color:#09F;
+}
+.small{
+	font-size: 0.8em;
+}
+.text-muted{
+	color: #999;
 }

@@ -1,5 +1,5 @@
 /*jslint browser:true*/
-/*global jQuery,_,Statesman,Config,Backbone, */
+/*global jQuery,_,Statesman,Config,Backbone */
 /**
  * @copyright mparaiso <mparaiso@online.fr>
  * @license   All rights reserved
@@ -75,9 +75,9 @@ jQuery(function($) {
 		pages: [],
 		projects: [],
 		zoom: false,
-		galleryVisible: false,
+		galleryVisible: true,
 		transition: true,
-		pageVisible: false
+		pageVisible: true
 	});
 	model.compute('currentImage', {
 		triggers: ['imageIndex', 'images'],
@@ -172,24 +172,24 @@ jQuery(function($) {
 		/* hide page*/
 		hidePage: {
 			execute: function() {
-				view.$main.addClass('hidden');
-				view.$header.addClass('hidden');
-				view.$gallery.addClass('hidden');
+				view.$main.hide();
+				view.$header.hide();
+				view.$gallery.hide();
 				command.hideSubNav.execute();
-				view.$gallery.addClass('hidden');
 			}
 		},
 		/* show page */
 		showPage: {
 			execute: function() {
-				view.$main.removeClass('hidden');
-				view.$header.removeClass('hidden');
+				view.$main.show();
+				view.$header.show();
 			}
 		},
 		/* first command executed , initialize the front page */
 		initPage: {
 			execute: function() {
 				command.hidePage.execute();
+				command.hideGallery.execute();
 				$.when(
 					$.getJSON(constant.imageResource),
 					$.getJSON(constant.pageResource),
@@ -211,8 +211,7 @@ jQuery(function($) {
 				var deferred = $.Deferred();
 				if (model.get('galleryVisible') === false) {
 					model.set('galleryVisible', true);
-					view.$gallery.removeClass('hidden');
-					/** show first image */
+					view.$gallery.fadeIn(500, deferred.resolve.bind(deferred));
 				}
 				setTimeout(deferred.resolve.bind(deferred), 1);
 				return deferred;
@@ -224,7 +223,7 @@ jQuery(function($) {
 				var deferred = $.Deferred();
 				if (model.get('galleryVisible') === true) {
 					model.set('galleryVisible', false);
-					view.$gallery.addClass('hidden');
+					view.$gallery.slideUp(500, deferred.resolve.bind(deferred));
 				}
 				setTimeout(deferred.resolve.bind(deferred), 1);
 				return deferred;
@@ -311,7 +310,7 @@ jQuery(function($) {
 		showSubNav: {
 			execute: function() {
 				if (model.get('subNav.hidden')) {
-					view.$subNav.show(400);
+					view.$subNav.show();
 					model.set('subNav.hidden', false);
 				}
 			}
@@ -320,7 +319,7 @@ jQuery(function($) {
 		hideSubNav: {
 			execute: function() {
 				if (!model.get('subNav.hidden')) {
-					view.$subNav.hide(400);
+					view.$subNav.hide();
 					model.set('subNav.hidden', true);
 				}
 			}
@@ -362,26 +361,30 @@ jQuery(function($) {
 				view.$zoom.html('[&harr;]');
 			}
 		},
+		/* show a resource */
 		showResource: {
 			execute: function(type, id) {
-				var resources = model.get(type + 's');
-				var resource = resources.filter(function(r) {
+				model.get(type + 's').filter(function(r) {
 					return r.id === id;
-				}).pop();
-				if (resource) {
-					command.hideResource.execute();
-					view.$page.html(template[type](resource));
-					model.set('pageVisible', true);
-					view.$page.removeClass('hidden');
-				}
+				}).forEach(function(resource) {
+					command.hideResource.execute().done(function() {
+						view.$page.html(template[type](resource));
+						view.$page.fadeIn(500);
+						model.set('pageVisible', true);
+					});
+				});
 			}
 		},
 		hideResource: {
 			execute: function() {
+				var deferred = $.Deferred();
 				if (model.get('pageVisible') === true) {
 					model.set('pageVisible', false);
-					view.$page.addClass('hidden');
+					view.$page.fadeOut(500, deferred.resolve.bind(deferred));
+				} else {
+					setTimeout(deferred.resolve.bind(deferred), 1);
 				}
+				return deferred.promise();
 			}
 		},
 		loadImageById: {
@@ -456,12 +459,14 @@ jQuery(function($) {
 	Router = Backbone.Router.extend({
 		routes: {
 			"project/:id": "project",
-			"project/:projectId/image/:imageId": "project",
-			":type/:id": "resource",
-			"(/:id)": "index",
+			"project/:projectId/image/:imageId": "projectImage",
+			"page/:id": "page",
+			"image/:id": "image",
+			"": "index",
 		},
 		index: function() {
 			command.initGallery.execute();
+			command.hideResource.execute();
 		},
 		project: function(projectId, imageId) {
 			console.log(arguments);
@@ -470,41 +475,56 @@ jQuery(function($) {
 			if (project) {
 				command.hideSubNav.execute();
 				command.showResource.execute("project", projectId);
+				model.set('currentProject', project);
 				command.loadImageById.execute(imageId || project.images[0].id).done(function(img) {
 					command.showImage.execute(img);
 				});
 			}
 		},
-		resource: function(type, id) {
-			switch (type) {
-				case 'image':
-					command.loadImageById.execute(id).done(function(img) {
-						command.showImage.execute(img);
-					});
-					break;
-				case 'page':
-					command.hideSubNav.execute();
-					command.showResource.execute(type, id);
-					break;
+		projectImage: function(projectId, imageId) {
+			console.log(arguments);
+			var project;
+			project = util.getProjectById(projectId);
+			if (project) {
+				command.hideSubNav.execute();
+				if (!model.get('currentProject') || (model.get('currentProject') && model.get('currentProject').id !== projectId )){
+					command.showResource.execute("project", projectId);
+					model.set('currentProject', project);
+				}
+				command.loadImageById.execute(imageId || project.images[0].id).done(function(img) {
+					command.showImage.execute(img);
+				});
 			}
+		},
+		page: function(id) {
+			command.hideGallery.execute();
+			command.hideSubNav.execute();
+			command.showResource.execute('page', id);
+		},
+		image: function(type, id) {
+			command.loadImageById.execute(id).done(function(img) {
+				command.showImage.execute(img);
+			});
 		}
 	});
 	template = {
 		blockWidth: _.template("<li class='block-width'>&nbsp;</li>"),
-		link: _.template('<li data-id="<%-id%>"\
-		 data-item-id="<%-itemId%>" data-type="<%-type%>">\
-		 <a href="#<%-type%>/<%-itemId%>"><%-title%></a></li>'),
+		link: _.template('	<li data-id="<%-id%>"\
+		 					data-item-id="<%-itemId%>" data-type="<%-type%>">\
+		 						<a <% if(type!="menu"){%> href="#<%-type%>/<%-itemId%>" <% }else{ %> href="javascript:void 0;" <% } %> >\
+		 							<%-title%>\
+		 						</a>\
+		 					</li>'),
+
 		linkSeparator: '<li class="separator">&nbsp;</li>',
+
 		page: _.template('<div class="page">\
 								<h2 class="primary"><%-title%></h2>\
-								<p><pre><%-content%></pre></p>\
+								<div><pre><%-content%></pre></div>\
 							</div>'),
+
 		project: _.template('<div class="project">\
-								<details open>\
-									<summary>\
-										<h4 class="primary inline"><%-title%></h4>\
-									</summary>\
-									<p><pre><%-description%></pre></p>\
+									<h2 class="primary inline"><%-title%></h2>\
 									<section>\
 										<% _.each(images,function(image){ %>\
 											<figure>\
@@ -514,8 +534,9 @@ jQuery(function($) {
 											</figure>\
 										<% }); %>\
 									</section>\
-								</details>\
+									<p><pre><%-description%></pre></p>\
 							</div>'),
+
 		summary: _.template('<summary>\
                					<h4 class="inline primary"><%-title%></h4>\
                					<button id="zoom" title="zoom in,zoom out" class="zoom">[&harr;]</button>\

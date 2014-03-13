@@ -757,53 +757,53 @@ $templates['menu_update'] = <<<HERE
     {%endblock%}
 HERE;
 $templates['menu_read'] = <<<HERE
-        {%extends 'admin_layout'%}
-        {%block admin_content%}
-        <div class="row">
-            <header class="lead">
-                <ol class="breadcrumb">
-                    <li><a href="{{path('menu_index') }}">Menus</a></li>
-                    <li class="active">{{menu.title}}</li>
-                </ol>
-            </header>
-            <dl class="dl-horizontal">
-            <dt>Description</dt>
-            <dd>{{menu.description}}</dd>
-            <dt>Published</dt>
-            <dd>{% if menu.isPublished %}yes{%else%}no{%endif%}</dd>
-            <dt>Links</dt>
-            {%for link in menu.links%}
-            <dd>{{link.title}} - <span class="text-muted">{{link.type}}</span></dd>
-            {%endfor%}
-            </dl>
-            <a href="{{path('menu_update',{id:menu.id})}}" class="btn btn-default">
-                Edit Menu
-            </a>
-        </div>
+    {%extends 'admin_layout'%}
+    {%block admin_content%}
+    <div class="row">
+        <header class="lead">
+            <ol class="breadcrumb">
+                <li><a href="{{path('menu_index') }}">Menus</a></li>
+                <li class="active">{{menu.title}}</li>
+            </ol>
+        </header>
+        <dl class="dl-horizontal">
+        <dt>Description</dt>
+        <dd>{{menu.description}}</dd>
+        <dt>Published</dt>
+        <dd>{% if menu.isPublished %}yes{%else%}no{%endif%}</dd>
+        <dt>Links</dt>
+        {%for link in menu.links%}
+        <dd>{{link.title}} - <span class="text-muted">{{link.type}}</span></dd>
+        {%endfor%}
+        </dl>
+        <a href="{{path('menu_update',{id:menu.id})}}" class="btn btn-default">
+            Edit Menu
+        </a>
+    </div>
 
-        {%endblock%}
+    {%endblock%}
 HERE;
 $templates['menu_form'] = <<<HERE
-        {{form_start(form,{attr:{class:'col-md-12','ng-app':'MenuForm','ng-controller':'MenuFormCtrl'}})}}
-            <fieldset>
-                <legend>Edit a new menu</legend>
-                {#{{form_row(form['links'],{attr:{id:'links'}})}}#}
-                {%for field in form %}
-                <div class="form-group">
-                    {% if not field.vars.attr  %}
-                        {{form_row(field,{attr:{class:'form-control'}})}}
-                    {% else%}
-                        {{form_row(field)}}
-                    {% endif %}
-                </div>
-                {%endfor%}
-                {%include 'menu-link-widget'%}
-                <div class="form-group">
-                    <button class="btn btn-default" type="reset">Reset</button>
-                    <button class="btn btn-default" ng-click='sendForm()' type="submit">Save</button>
-                </div>
-            </fieldset>
-        {{form_end(form)}}
+    {{form_start(form,{attr:{class:'col-md-12','ng-app':'MenuForm','ng-controller':'MenuFormCtrl'}})}}
+        <fieldset>
+            <legend>Edit a new menu</legend>
+            {#{{form_row(form['links'],{attr:{id:'links'}})}}#}
+            {%for field in form %}
+            <div class="form-group">
+                {% if not field.vars.attr  %}
+                    {{form_row(field,{attr:{class:'form-control'}})}}
+                {% else%}
+                    {{form_row(field)}}
+                {% endif %}
+            </div>
+            {%endfor%}
+            {%include 'menu-link-widget'%}
+            <div class="form-group">
+                <button class="btn btn-default" type="reset">Reset</button>
+                <button class="btn btn-default" ng-click='sendForm()' type="submit">Save</button>
+            </div>
+        </fieldset>
+    {{form_end(form)}}
 HERE;
 $templates['menu-link-widget'] = <<<HERE
     <!-- angular widget for links management -->

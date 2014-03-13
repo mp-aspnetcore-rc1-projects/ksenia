@@ -64,25 +64,25 @@ h2,h3{
  * @link http://code.jelmerdemaat.nl/2012/perfectly-justified-css-grid-technique-using-inline-block/
  */
 nav{
-	padding-left: 0;
-	float:right;
+	display: inline;
+	float: right;
+	width:auto;
 }
-	nav ul{
-		padding-left:0;
-	}
-		nav ul li{
-			color:#888;
-			display:inline;
-		}
-	nav li a:hover{
-		color:#222;
-		text-decoration: none;
-	}
-
-	nav .separator{
-		border-right:1px dotted #999;
-	}
+nav li{
+	color:#888;
+	display:inline;
+}
+nav li a:hover{
+	color:#222;
+	text-decoration: none;
+}
+.separator{
+	margin-right: 5px;
+	border-right:1px dotted #999;
+}
 .nav-sub{
+	clear:right;
+	overflow: hidden;
 }
 .nav-sub li{
 	display: block;
@@ -277,4 +277,7 @@ pre{
 }
 .text-muted{
 	color: #999;
+}
+.space{
+	height:200px;
 }

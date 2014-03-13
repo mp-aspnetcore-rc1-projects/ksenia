@@ -9,6 +9,7 @@
 jQuery(function($) {
 	"use strict";
 	var model, command, template, Router, mediator, view, util, constant, $log;
+	/** utility functions **/
 	util = {
 		/**
 		 * build a jQuery object from a link
@@ -58,6 +59,7 @@ jQuery(function($) {
 			}).pop();
 		}
 	};
+	/** immutable values */
 	constant = {
 		debug: true,
 		config: Config,
@@ -105,6 +107,7 @@ jQuery(function($) {
 				})).children().each(function(i) {
 					$(this).after(template.linkSeparator);
 				}).parent().children().last().remove();
+				// $('.nav-sub').width(view.$menu.width());
 			}
 		},
 		/*initialize gallery */
@@ -213,7 +216,7 @@ jQuery(function($) {
 				var deferred = $.Deferred();
 				if (model.get('galleryVisible') === false) {
 					model.set('galleryVisible', true);
-					view.$gallery.fadeIn(500, deferred.resolve.bind(deferred));
+					view.$gallery.slideDown(700, deferred.resolve.bind(deferred));
 				}
 				setTimeout(deferred.resolve.bind(deferred), 1);
 				return deferred;
@@ -255,10 +258,10 @@ jQuery(function($) {
 			execute: function(img) {
 				view.$img = $(img);
 				command.showSpinner.execute();
-				command.hideImage.execute().pipe(command.showGallery.execute()).done(function() {
+				return command.hideImage.execute().pipe(command.showGallery.execute()).done(function() {
 					command.toggleZoom.execute();
 					view.$gallery.find('figure').html(img);
-					view.$gallery.find('figure').fadeIn(500, function() {
+					view.$gallery.find('figure').fadeIn(700, function() {
 						view.$summary.html(template.summary(model.get('currentImage')));
 						command.initSummary.execute();
 						view.$summary.slideDown(500);
@@ -312,7 +315,7 @@ jQuery(function($) {
 		showSubNav: {
 			execute: function() {
 				if (model.get('subNav.hidden')) {
-					view.$subNav.show();
+					view.$subNav.slideDown();
 					model.set('subNav.hidden', false);
 				}
 			}
@@ -321,7 +324,7 @@ jQuery(function($) {
 		hideSubNav: {
 			execute: function() {
 				if (!model.get('subNav.hidden')) {
-					view.$subNav.hide();
+					view.$subNav.slideUp();
 					model.set('subNav.hidden', true);
 				}
 			}
@@ -371,7 +374,7 @@ jQuery(function($) {
 				}).forEach(function(resource) {
 					command.hideResource.execute().done(function() {
 						view.$page.html(template[type](resource));
-						view.$page.fadeIn(500);
+						view.$page.slideDown(700);
 						model.set('pageVisible', true);
 					});
 				});
@@ -459,6 +462,7 @@ jQuery(function($) {
 			}));
 		}
 	});
+	/** route links in the page */
 	Router = Backbone.Router.extend({
 		routes: {
 			"project/:id": "project",
@@ -472,7 +476,6 @@ jQuery(function($) {
 			command.hideResource.execute();
 		},
 		project: function(projectId, imageId) {
-			console.log(arguments);
 			var project;
 			project = util.getProjectById(projectId);
 			if (project) {
@@ -485,7 +488,6 @@ jQuery(function($) {
 			}
 		},
 		projectImage: function(projectId, imageId) {
-			console.log(arguments);
 			var project;
 			project = util.getProjectById(projectId);
 			if (project) {
@@ -510,6 +512,7 @@ jQuery(function($) {
 			});
 		}
 	});
+	/** html templates */
 	template = {
 		blockWidth: _.template("<li class='block-width'>&nbsp;</li>"),
 		link: _.template('	<li data-id="<%-id%>"\
@@ -524,6 +527,7 @@ jQuery(function($) {
 		page: _.template('<div class="page">\
 								<h2 class="primary"><%-title%></h2>\
 								<div><pre><%-content%></pre></div>\
+								<div class="space">&nbsp;</div>\
 							</div>'),
 
 		project: _.template('<div class="project">\
@@ -538,6 +542,7 @@ jQuery(function($) {
 										<% }); %>\
 									</section>\
 									<p><pre><%-description%></pre></p>\
+									<div class="space">&nbsp;</div>\
 							</div>'),
 
 		summary: _.template('<summary>\

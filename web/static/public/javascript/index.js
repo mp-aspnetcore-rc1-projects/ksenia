@@ -175,6 +175,7 @@ jQuery(function($) {
 				view.$main.hide();
 				view.$header.hide();
 				view.$gallery.hide();
+				view.$footer.hide();
 				command.hideSubNav.execute();
 			}
 		},
@@ -183,6 +184,7 @@ jQuery(function($) {
 			execute: function() {
 				view.$main.show();
 				view.$header.show();
+				view.$footer.show();
 			}
 		},
 		/* first command executed , initialize the front page */
@@ -380,7 +382,7 @@ jQuery(function($) {
 				var deferred = $.Deferred();
 				if (model.get('pageVisible') === true) {
 					model.set('pageVisible', false);
-					view.$page.fadeOut(500, deferred.resolve.bind(deferred));
+					view.$page.slideUp(500, deferred.resolve.bind(deferred));
 				} else {
 					setTimeout(deferred.resolve.bind(deferred), 1);
 				}
@@ -425,7 +427,8 @@ jQuery(function($) {
 		$menu: $('#main-menu'),
 		$subNav: $('.nav-sub'),
 		$zoom: $('#zoom'),
-		$page: $('#page')
+		$page: $('#page'),
+		$footer:$('footer')
 	};
 	/** dispatch event between layers of application */
 	mediator = $({}).on({
@@ -539,13 +542,11 @@ jQuery(function($) {
 
 		summary: _.template('<summary>\
                					<h4 class="inline primary"><%-title%></h4>\
-               					<button id="zoom" title="zoom in,zoom out" class="zoom">[&harr;]</button>\
                				</summary>\
                				<hr>\
                				<p>\
-                  				Project: <a href="#"><%-project.title%></a><br>\
-                  				Client: <a href="#"><%-project.client%></a><br>\
-                  				<%-description%>\
+                  				Project: <a href="#project/<%-project.id%>"><%-project.title%></a><br>\
+                  				Client: <%-project.client%><br>\
                				</p>')
 	};
 	/** log function,can be turned off */

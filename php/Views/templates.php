@@ -152,6 +152,7 @@ $templates['project_index'] = <<<HERE
 					<th>Description</th>
 					<th>Language</th>
 					<th>Published</th>
+					<th>Main</th>
 					<th class="col-md-3"></th>
 				</tr>
 			</thead>
@@ -163,6 +164,7 @@ $templates['project_index'] = <<<HERE
 					<td>{{project.description[:50]~"..."}}</td>
 					<td>{{project.language}}</td>
 					<td>{{project.isPublished?'Yes':'No'}}</td>
+					<td>{{project.isMain?'Yes':'No'}}</td>
 					<td><a class="btn btn-link"  href="{{path('project_read',{id:project.id}) }}">Manage Images</a></td>
 					<td>
 					    {#<form class="inline" action="{{path('project_clone',{id:project.id}) }}" method="POST">

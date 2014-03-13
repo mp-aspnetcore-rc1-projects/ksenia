@@ -515,6 +515,13 @@ jQuery(function($) {
 	/** html templates */
 	template = {
 		blockWidth: _.template("<li class='block-width'>&nbsp;</li>"),
+		index:_.template('	<% _.each(images,function(image){ %>\
+									<figure>\
+										<a href="#/project/<%-id%>/image/<%-image.id%>">\
+											<img src="/static/images/cache/<%-image.id%>.<%-image.extension%>"/>\
+										</a>\
+									</figure>\
+								<% }); %>'),
 		link: _.template('	<li data-id="<%-id%>"\
 		 					data-item-id="<%-itemId%>" data-type="<%-type%>">\
 		 						<a <% if(type!="menu"){%> href="#<%-type%>/<%-itemId%>" <% }else{ %> href="javascript:void 0;" <% } %> >\

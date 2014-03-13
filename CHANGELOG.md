@@ -12,3 +12,4 @@
 - Wed Mar 12 21:19:43 GMT 2014 : 
 - Thu Mar 13 17:00:25 GMT 2014 : design changed
 - Thu Mar 13 17:21:41 GMT 2014 : zoom removed
+- Thu Mar 13 17:58:34 GMT 2014 : gallery slideUp/Down

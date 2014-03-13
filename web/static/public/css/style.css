@@ -37,7 +37,9 @@ header{
 	header hgroup{
 		display: inline;
 	}
-	header  h1,header h4{
+	header h1,
+	header h4,
+	header h5{
 		display: inline;
 		padding-right:20px;
 	}
@@ -97,6 +99,7 @@ nav li a:hover{
 	color: #A00;
 	border: 10px solid #A00;
 }
+
 /**
  * GALLERY
  */
@@ -104,7 +107,7 @@ nav li a:hover{
 	position: relative;
 	width:100%;
 	overflow: hidden;
-	background:url('/static/public/images/stripes.jpg') #111;
+	background:url('/static/public/images/stripes.jpg') #222;
 }
 	.gallery figure{
 		margin:0 auto;
@@ -112,7 +115,6 @@ nav li a:hover{
 		height: 600px;
 		vertical-align: middle;
 		overflow: hidden;
-		background:#000;
 	}
 		.gallery figure img{
 			transition:.1s opacity;
@@ -125,19 +127,21 @@ nav li a:hover{
 		.gallery details:hover{
 			background: rgba(0,0,0,.1);
 		}
-.gallery-controls{
-	overflow: hidden;
-}
-	.gallery-controls button{
-		opacity: inherit;
-		border: none;
-		transition:.2s all ease-out;
-		width:41px;
-		height:35px;
+
+	.gallery .controls{
+		overflow: hidden;
 	}
-	.gallery-controls button:hover{
-		opacity:1;
-	}
+		.gallery .controls button{
+			opacity: inherit;
+			border: none;
+			transition:.2s all ease-out;
+			width:41px;
+			height:35px;
+		}
+		.gallery .controls button:hover{
+			opacity:1;
+		}
+
 .previous{
 	text-decoration: none;
 	position:absolute;
@@ -156,13 +160,12 @@ nav li a:hover{
 	opacity:0.8;
 	background: url('/static/public/images/next_pic.png');
 }
-.next:hover,.previous:hover{
+.next:hover,
+.previous:hover{
 	opacity: 1;
 	background-position: 0 -35px;
 }
-.text-muted{
-	color:#AAA;
-}
+
 /**
  * SUMMARY
  */
@@ -276,8 +279,10 @@ pre{
 	font-size: 0.8em;
 }
 .text-muted{
-	color: #999;
+
+	color:#AAA;
 }
 .space{
+
 	height:200px;
 }

@@ -12,7 +12,7 @@ use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-
+use Doctrine\Common\Collections\ArrayCollection;
 
 class Index implements ControllerProviderInterface
 {
@@ -31,7 +31,7 @@ class Index implements ControllerProviderInterface
         /** @var \Entity\Project $project */
         $project = $app->projectService->find($projectId) or $app->abort(404);
         $image = $project->getImageById($imageId) or $app->abort(404);
-        return $app->twig->render('image.twig', array('image' => $image, 'project'=> $project));
+        return $app->twig->render('image.twig', array('image' => $image, 'project' => $project));
     }
 
     function page(App $app, $pageId) {
@@ -43,9 +43,22 @@ class Index implements ControllerProviderInterface
      * Returns all menu serialized
      * @return Response  json or xml response
      */
-    function menuResource(App $app,$_format){
-        $menus=$app->menuService->findAll();
-        return new Response($app->serializer->serialize($menus,$_format));
+    function publicMenuResource(App $app) {
+        return $app->json($app->menuService->findAllPublishedMenus());
+    }
+
+    function publicImageResource(App $app) {
+        return $app->json($app->imageService->findAllPublishedImages());
+    }
+
+    function publicProjectResource(App $app) {
+        $projects = $app->projectService->findAllPublishedProjects();
+        return $app->json($projects);
+    }
+
+    function publicPageResource(App $app) {
+        $pages = $app->pageService->findAllPublishedPages();
+        return $app->json($pages);
     }
 
 
@@ -106,20 +119,19 @@ class Index implements ControllerProviderInterface
             ->bind('image');
         $portfolioController->get('/page/{pageId}}', array($this, 'page'))
             ->bind('page');
-        $portfolioController->get('/static/images/cache/{imageId}.{extension}', array($this, 'imageLoad'))
-            ->value("extension", "jpg")
+        $portfolioController->get('/static/images/cache/{imageId}.{extension}', array($this, 'imageLoad'))->value("extension", "jpg")
             ->bind('image_load');
         $portfolioController->get('/static/images/cache/flush/{imageId}.{extension}', array($this, 'imageLoad'))
             ->value("extension", "jpg")
             ->bind('image_load_flush');
-        $portfolioController->mount('/api/',$app['projectRestController']->connect($app));
-        $portfolioController->mount('/api/',$app['imageRestController']->connect($app));
-        $portfolioController->mount('/api/',$app['pageRestController']->connect($app));
-        /** api endpoint to the main menu */
-        $portfolioController->get('/api/menu.{_format}',array($this,'menuResource'))
-            ->value('_format','json')
-            ->bind('menu_public_api');
-        //$portfolioController->mount('/api/',$app['pageRestController']);
+        $portfolioController->get('/api/project', array($this, 'publicProjectResource'))
+            ->bind('public_project_resource');
+        $portfolioController->get('/api/page', array($this, 'publicPageResource'))
+            ->bind('public_page_resource');
+        $portfolioController->get('/api/menu', array($this, 'publicMenuResource'))
+            ->bind('public_menu_resource');
+        $portfolioController->get('/api/image', array($this, 'publicImageResource'))
+            ->bind('public_image_resource');
         return $portfolioController;
     }
 }

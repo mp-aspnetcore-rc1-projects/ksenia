@@ -10,9 +10,12 @@ use Doctrine\ODM\MongoDB\DocumentManager;
  */
 class Page extends Base
 {
-    function __construct(DocumentManager $dm)
-    {
-        parent::__construct($dm,'\Entity\Page');
+    /** find all public pages */
+    function findAllPublishedPages() {
+        return $this->getRepository()->findBy(array('isPublished'=>true));
+    }
+    function __construct(DocumentManager $dm) {
+        parent::__construct($dm, '\Entity\Page');
     }
 
 }

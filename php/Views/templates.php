@@ -301,7 +301,7 @@ $templates['project_read'] = <<<HERE
                                 <img data-ng-src="{{imageSrc(image)}}" title="{{image.title}}" alt="{{image.title}}"/>
                             </a>
                         </figure>
-                        <figcaption class="text-muted"><small>{{image.title}}</small></figcaption>
+                        <figcaption class="text-muted"><small>{{image.title|limitTo:25}}</small></figcaption>
                         <a class="btn btn-default btn-xs" data-ng-href="{{imageHref(image)}}/update" title="Edit image">
                             <span class="glyphicon glyphicon-pencil"></span>
                         </a>

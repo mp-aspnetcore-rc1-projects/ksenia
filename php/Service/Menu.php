@@ -36,7 +36,7 @@ class Menu extends Base
         }
         parent::update($model, $where, $flush);
     }
-
+    /** create a new menu */
     function create($model, $flush = true) {
         /** @var \Entity\Menu $model */
         foreach ($model->getLinks() as $link) {
@@ -47,6 +47,11 @@ class Menu extends Base
             //mark as main,unmark other menus as main
             $this->markAsMain($model);
         }
+    }
+
+    /** find published menu */
+    function findAllPublishedMenus(){
+        return $this->getRepository()->findBy(array('isPublished'=>true));
     }
 
 

@@ -554,12 +554,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/mongodb-odm.git",
-                "reference": "e99d818b4224b35fab38abc230696d9282a1ecea"
+                "reference": "c25f282adccac62f9f70c36727e3520d2f4be70f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/mongodb-odm/zipball/e99d818b4224b35fab38abc230696d9282a1ecea",
-                "reference": "e99d818b4224b35fab38abc230696d9282a1ecea",
+                "url": "https://api.github.com/repos/doctrine/mongodb-odm/zipball/c25f282adccac62f9f70c36727e3520d2f4be70f",
+                "reference": "c25f282adccac62f9f70c36727e3520d2f4be70f",
                 "shasum": ""
             },
             "require": {
@@ -624,7 +624,7 @@
                 "odm",
                 "persistence"
             ],
-            "time": "2014-02-27 04:04:39"
+            "time": "2014-03-13 15:48:42"
         },
         {
             "name": "doctrine/mongodb-odm-bundle",
@@ -633,12 +633,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/DoctrineMongoDBBundle.git",
-                "reference": "b9a52dc9961d63f837af3b1bdbbb7759476d91d9"
+                "reference": "037e4d054364abd5ece804440fd8242639b021d6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/DoctrineMongoDBBundle/zipball/b9a52dc9961d63f837af3b1bdbbb7759476d91d9",
-                "reference": "b9a52dc9961d63f837af3b1bdbbb7759476d91d9",
+                "url": "https://api.github.com/repos/doctrine/DoctrineMongoDBBundle/zipball/037e4d054364abd5ece804440fd8242639b021d6",
+                "reference": "037e4d054364abd5ece804440fd8242639b021d6",
                 "shasum": ""
             },
             "require": {
@@ -695,7 +695,7 @@
                 "persistence",
                 "symfony"
             ],
-            "time": "2014-02-04 16:15:58"
+            "time": "2014-03-10 15:20:26"
         },
         {
             "name": "monolog/monolog",
@@ -941,12 +941,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/silexphp/Silex.git",
-                "reference": "b40e5b2bd3c550424e96104545c31da1023d7f66"
+                "reference": "5f449095abfe602d8d2bc11fd287f5f47e1bf8ec"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/silexphp/Silex/zipball/b40e5b2bd3c550424e96104545c31da1023d7f66",
-                "reference": "b40e5b2bd3c550424e96104545c31da1023d7f66",
+                "url": "https://api.github.com/repos/silexphp/Silex/zipball/5f449095abfe602d8d2bc11fd287f5f47e1bf8ec",
+                "reference": "5f449095abfe602d8d2bc11fd287f5f47e1bf8ec",
                 "shasum": ""
             },
             "require": {
@@ -1019,7 +1019,7 @@
             "keywords": [
                 "microframework"
             ],
-            "time": "2014-03-04 21:23:45"
+            "time": "2014-03-14 14:04:24"
         },
         {
             "name": "symfony/config",

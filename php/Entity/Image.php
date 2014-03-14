@@ -236,7 +236,8 @@ class Image implements JsonSerializable,NormalizableInterface
                 "id" => $this->getProject()->getId(),
                 "title" => $this->getProject()->getTitle(),
                 "client" => $this->getProject()->getClient(),
-                "owner"=>$this->getProject()->getOwner()
+                "owner"=>$this->getProject()->getOwner(),
+                "isPublished"=>$this->getProject()->getIsPublished()
             ) : null
         );
     }
@@ -250,7 +251,8 @@ class Image implements JsonSerializable,NormalizableInterface
             $this->setCreatedAt(new \DateTime());
         }
         $this->setUpdatedAt(new \DateTime());
-        if (null != $this->getFile()) {
+        // get file extension and mime type
+        if (null != $this->getFile() && file_exists($this->getFile()->getFilename())) {
             $mime = MimeTypeGuesser::getInstance()->guess($this->getFile()->getFilename());
             $this->setMimeType($mime);
             $i = preg_match("/\.(?<ext>\w+)$/", $this->getFile()->getFilename(), $matches);
@@ -258,6 +260,7 @@ class Image implements JsonSerializable,NormalizableInterface
                 $this->setExtension($matches['ext']);
             }
         }
+        // change filename
         if (null != $this->getId()) {
             $this->setFilename($this->getId() . "." . $this->getExtension());
         }

@@ -3,6 +3,7 @@
 namespace Service;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
+use Doctrine\ODM\MongoDB\DocumentRepository;
 use Doctrine\ODM\MongoDB\LockMode;
 
 /**
@@ -108,5 +109,8 @@ class Base
         return $this->dm;
     }
 
-
+    /** @return DocumentRepository */
+    public function getRepository(){
+        return $this->getDm()->getRepository($this->getClassName());
+    }
 }

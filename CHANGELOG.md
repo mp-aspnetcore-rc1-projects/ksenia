@@ -15,3 +15,4 @@
 - Thu Mar 13 17:58:34 GMT 2014 : gallery slideUp/Down
 - Fri Mar 14 17:40:10 GMT 2014 : Slideshow now displays images related to project when project is selected.
 - Fri Mar 14 19:25:05 GMT 2014 : resource images fadein
+- Fri Mar 14 22:14:58 GMT 2014 : front displays only published resources

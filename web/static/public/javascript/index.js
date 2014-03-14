@@ -8,6 +8,7 @@
  */
 jQuery(function ($) {
     "use strict";
+    console.dir(this);
     var model, router, command, template, Router, Model, mediator, view, util, constant, $log;
     util = { /** utility functions **/
         /**
@@ -327,14 +328,23 @@ jQuery(function ($) {
                 return model.get('transition') === false;
             },
             execute: function () {
-                var image;
+                var image, route;
                 if (!this.canExecute()) {
                     return;
                 }
                 image = model.getNextImage();
-                util.loadImage(util.getImageSrc(image.id, image.extension), function (err, img) {
-                    command.showImage.execute(img);
-                });
+                if (model.get('currentProject')) {
+                    route = '#project/' + model.get('currentProject').id + "/image/" + image.id + '/' + image.title;
+                } else {
+                    route = '#image/' + image.id + '/' + image.title;
+                }
+                router.navigate(route, {trigger: true});
+
+                /*
+                 util.loadImage(util.getImageSrc(image.id, image.extension), function (err, img) {
+                 command.showImage.execute(img);
+                 });
+                 */
             }
         },
         /* move to previous image */
@@ -343,13 +353,22 @@ jQuery(function ($) {
                 return model.get('transition') === false;
             },
             execute: function () {
-                var image = model.getPreviousImage();
+                var image, route;
                 if (!this.canExecute()) {
                     return;
                 }
-                util.loadImage(util.getImageSrc(image.id, image.extension), function (err, img) {
-                    command.showImage.execute(img);
-                });
+                image = model.getPreviousImage();
+                if (model.get('currentProject')) {
+                    route = '#project/' + model.get('currentProject').id + "/image/" + image.id + '/' + image.title;
+                } else {
+                    route = '#image/' + image.id + '/' + image.title;
+                }
+                router.navigate(route, {trigger: true});
+                /*
+                 util.loadImage(util.getImageSrc(image.id, image.extension), function (err, img) {
+                 command.showImage.execute(img);
+                 });
+                 */
             }
         },
         /* show loading spinner */
@@ -493,7 +512,7 @@ jQuery(function ($) {
             "project/:id(/:title)": "project",
             "project/:projectId/image/:imageId": "projectImage",
             "page/:id(/:title)": "page",
-            "image/:id": "index",
+            "image/:id(/:title)": "index",
             "": "index"
         },
         index: function (id) {
@@ -540,7 +559,7 @@ jQuery(function ($) {
         thumbnails: _.template('<!--suppress ALL --><div>\
 									<% _.each(images,function(image){ %>\
 										<figure class="thumbnail">\
-											<a href="#/image/<%-image.id%>">\
+											<a href="#image/<%-image.id%>">\
 												<img data-src="/static/images/cache/<%-image.id%>.<%-image.extension%>"/>\
 											</a>\
 										</figure>\

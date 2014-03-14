@@ -117,7 +117,7 @@ nav li a:hover{
 	.gallery figure{
 		margin:0 auto;
 		text-align: center;
-		height: 600px;
+		height: 640px;
 		vertical-align: middle;
 		overflow: hidden;
 	}
@@ -125,28 +125,39 @@ nav li a:hover{
 			height:100%;
 			transition:.1s opacity;
 		}
-		.gallery details{
-			transition:.5s background;
-			background: rgba(0,0,0,.8);
-			color:#F5F5F5;
-		}
-		.gallery details:hover{
-			background: rgba(0,0,0,.1);
-		}
 
-	.gallery .controls{
-		overflow: hidden;
-	}
-		.gallery .controls button{
-			opacity: inherit;
-			border: none;
-			transition:.2s all ease-out;
-			width:41px;
-			height:35px;
-		}
-		.gallery .controls button:hover{
-			opacity:1;
-		}
+    .gallery details{
+        transition:.5s background;
+        background: rgba(0,0,0,.8);
+        color:#F5F5F5;
+        font-size: inherit;
+        z-index:4;
+        position: absolute;
+        bottom:0;
+        width:90%;
+    }
+    .gallery details:hover{
+        background: rgba(0,0,0,.1);
+    }
+
+        .gallery details > *{
+                padding: 0 15px;
+        }
+
+    .gallery .controls{
+        overflow: hidden;
+    }
+
+        .gallery .controls button{
+            border: none;
+            transition:.2s all ease-out;
+            width:41px;
+            height:35px;
+        }
+
+        .gallery .controls button:hover{
+            opacity:1;
+        }
 
 .previous{
 	text-decoration: none;
@@ -172,36 +183,6 @@ nav li a:hover{
 	background-position: 0 -35px;
 }
 
-/**
- * SUMMARY
- */
-details{
-	/* transition:0.5 all ease-out; */
-	position: relative;
-	font-size: inherit;
-	z-index:4;
-	position: absolute;
-	bottom:0;
-	width:90%;
-	/* transition:0.4s opacity,color,background; */
-}
-	details > *{
-		padding: 0 15px;
-	}
-	details:hover{
-		background:rgba(25,25,25,0.4);
-	}
-
-.zoom{
-	display: inline;
-	border:none;
-	background: none;
-	color:inherit;
-	font-family: inherit;
-	opacity: 0.9;
-	font-size: 0.8em;
-}
-/*  */
 .spinner{
 	position: absolute;
 	z-index: -10;
@@ -280,7 +261,7 @@ pre{
 	height:200px;
 }
 .primary{
-	color:#09F;
+	color: #20a3ea;
 }
 .small{
 	font-size: 0.8em;

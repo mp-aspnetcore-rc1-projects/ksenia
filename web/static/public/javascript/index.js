@@ -1,4 +1,4 @@
-/*jslint browser:true*/
+/*jslint es5:true,browser:true*/
 /*global jQuery,_,Statesman,Config,Backbone */
 /**
  * @copyright mparaiso <mparaiso@online.fr>
@@ -8,9 +8,8 @@
  */
 jQuery(function($) {
 	"use strict";
-	var model, command, template, Router, mediator, view, util, constant, $log;
-	/** utility functions **/
-	util = {
+	var model, router, command, template, Router, Model, mediator, view, util, constant, $log;
+	util = { /** utility functions **/
 		/**
 		 * build a jQuery object from a link
 		 * @param  {Object} link
@@ -22,16 +21,6 @@ jQuery(function($) {
 					mediator.trigger('click.menu', [$(this).data()]);
 				}
 			});
-		},
-		findMainMenu: function(menus) {
-			/* extract main menu*/
-			var menu = menus.filter(function(m) {
-				return m.isMain;
-			}).pop();
-			if (!menu) {
-				menu = menus[0];
-			}
-			return menu;
 		},
 		getImageSrc: function(id, extension) {
 			return constant.imagePath.replace(/(\:\w+)/g, function(match) {
@@ -52,11 +41,6 @@ jQuery(function($) {
 				return callback(e);
 			};
 			img.src = src;
-		},
-		getProjectById: function(id) {
-			return model.get('projects').filter(function(project) {
-				return project.id === id;
-			}).pop();
 		}
 	};
 	/** immutable values */
@@ -67,84 +51,128 @@ jQuery(function($) {
 		projectResource: '/api/project',
 		pageResource: '/api/page',
 		menuResource: '/api/menu',
-		imagePath: '/static/images/cache/:id.:extension'
+		imagePath: '/static/images/cache/:id.:extension',
 	};
 	/** manage application state */
-	model = new Statesman({
-		imageIndex: 0,
-		images: [],
-		menus: [],
-		pages: [],
-		projects: [],
-		zoom: false,
-		galleryVisible: true,
-		transition: true,
-		pageVisible: true
-	});
-	model.compute('currentImage', {
-		triggers: ['imageIndex', 'images'],
-		get: function() {
-			var i = this.get('imageIndex');
-			return this.get('images')[i];
+	Model = Backbone.Model.extend({
+		initialize: function(options) {
+			this.on('change:menus', function(model) {
+				var menus = this.get('menus');
+				var menu = menus.filter(function(m) {
+					return m.isMain;
+				}).pop();
+				if (!menu) {
+					menu = menus[0];
+				}
+				this.set('mainMenu', menu);
+			});
+			this.on('change:currentImage', function(model, currentImage) {
+				var index = this.getImageIndexInPlaylist(currentImage);
+				if (index < 0) {
+					index = 0;
+				}
+				this.set('playlistIndex', index);
+			});
+			this.on('change:currentProject', function(model, currentProject) {
+				this.set('playlist', this.getImagesByProject(currentProject));
+				this.set('playlistIndex', 0);
+			});
+			this.on('change:transition', function(model, transition) {
+				mediator.trigger('load.image', [transition]);
+			});
+		},
+		getCurrentImage: function() { /* get the current image displayed in playlist */
+			return this.getImageInPlaylistAt(this.get('playlistIndex'));
+		},
+		getImageIndexInPlaylist: function(image) { /* get the index of an image in the playlist */
+			return this.get('playlist').indexOf(this.getImageById(image.id));
+		},
+		getImageById: function(id) { /* get image by image id */
+			return this.get('images').filter(function(img) {
+				return id === img.id;
+			}).pop();
+		},
+		getFirstImageInPlaylist: function() {
+			return this.getImageInPlaylistAt(0);
+		},
+		getImageInPlaylistAt: function(index) {
+			return model.get('playlist')[index];
+		},
+		getPreviousImage: function() { /* get previous image in current playlist */
+			var index;
+			index = (this.get('playlistIndex') - 1) % this.get('playlist').length;
+			if (index < 0) {
+				index = index + this.get('playlist').length;
+			}
+			this.set('playlistIndex', index);
+			return this.getCurrentImage();
+		},
+		getNextImage: function() { /* get next image in current playlist */
+			this.set('playlistIndex', (this.get('playlistIndex') + 1) % this.get('playlist').length);
+			return this.getCurrentImage();
+		},
+		getImagesByProject: function(project) { /* find all images by project id */
+			return this.get('images').filter(function(img) {
+				return img.project.id.toString() === project.id.toString();
+			});
+		},
+		getProjectById: function(id) {
+			return this.get('projects').filter(function(project) {
+				return project.id === id;
+			}).pop();
+		},
+		defaults: {
+			playlistIndex: 0,
+			images: [], // all images
+			playlist: [], // gallery imageList
+			menus: [], // all menus
+			pages: [], // all pages
+			projects: [], // all projects
+			galleryVisible: true, //is gallery showing
+			transition: false, //is image transition happening
+			pageVisible: true //is page visible
 		}
 	});
-	model.observe('transition', function(isTransition) {
-		mediator.trigger('load.image', [isTransition]);
-	});
+
 	/** application controller */
 	command = {
-		/* start router */
-		startRouter: {
+		startRouter: { /* start router */
 			execute: function() {
 				Backbone.history.start();
 			}
 		},
-		/* initialize main menu */
-		initMenu: {
+		initMenu: { /* initialize main menu */
 			execute: function() {
 				view.$menu.append(model.get('mainMenu').links.map(function(link) {
 					return util.buildLink(link);
 				})).children().each(function(i) {
 					$(this).after(template.linkSeparator);
 				}).parent().children().last().remove();
-				// $('.nav-sub').width(view.$menu.width());
 			}
 		},
-		/*initialize gallery */
-		initGallery: {
-			/** init image gallery */
+		initGallery: { /*initialize gallery */
 			execute: function() {
-				var src, img;
-				img = model.get('images[0]');
-				src = util.getImageSrc(img.id, img.extension);
-				/* load first image */
-				util.loadImage(src, function(err, img) {
-					model.set('imageIndex', 0);
-					command.showGallery.execute().done(function() {
-						/** add click handlers to buttons */
-						command.showImage.execute(img);
-						view.$next.on('click', function() {
-							mediator.trigger('click.next');
-						});
-						view.$previous.on('click', function() {
-							mediator.trigger('click.previous');
-						});
-					});
+				model.set('playlist', model.get('images'));
+				model.set('playlistIndex', 0);
+				model.set('currentImage', model.get('images')[0]);
+				command.showCurrentImage.execute();
+				command.hideResource.execute().done(function() {
+					view.$page.html(template.thumbnails({
+						images: model.get('playlist')
+					}));
+					view.$page.slideDown(700);
+					model.set('pageVisible', true);
 				});
 			}
 		},
-		/* init summary */
-		initSummary: {
+		initSummary: { /* init summary */
 			execute: function() {
-				//remove all event listeners
-				view.$summary.off();
-				/* adjust summary size to the header size,now that the header has a menu */
-				//view.$summary.width(view.$header.width());
+				view.$summary.off(); /* remove all event listeners */
 				view.$zoom = view.$summary.find('zoom');
 				view.$zoom.click(mediator.trigger.bind(mediator, 'click.zoom'));
 			}
 		},
-		showSummary: {
+		showSummary: { /* show summary */
 			execute: function() {
 				var deferred = $.Deferred();
 				view.$summary.show(700, function() {
@@ -162,18 +190,16 @@ jQuery(function($) {
 				return deferred.promise();
 			}
 		},
-		/* init model */
-		initModel: {
+		initModel: { /* init model */
 			execute: function(images, projects, pages, menus) {
 				model.set('images', images);
 				model.set('pages', pages);
 				model.set('projects', projects);
-				model.set('mainMenu', util.findMainMenu(menus));
 				model.set('menus', menus);
+				model.set('playlist', images);
 			}
 		},
-		/* hide page*/
-		hidePage: {
+		hidePage: { /* hide page*/
 			execute: function() {
 				view.$main.hide();
 				view.$header.hide();
@@ -238,18 +264,11 @@ jQuery(function($) {
 		hideImage: {
 			execute: function() {
 				var deferred = $.Deferred();
-
-				if (model.get('imageHidden') === false) {
-					command.hideSummary.execute().done(function() {
-						view.$gallery.find('figure').fadeOut(500, function() {
-							model.set('transition', true);
-							model.set('imageHidden', true);
-							deferred.resolve();
-						});
+				command.hideSummary.execute().done(function() {
+					view.$gallery.find('figure').fadeOut(500, function() {
+						deferred.resolve();
 					});
-				} else {
-					setTimeout(deferred.resolve.bind(deferred), 1);
-				}
+				});
 				return deferred.promise();
 			}
 		},
@@ -257,27 +276,38 @@ jQuery(function($) {
 		showImage: {
 			execute: function(img) {
 				view.$img = $(img);
-				command.showSpinner.execute();
+				model.set('transition', true);
 				return command.hideImage.execute().pipe(command.showGallery.execute()).done(function() {
-					command.toggleZoom.execute();
 					view.$gallery.find('figure').html(img);
 					view.$gallery.find('figure').fadeIn(700, function() {
-						view.$summary.html(template.summary(model.get('currentImage')));
+						console.log('currentImage', model.getCurrentImage());
+						view.$summary.html(template.summary(model.getCurrentImage()));
 						command.initSummary.execute();
 						view.$summary.slideDown(500);
 						model.set('transition', false);
-						model.set('imageHidden', false);
 					});
+				});
+			}
+		},
+		showCurrentImage: { /** show current image */
+			execute: function() {
+				var image = model.get('currentImage') || model.getFirstImageInPlaylist();
+				return command.loadImageById.execute(image.id).done(function(img) {
+					command.showImage.execute(img);
 				});
 			}
 		},
 		/* move to next image */
 		showNextImage: {
+			canExecute: function() {
+				return model.get('transition') === false;
+			},
 			execute: function() {
 				var image;
-				command.hideResource.execute();
-				model.set('imageIndex', (model.get('imageIndex') + 1) % model.get('images').length);
-				image = model.get('images.' + model.get('imageIndex'));
+				if (!this.canExecute()) {
+					return;
+				}
+				image = model.getNextImage();
 				util.loadImage(util.getImageSrc(image.id, image.extension), function(err, img) {
 					command.showImage.execute(img);
 				});
@@ -285,15 +315,14 @@ jQuery(function($) {
 		},
 		/* move to previous image */
 		showPreviousImage: {
+			canExecute: function() {
+				return model.get('transition') === false;
+			},
 			execute: function() {
-				var image, index;
-				command.hideResource.execute();
-				index = model.get('imageIndex') - 1 % model.get('images').length;
-				if (index < 0) {
-					index = index + model.get('images').length;
+				var image = model.getPreviousImage();
+				if (!this.canExecute()) {
+					return;
 				}
-				model.set('imageIndex', index);
-				image = model.get('images.' + model.get('imageIndex'));
 				util.loadImage(util.getImageSrc(image.id, image.extension), function(err, img) {
 					command.showImage.execute(img);
 				});
@@ -341,29 +370,6 @@ jQuery(function($) {
 					function(link) {
 						return util.buildLink(link);
 					}));
-			}
-		},
-		toggleZoom: {
-			execute: function() {
-				if (model.get('zoom')) {
-					command.zoom.execute();
-				} else {
-					command.unzoom.execute();
-				}
-			}
-		},
-		zoom: {
-			execute: function() {
-				view.$img.width('100%');
-				view.$img.css('height', 'auto');
-				view.$zoom.html('[&nharr;]');
-			}
-		},
-		unzoom: {
-			execute: function() {
-				view.$img.width('auto');
-				view.$img.css('height', '100%');
-				view.$zoom.html('[&harr;]');
 			}
 		},
 		/* show a resource */
@@ -431,30 +437,22 @@ jQuery(function($) {
 		$subNav: $('.nav-sub'),
 		$zoom: $('#zoom'),
 		$page: $('#page'),
-		$footer:$('footer')
+		$footer: $('footer')
 	};
 	/** dispatch event between layers of application */
 	mediator = $({}).on({
-		'load.image': function(e, isTransition) {
-			if (isTransition) {
+		'load.image': function(e, transition) {
+			if (transition) {
 				command.showSpinner.execute();
 			} else {
 				command.hideSpinner.execute();
 			}
 		},
-		'click.zoom': function() {
-			model.set('zoom', !model.get('zoom'));
-			command.toggleZoom.execute();
-		},
 		'click.previous': function() {
-			if (model.get('transition') === false) {
-				command.showPreviousImage.execute();
-			}
+			command.showPreviousImage.execute();
 		},
 		'click.next': function() {
-			if (model.get('transition') === false) {
-				command.showNextImage.execute();
-			}
+			command.showNextImage.execute();
 		},
 		'click.menu': function(event, link) {
 			command.toggleSubNav.execute(_(model.get('menus')).find(function(menu) {
@@ -473,51 +471,42 @@ jQuery(function($) {
 		},
 		index: function() {
 			command.initGallery.execute();
-			command.hideResource.execute();
 		},
-		project: function(projectId, imageId) {
+		project: function(projectId) {
 			var project;
-			project = util.getProjectById(projectId);
+			project = model.getProjectById(projectId);
 			if (project) {
 				command.hideSubNav.execute();
 				command.showResource.execute("project", projectId);
 				model.set('currentProject', project);
-				command.loadImageById.execute(imageId || project.images[0].id).done(function(img) {
-					command.showImage.execute(img);
-				});
+				model.set('currentImage', model.getFirstImageInPlaylist());
+				command.showCurrentImage.execute();
 			}
 		},
 		projectImage: function(projectId, imageId) {
 			var project;
-			project = util.getProjectById(projectId);
+			project = model.getProjectById(projectId);
 			if (project) {
 				command.hideSubNav.execute();
-				if (!model.get('currentProject') || (model.get('currentProject') && model.get('currentProject').id !== projectId )){
-					command.showResource.execute("project", projectId);
+				if (!model.get('currentProject') || (model.get('currentProject').id !== projectId)) {
 					model.set('currentProject', project);
+					command.showResource.execute("project", projectId);
 				}
-				command.loadImageById.execute(imageId || project.images[0].id).done(function(img) {
-					command.showImage.execute(img);
-				});
+				model.set('currentImage', model.getImageById(imageId) || model.getFirstImageInPlaylist());
+				command.showCurrentImage.execute();
 			}
 		},
 		page: function(id) {
 			command.hideGallery.execute();
 			command.hideSubNav.execute();
 			command.showResource.execute('page', id);
-		},
-		image: function(type, id) {
-			command.loadImageById.execute(id).done(function(img) {
-				command.showImage.execute(img);
-			});
 		}
 	});
 	/** html templates */
 	template = {
-		blockWidth: _.template("<li class='block-width'>&nbsp;</li>"),
-		index:_.template('	<% _.each(images,function(image){ %>\
-									<figure>\
-										<a href="#/project/<%-id%>/image/<%-image.id%>">\
+		thumbnails: _.template('	<% _.each(images,function(image){ %>\
+									<figure class="thumbnail">\
+										<a href="#/image/<%-image.id%>">\
 											<img src="/static/images/cache/<%-image.id%>.<%-image.extension%>"/>\
 										</a>\
 									</figure>\
@@ -541,7 +530,7 @@ jQuery(function($) {
 									<h2 class="primary inline"><%-title%></h2>\
 									<section>\
 										<% _.each(images,function(image){ %>\
-											<figure>\
+											<figure class="thumbnail">\
 												<a href="#/project/<%-id%>/image/<%-image.id%>">\
 													<img src="/static/images/cache/<%-image.id%>.<%-image.extension%>"/>\
 												</a>\
@@ -573,7 +562,16 @@ jQuery(function($) {
 			if (constant.debug === true) {
 				$log("version", constant.config.version);
 			}
-			var router = new Router();
+			model = new Model();
+			router = new Router();
+			view.$next.on('click', function() { /** add click handlers to buttons */
+				console.log('click.next', model.toJSON());
+				mediator.trigger('click.next');
+			});
+			view.$previous.on('click', function() { /** add click handlers to buttons */
+				console.log('click.previous', model.toJSON());
+				mediator.trigger('click.previous');
+			});
 			command.initPage.execute();
 		}
 	}());

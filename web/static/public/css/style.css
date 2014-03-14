@@ -117,6 +117,7 @@ nav li a:hover{
 		overflow: hidden;
 	}
 		.gallery figure img{
+			height:100%;
 			transition:.1s opacity;
 		}
 		.gallery details{
@@ -241,20 +242,21 @@ pre{
 	border-bottom: 1px dotted ;
 }
 
-.project figure{
+.thumbnail {
 	width:50px;
 	height: 50px;
 	overflow: hidden;
 	display:inline-block;
 	margin-right:10px;
+	margin-bottom:10px;
 	background-color: #000;
 	text-align: center;
 	border:1px solid #AAA;
 }
-.project figure:hover{
+.thumbnail:hover{
 	border:1px solid #0AF;
 }
-.project figure img{
+.thumbnail img{
 	height: 100%;
 }
 /**

@@ -5,6 +5,7 @@ FRONTEND
 --------
 
 - [X] Detail project should link to project
+- [X] Slideshow now displays images related to project when project is selected.
 
 BACKEND
 -------

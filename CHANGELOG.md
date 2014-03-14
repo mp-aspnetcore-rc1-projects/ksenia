@@ -1,7 +1,5 @@
 - Wed Mar 12 12:48:43 GMT 2014  : Setting page created
 - Wed Mar 12 12:58:47 GMT 2014 : clean up index.twig
-- Wed Mar 12 13:00:07 GMT 2014 : 
-- Wed Mar 12 13:38:29 GMT 2014 : 
 - Wed Mar 12 18:04:28 GMT 2014 : menu links now direct to resources
 - Wed Mar 12 18:08:33 GMT 2014 : showImage is not a function error
 - Wed Mar 12 18:41:45 GMT 2014 : spinner showing up
@@ -9,7 +7,6 @@
 - Wed Mar 12 19:33:17 GMT 2014 : image summary slideDown
 - Wed Mar 12 19:36:05 GMT 2014 : image summary slideUp slideDown and font reduced
 - Wed Mar 12 19:41:38 GMT 2014 : container font-size
-- Wed Mar 12 21:19:43 GMT 2014 : 
 - Thu Mar 13 17:00:25 GMT 2014 : design changed
 - Thu Mar 13 17:21:41 GMT 2014 : zoom removed
 - Thu Mar 13 17:58:34 GMT 2014 : gallery slideUp/Down

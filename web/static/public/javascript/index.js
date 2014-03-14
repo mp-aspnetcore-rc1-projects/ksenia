@@ -490,9 +490,9 @@ jQuery(function ($) {
     /** route links in the page */
     Router = Backbone.Router.extend({
         routes: {
-            "project/:id": "project",
+            "project/:id(/:title)": "project",
             "project/:projectId/image/:imageId": "projectImage",
-            "page/:id": "page",
+            "page/:id(/:title)": "page",
             "image/:id": "index",
             "": "index"
         },
@@ -549,7 +549,7 @@ jQuery(function ($) {
 								<div class="space">&nbsp;</div>'),
         link: _.template('	<li data-id="<%-id%>"\
 		 					data-item-id="<%-itemId%>" data-type="<%-type%>">\
-		 						<a <% if(type!="menu"){%> href="#<%-type%>/<%-itemId%>" <% }else{ %> href="javascript:void 0;" <% } %> >\
+		 						<a <% if(type!="menu"){%> href="#<%-type%>/<%-itemId%>/<%-title%>" <% }else{ %> href="javascript:void 0;" <% } %> >\
 		 							<%-title%>\
 		 						</a>\
 		 					</li>'),

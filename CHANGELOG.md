@@ -15,3 +15,4 @@
 - Fri Mar 14 22:14:58 GMT 2014 : front displays only published resources
 - Fri Mar 14 22:23:07 GMT 2014 : page did not have content
 - Fri Mar 14 22:31:34 GMT 2014 : updated images were unpublished
+- Fri Mar 14 23:23:59 GMT 2014 : previous and next image links are now pushed into browsers history

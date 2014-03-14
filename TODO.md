@@ -12,4 +12,5 @@ BACKEND
 
 - [ ] Description should support markdown
 - [ ] enable markdown preview
+- [ ] images should be optimized when uploaded to database
 

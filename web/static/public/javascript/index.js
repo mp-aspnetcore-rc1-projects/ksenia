@@ -74,8 +74,10 @@ jQuery(function($) {
 				this.set('playlistIndex', index);
 			});
 			this.on('change:currentProject', function(model, currentProject) {
-				this.set('playlist', this.getImagesByProject(currentProject));
-				this.set('playlistIndex', 0);
+				if (currentProject) {
+					this.set('playlist', this.getImagesByProject(currentProject));
+					this.set('playlistIndex', 0);
+				}
 			});
 			this.on('change:transition', function(model, transition) {
 				mediator.trigger('load.image', [transition]);
@@ -128,9 +130,9 @@ jQuery(function($) {
 			menus: [], // all menus
 			pages: [], // all pages
 			projects: [], // all projects
-			galleryVisible: true, //is gallery showing
+			galleryVisible: false, //is gallery showing
 			transition: false, //is image transition happening
-			pageVisible: true //is page visible
+			resourceVisible: true //is page visible
 		}
 	});
 
@@ -150,19 +152,38 @@ jQuery(function($) {
 				}).parent().children().last().remove();
 			}
 		},
-		initGallery: { /*initialize gallery */
+		showResourceImages:{
+			execute:function(){
+				view.$page.find('img').each(function(index, img) {
+						var $this = $(this);
+						setTimeout(
+							util.loadImage.bind(null, $this.data('src'), function(err, image) {
+								$this.parent().hide();
+								$this.replaceWith(image);
+								$(image).parent().fadeIn();
+							}),
+							index * 200);
+					});
+			}
+		},
+		showGalleryResource: {
 			execute: function() {
-				model.set('playlist', model.get('images'));
-				model.set('playlistIndex', 0);
-				model.set('currentImage', model.get('images')[0]);
-				command.showCurrentImage.execute();
 				command.hideResource.execute().done(function() {
 					view.$page.html(template.thumbnails({
 						images: model.get('playlist')
 					}));
 					view.$page.slideDown(700);
-					model.set('pageVisible', true);
+					model.set('resourceVisible', true);
+					command.showResourceImages.execute();
 				});
+			}
+		},
+		initGallery: { /*initialize gallery */
+			execute: function(image) {
+				model.set('playlist', model.get('images'));
+				model.set('playlistIndex', 0);
+				model.set('currentImage', image || model.getFirstImageInPlaylist());
+				command.showCurrentImage.execute();
 			}
 		},
 		initSummary: { /* init summary */
@@ -381,7 +402,8 @@ jQuery(function($) {
 					command.hideResource.execute().done(function() {
 						view.$page.html(template[type](resource));
 						view.$page.slideDown(700);
-						model.set('pageVisible', true);
+						model.set('resourceVisible', true);
+						command.showResourceImages.execute();
 					});
 				});
 			}
@@ -389,8 +411,8 @@ jQuery(function($) {
 		hideResource: {
 			execute: function() {
 				var deferred = $.Deferred();
-				if (model.get('pageVisible') === true) {
-					model.set('pageVisible', false);
+				if (model.get('resourceVisible') === true) {
+					model.set('resourceVisible', false);
 					view.$page.slideUp(500, deferred.resolve.bind(deferred));
 				} else {
 					setTimeout(deferred.resolve.bind(deferred), 1);
@@ -444,8 +466,10 @@ jQuery(function($) {
 		'load.image': function(e, transition) {
 			if (transition) {
 				command.showSpinner.execute();
+				//view.$gallery.find('figure').addClass('spinner');
 			} else {
 				command.hideSpinner.execute();
+				//view.$gallery.find('figure').removeClass('spinner');
 			}
 		},
 		'click.previous': function() {
@@ -466,11 +490,17 @@ jQuery(function($) {
 			"project/:id": "project",
 			"project/:projectId/image/:imageId": "projectImage",
 			"page/:id": "page",
-			"image/:id": "image",
+			"image/:id": "index",
 			"": "index",
 		},
-		index: function() {
-			command.initGallery.execute();
+		index: function(id) {
+			if (model.get('currentProject') || !model.get('galleryVisible')) {
+				model.set('currentProject', null);
+				command.showGalleryResource.execute();
+			}
+			command.initGallery.execute(model.getImageById(id));
+			command.hideSubNav.execute();
+
 		},
 		project: function(projectId) {
 			var project;
@@ -504,13 +534,16 @@ jQuery(function($) {
 	});
 	/** html templates */
 	template = {
-		thumbnails: _.template('	<% _.each(images,function(image){ %>\
-									<figure class="thumbnail">\
-										<a href="#/image/<%-image.id%>">\
-											<img src="/static/images/cache/<%-image.id%>.<%-image.extension%>"/>\
-										</a>\
-									</figure>\
-								<% }); %>'),
+		thumbnails: _.template('<div>\
+									<% _.each(images,function(image){ %>\
+										<figure class="thumbnail">\
+											<a href="#/image/<%-image.id%>">\
+												<img data-src="/static/images/cache/<%-image.id%>.<%-image.extension%>"/>\
+											</a>\
+										</figure>\
+									<% }); %>\
+								</div>\
+								<div class="space">&nbsp;</div>'),
 		link: _.template('	<li data-id="<%-id%>"\
 		 					data-item-id="<%-itemId%>" data-type="<%-type%>">\
 		 						<a <% if(type!="menu"){%> href="#<%-type%>/<%-itemId%>" <% }else{ %> href="javascript:void 0;" <% } %> >\
@@ -530,9 +563,9 @@ jQuery(function($) {
 									<h2 class="primary inline"><%-title%></h2>\
 									<section>\
 										<% _.each(images,function(image){ %>\
-											<figure class="thumbnail">\
+											<figure class="stripped thumbnail">\
 												<a href="#/project/<%-id%>/image/<%-image.id%>">\
-													<img src="/static/images/cache/<%-image.id%>.<%-image.extension%>"/>\
+													<img data-src="/static/images/cache/<%-image.id%>.<%-image.extension%>"/>\
 												</a>\
 											</figure>\
 										<% }); %>\

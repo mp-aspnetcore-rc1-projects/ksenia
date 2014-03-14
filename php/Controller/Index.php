@@ -50,7 +50,7 @@ class Index implements ControllerProviderInterface
 
 
     /**
-     * Load an image stored on grid fs
+     * Load an image stored on grid fs if the image is not cached
      * @link http://php-and-symfony.matthiasnoback.nl/2012/10/uploading-files-to-mongodb-gridfs-2/
      * @param App     $app
      * @param Request $req
@@ -71,6 +71,7 @@ class Index implements ControllerProviderInterface
             while (!feof($r)) {
                 $packet = fread($r, 8192);
                 fputs($out, $packet);
+                //write in cache
                 if ($doCache) fputs($cache, $packet);
                 ob_flush();
                 sleep(0.1);

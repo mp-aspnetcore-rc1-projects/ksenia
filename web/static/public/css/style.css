@@ -109,6 +109,11 @@ nav li a:hover{
 	overflow: hidden;
 	background:url('/static/public/images/stripes.jpg') #222;
 }
+	.gallery .container,
+	.spinner{
+		background: url('/static/public/images/spinner-black.gif') 50% 50% no-repeat ;
+	}
+
 	.gallery figure{
 		margin:0 auto;
 		text-align: center;
@@ -287,4 +292,7 @@ pre{
 .space{
 
 	height:200px;
+}
+.stripped{
+	background:url('/static/public/images/stripes.jpg') #222;
 }

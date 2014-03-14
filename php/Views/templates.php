@@ -558,6 +558,7 @@ $templates['page_index'] = <<<HERE
                 <th>Title</th>
                 <th>Description</th>
                 <th>Language</th>
+                <th>Published</th>
                 <th style="width:30%"></th>
                 </tr>
             </thead>
@@ -570,6 +571,7 @@ $templates['page_index'] = <<<HERE
                     </a>
                 <td>{{page.description[:50]~"..."}}</td>
                 <td>{{page.language}}</td>
+                <td>{{page.isPublished?'Yes':'No'}}</td>
                 <td>
                 <a class="btn btn-link" href="{{path('page_update',{id:page.id}) }}">Edit</a>
                 <form class="inline"

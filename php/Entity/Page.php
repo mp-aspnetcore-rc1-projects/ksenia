@@ -149,6 +149,8 @@ class  Page implements \JsonSerializable
         return array(
             'title' => $this->getTitle(),
             'description' => $this->getDescription(),
+            'content' => $this->getContent(),
+            'isPublished'=>$this->getIsPublished(),
             "id" => $this->getId()
         );
     }

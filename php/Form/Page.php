@@ -23,7 +23,7 @@ class Page extends AbstractType
         parent::buildForm($builder, $options);
         $builder->add('title')
             ->add('language', 'choice', array('choices' => array('en' => 'English', 'ru' => 'Russian')))
-            ->add('isPublished', 'choice', array('choices' => array('yes', 'no')))
+            ->add('isPublished', 'choice', array('choices' => array('no', 'yes')))
             ->add('category')
             ->add('description', 'textarea', array('attr' => array('rows' => 2)))
             ->add('content', 'textarea', array('attr' => array('rows' => 10)));

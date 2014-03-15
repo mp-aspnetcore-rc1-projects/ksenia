@@ -1,15 +1,15 @@
 /*jslint es5:true,browser:true,white:true,devel:true,nomen:true*/
-/*global jQuery,Config,Backbone,_ */
+/*global jQuery,Config,Backbone,_,Model */
 /**
  * @copyright mparaiso <mparaiso@online.fr>
  * @license   All rights reserved
  * @version 0.0.1
- * @dependencies jquery , underscore , Stateman, Backbone
+ * @dependencies jquery , underscore , Stateman, Backbone,Model
  */
 jQuery(function ($) {
     "use strict";
-    console.dir(this);
-    var model, router, command, template, Router, Model, mediator, view, util, constant, $log;
+    var self, model, router, Router, command, template, mediator, view, util, constant, $log;
+    self = this;
     util = { /** utility functions **/
         /**
          * build a jQuery object from a link
@@ -54,89 +54,7 @@ jQuery(function ($) {
         menuResource: Config.menuResource,
         imagePath: '/static/images/cache/:id.:extension'
     };
-    /** manage application state */
-    Model = Backbone.Model.extend({
-        initialize: function (options) {
-            this.on('change:menus', function (model) {
-                var menus, menu;
-                menus = this.get('menus');
-                menu = menus.filter(function (m) {
-                    return m.isMain;
-                }).pop();
-                if (!menu) {
-                    menu = menus[0];
-                }
-                this.set('mainMenu', menu);
-            });
-            this.on('change:currentImage', function (model, currentImage) {
-                var index = this.getImageIndexInPlaylist(currentImage);
-                if (index < 0) {
-                    index = 0;
-                }
-                this.set('playlistIndex', index);
-            });
-            this.on('change:currentProject', function (model, currentProject) {
-                if (currentProject) {
-                    this.set('playlist', this.getImagesByProject(currentProject));
-                    this.set('playlistIndex', 0);
-                }
-            });
-            this.on('change:transition', function (model, transition) {
-                mediator.trigger('load.image', [transition]);
-            });
-        },
-        getCurrentImage: function () { /* get the current image displayed in playlist */
-            return this.getImageInPlaylistAt(this.get('playlistIndex'));
-        },
-        getImageIndexInPlaylist: function (image) { /* get the index of an image in the playlist */
-            return this.get('playlist').indexOf(this.getImageById(image.id));
-        },
-        getImageById: function (id) { /* get image by image id */
-            return this.get('images').filter(function (img) {
-                return id === img.id;
-            }).pop();
-        },
-        getFirstImageInPlaylist: function () {
-            return this.getImageInPlaylistAt(0);
-        },
-        getImageInPlaylistAt: function (index) {
-            return model.get('playlist')[index];
-        },
-        getPreviousImage: function () { /* get previous image in current playlist */
-            var index;
-            index = (this.get('playlistIndex') - 1) % this.get('playlist').length;
-            if (index < 0) {
-                index = index + this.get('playlist').length;
-            }
-            this.set('playlistIndex', index);
-            return this.getCurrentImage();
-        },
-        getNextImage: function () { /* get next image in current playlist */
-            this.set('playlistIndex', (this.get('playlistIndex') + 1) % this.get('playlist').length);
-            return this.getCurrentImage();
-        },
-        getImagesByProject: function (project) { /* find all images by project id */
-            return this.get('images').filter(function (img) {
-                return img.project.id.toString() === project.id.toString();
-            });
-        },
-        getProjectById: function (id) {
-            return this.get('projects').filter(function (project) {
-                return project.id === id;
-            }).pop();
-        },
-        defaults: {
-            playlistIndex: 0,
-            images: [], // all images
-            playlist: [], // gallery imageList
-            menus: [], // all menus
-            pages: [], // all pages
-            projects: [], // all projects
-            galleryVisible: false, //is gallery showing
-            transition: false, //is image transition happening
-            resourceVisible: true //is page visible
-        }
-    });
+
 
     /** application controller */
     command = {
@@ -185,7 +103,9 @@ jQuery(function ($) {
             execute: function (image) {
                 model.set('playlist', model.get('images'));
                 model.set('playlistIndex', 0);
-                model.set('currentImage', image || model.getFirstImageInPlaylist());
+                if (image) {
+                    model.setCurrentImage(image);
+                }
                 command.showCurrentImage.execute();
             }
         },
@@ -300,7 +220,6 @@ jQuery(function ($) {
         /* show gallery image */
         showImage: {
             execute: function (img) {
-                view.$img = $(img);
                 model.set('transition', true);
                 return command.hideImage.execute().pipe(command.showGallery.execute()).done(function () {
                     view.$gallery.find('figure').html(img);
@@ -316,7 +235,7 @@ jQuery(function ($) {
         },
         showCurrentImage: { /** show current image */
         execute: function () {
-            var image = model.get('currentImage') || model.getFirstImageInPlaylist();
+            var image = model.getCurrentImage() || model.getFirstImageInPlaylist();
             return command.loadImageById.execute(image.id).done(function (img) {
                 command.showImage.execute(img);
             });
@@ -466,7 +385,6 @@ jQuery(function ($) {
         $spinner: $('#spinner'),
         $main: $('#main'),
         $gallery: $('#gallery'),
-        $img: null,
         $next: $('.next'),
         $previous: $('.previous'),
         $summary: $('.summary'),
@@ -525,7 +443,7 @@ jQuery(function ($) {
                 command.hideSubNav.execute();
                 command.showResource.execute("project", projectId);
                 model.set('currentProject', project);
-                model.set('currentImage', model.getFirstImageInPlaylist());
+                model.setCurrentImage(model.getFirstImageInPlaylist());
                 command.showCurrentImage.execute();
             }
         },
@@ -538,7 +456,7 @@ jQuery(function ($) {
                     model.set('currentProject', project);
                     command.showResource.execute("project", projectId);
                 }
-                model.set('currentImage', model.getImageById(imageId) || model.getFirstImageInPlaylist());
+                model.setCurrentImage(model.getImageById(imageId));
                 command.showCurrentImage.execute();
             }
         },
@@ -553,7 +471,7 @@ jQuery(function ($) {
         thumbnails: _.template('<!--suppress ALL --><div>\
 									<% _.each(images,function(image){ %>\
 										<figure class="thumbnail">\
-											<a href="#image/<%-image.id%>">\
+											<a href="#image/<%-image.id%>/<%-image.title%>">\
 												<img data-src="/static/images/cache/<%-image.id%>.<%-image.extension%>"/>\
 											</a>\
 										</figure>\
@@ -612,6 +530,9 @@ jQuery(function ($) {
                 $log("version", constant.config.version);
             }
             model = new Model();
+            model.on('change:transition', function (model, transition) {
+                mediator.trigger('load.image', [transition]);
+            });
             router = new Router();
             view.$next.on('click', function () {
                 /** add click handlers to buttons */

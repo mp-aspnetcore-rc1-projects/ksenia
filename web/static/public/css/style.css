@@ -125,6 +125,7 @@ nav li a:hover{
 	}
 		.gallery figure img{
 			height:100%;
+            width:auto;
 			transition:.1s opacity;
 		}
     .gallery details{
@@ -241,6 +242,7 @@ pre{
 }
 .thumbnail img{
 	height: 100%;
+    width:auto;
 }
 /**
  * HELPERS

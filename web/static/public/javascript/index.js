@@ -510,7 +510,7 @@ jQuery(function ($) {
     Router = Backbone.Router.extend({
         routes: {
             "project/:id(/:title)": "project",
-            "project/:projectId/image/:imageId": "projectImage",
+            "project/:projectId/image/:imageId(/:title)": "projectImage",
             "page/:id(/:title)": "page",
             "image/:id(/:title)": "index",
             "": "index"

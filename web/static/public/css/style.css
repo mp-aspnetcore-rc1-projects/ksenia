@@ -48,9 +48,11 @@ header{
 		max-width:100%;
 	}
 
-h2,h3{
-	font-style: italic;
+h1,h2,h3{
 }
+    h1 a:hover,h2 a:hover,h3 a:hover{
+        text-decoration: none;
+    }
 /**
  * CONTAINER
  */
@@ -113,7 +115,6 @@ nav li a:hover{
 	.spinner{
 		background: url('/static/public/images/spinner-black.gif') 50% 50% no-repeat ;
 	}
-
 	.gallery figure{
 		margin:0 auto;
 		text-align: center;
@@ -125,7 +126,6 @@ nav li a:hover{
 			height:100%;
 			transition:.1s opacity;
 		}
-
     .gallery details{
         transition:.5s background;
         background: rgba(0,0,0,.8);
@@ -139,22 +139,18 @@ nav li a:hover{
     .gallery details:hover{
         background: rgba(0,0,0,.1);
     }
-
         .gallery details > *{
                 padding: 0 15px;
         }
-
     .gallery .controls{
         overflow: hidden;
     }
-
         .gallery .controls button{
             border: none;
             transition:.2s all ease-out;
             width:41px;
             height:35px;
         }
-
         .gallery .controls button:hover{
             opacity:1;
         }

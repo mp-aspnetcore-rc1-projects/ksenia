@@ -339,12 +339,6 @@ jQuery(function ($) {
                     route = '#image/' + image.id + '/' + image.title;
                 }
                 router.navigate(route, {trigger: true});
-
-                /*
-                 util.loadImage(util.getImageSrc(image.id, image.extension), function (err, img) {
-                 command.showImage.execute(img);
-                 });
-                 */
             }
         },
         /* move to previous image */

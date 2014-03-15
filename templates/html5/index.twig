@@ -1,85 +1,117 @@
 <!doctype html>
-<html lang="{{app.settings.language}}">
-   <head>
-      <meta charset="UTF-8">
-      <meta http-equiv="X-UA-Compatible" content="IE=edge">
-      <title>{{app.settings.title}}</title>
-      <meta name="description" content="{{app.settings.subtitle}}">
-      <meta name="viewport" content="width=device-width, initial-scale=1">
-      {# STYLES #}
-      <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400' rel='stylesheet' type='text/css'>
-      <link rel="stylesheet" href="/static/public/css/reset.css">
-      <link rel="stylesheet" href="/static/public/css/style.css">
-      {# SCRIPTS #}
-      <script defer src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
-      <script defer src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-      <script defer src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js"></script>
-      <script defer src="/static/public/javascript/index.js"></script>
-      <script>
-         var Config={
-          version:"{{app.ksu.version}}",
-          title:"{{app.ksu.title}}",
-          projectResource:"{{path('public_project_resource')}}",
-          pageResource:"{{path('public_page_resource')}}",
-          menuResource:"{{ path('public_menu_resource') }}"
-         }
-      </script> 
-   </head>
-   <body>
-      <!--[if lt IE 9]>
-        <p class="browsehappy">
-            You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.
-        </p>
-      <![endif]-->
-         <noscript><h1>Please enable javascript to view this page.</h1></noscript>
-         <div id="spinner" class="spinner"></div>
-         <!--HEADER -->
-         <section class=" head">
-            <header class='container'>
-                  <nav>
-                     <ul id="main-menu" class="nav">
-                     </ul>
-                     <ul id="sub-menu" class="nav-sub">
-                     </ul>
-                  </nav>
-                  <hgroup>
-                     <h1 class="primary" ><a href="#">{{app.settings.title}}</a></h1>
-                     <h5 class="text-muted">
-                        {{app.settings.subtitle}}
-                     </h5>                  
-                  </hgroup>
-            </header>            
-         </section>
-         <section class='gallery'>
-            <section id="gallery" class="container">
-               <figure><img/></figure>
-               <div class="controls">
-                  <button class="previous"> </button>
-                  <button class="next"> </button>
-               </div>
-               <!-- SUMMARY-->
-               <details id="detail" class="summary" open>
-               </details>
-               <!--ENDSUMMARY-->
-            </section>   
-         </section>
-         <section class="resource">
-            <div id="page" class="container"></div>
-         </section>
-         <footer class="container">
-            <section class="small">
-               <hr>
-               &copy; {{""|date('Y')}} Marc Paraiso. Ksenia Pirovskikh.<br>
-               programming - marc paraiso : mparaiso@online.fr</section>
-         </footer>
-      <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
-      <script>
-         (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
-            function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
-         e=o.createElement(i);r=o.getElementsByTagName(i)[0];
-         e.src='//www.google-analytics.com/analytics.js';
-         r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-         ga('create','UA-XXXXX-X');ga('send','pageview');
-      </script>
-   </body>
+<html lang="{{ app.settings.language }}">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>{{ app.settings.title }}</title>
+    <meta name="description" content="{{ app.settings.subtitle }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {# STYLES #}
+    <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="/static/public/css/reset.css">
+    <link rel="stylesheet" href="/static/public/css/style.css">
+    {# SCRIPTS #}
+    <script defer src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
+    <script defer src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script defer src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js"></script>
+    <script defer src="/static/public/javascript/index.js"></script>
+    <script>
+        var Config = {
+            version: "{{app.ksu.version}}",
+            title: "{{app.ksu.title}}",
+            projectResource: "{{path('public_project_resource')}}",
+            pageResource: "{{path('public_page_resource')}}",
+            menuResource: "{{ path('public_menu_resource') }}"
+        }
+    </script>
+    <style type="text/css">
+        body {
+            color: {{ app.settings.textColor|default('#444') }};
+            background-color: # {{ app.settings.backgroundColor|default('#EFEFEF') }};
+        }
+
+        .muted {
+            color: {{ app.settings.textMuted|default('#AAA') }};
+        }
+
+        .primary {
+            color: {{ app.settings.primaryColor|default('#20a3ea') }};
+        }
+
+        .secondary {
+            color: {{ app.settings.primaryColor|default('#20a3ea') }};
+        }
+
+        .ternary {
+            color: {{ app.settings.primaryColor|default('#20a3ea') }};
+        }
+    </style>
+</head>
+<body>
+<!--[if lt IE 9]>
+<p class="browsehappy">
+    You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your
+    browser</a> to improve your experience.
+</p>
+<![endif]-->
+<noscript><h1>Please enable javascript to view this page.</h1></noscript>
+<div id="spinner" class="spinner"></div>
+<!--HEADER -->
+<section class=" head">
+    <header class='container'>
+        <nav>
+            <ul id="main-menu" class="nav">
+            </ul>
+            <ul id="sub-menu" class="nav-sub">
+            </ul>
+        </nav>
+        <hgroup>
+            <h1 class="primary"><a href="#">{{ app.settings.title }}</a></h1>
+            <h5 class="text-muted">
+                {{ app.settings.subtitle }}
+            </h5>
+        </hgroup>
+    </header>
+</section>
+<section class='gallery'>
+    <section id="gallery" class="container">
+        <figure><img/></figure>
+        <div class="controls">
+            <button class="previous"></button>
+            <button class="next"></button>
+        </div>
+        <!-- SUMMARY-->
+        <details id="detail" class="summary" open>
+        </details>
+        <!--ENDSUMMARY-->
+    </section>
+</section>
+<section class="resource">
+    <div id="page" class="container"></div>
+</section>
+<footer class="container">
+    <section class="small">
+        <hr>
+        &copy; {{ ""|date('Y') }} Marc Paraiso. Ksenia Pirovskikh.<br>
+        programming - marc paraiso : mparaiso@online.fr
+    </section>
+</footer>
+<!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+<script>
+    (function (b, o, i, l, e, r) {
+        b.GoogleAnalyticsObject = l;
+        b[l] || (b[l] =
+                function () {
+                    (b[l].q = b[l].q || []).push(arguments)
+                });
+        b[l].l = +new Date;
+        e = o.createElement(i);
+        r = o.getElementsByTagName(i)[0];
+        e.src = '//www.google-analytics.com/analytics.js';
+        r.parentNode.insertBefore(e, r)
+    }(window, document, 'script', 'ga'));
+    ga('create', 'UA-XXXXX-X');
+    ga('send', 'pageview');
+</script>
+</body>
 </html>

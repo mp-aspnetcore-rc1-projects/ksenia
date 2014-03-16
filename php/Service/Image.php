@@ -76,7 +76,7 @@ class Image extends Base implements IService
 
     /** find all published images */
     function findAllPublishedImages() {
-        return $this->getRepository()->findBy(array('isPublished'=>true));
+        return $this->getRepository()->findBy(array('isPublished'=>true),array('createdAt'=>-1));
     }
 
 }

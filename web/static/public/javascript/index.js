@@ -465,7 +465,7 @@ jQuery(function($) {
                     <footer class="container">\
                         <section class="small">\
                             <hr>\
-                            &copy; <% print(Date.now()) %> Marc Paraiso. Ksenia Pirovskikh.<br>\
+                            &copy; <% print((new Date).getFullYear()) %> Marc Paraiso. Ksenia Pirovskikh.<br>\
                             programming - marc paraiso : mparaiso@online.fr\
                         </section>\
                     </footer>')

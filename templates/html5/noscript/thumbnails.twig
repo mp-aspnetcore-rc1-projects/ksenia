@@ -1,0 +1,9 @@
+<div>
+    {% for image in images %}
+        <figure class="thumbnail">
+            <a href="{{ path('image',{imageId:image.id,projectId:image.project.id}) }}" style="display: inline;">
+                <img src="{{ path('image_load',{imageId:image.id,extension:image.extension}) }}">
+            </a>
+        </figure>
+    {% endfor %}
+</div>

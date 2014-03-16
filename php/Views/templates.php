@@ -27,14 +27,12 @@ $templates['layout'] = <<<HERE
                     <section class="navbar-header">
                         <a class="navbar-brand" href="{{path('admin_index')}}">{{ app.ksu.title | upper }} | Administration </a>
                     </section>
-                    {# 
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="{{path('index')}}">Home</a></li>
-                        <li><a href="#">Services</a></li>
+                        {#<li><a href="#">Services</a></li>
                         <li><a href="#">Clients</a></li>
-                        <li><a href="#">About me</a></li>
+                        <li><a href="#">About me</a></li>#}
                     </ul>
-                    #}
                 </div>
             </nav>
 			<main class='container'>
@@ -214,6 +212,7 @@ $templates['project_create'] = <<<HERE
 	{% endblock %}
 	{% block scripts %}
 	{{ parent() }}
+    {% include 'showdown'%}
 	{% endblock %}
 HERE;
 $templates['project_update'] = <<<HERE
@@ -232,9 +231,7 @@ $templates['project_update'] = <<<HERE
 	{% endblock %}
 	{% block scripts %}
 	{{ parent() }}
-	<script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
-	<script src="/static/javascript/jquery-plugins.js"></script>
-	{#<script src="/static/javascript/project-new.js"></script>#}
+    {% include 'showdown'%}
 	{% endblock %}
 HERE;
 $templates['project_read'] = <<<HERE
@@ -251,7 +248,7 @@ $templates['project_read'] = <<<HERE
                 <dt>Title</dt>
                 <dd data-ng-bind="project.title">{{project.title}}</dd>
                 <dt>Description</dt>
-                <dd>{{project.description}}</dd>
+                <dd data-to-markdown>{{project.description}}</dd>
                 <dt>Client</dt>
                 <dd>{{project.client}}</dd>
                 <dt>Published</dt>
@@ -324,8 +321,8 @@ $templates['project_read'] = <<<HERE
 	{% endblock %}
     {%block scripts %}
     	{{parent()}}
-    	{% include 'jquery' %}
     	{% include 'underscore' %}
+    	{% include 'showdown'%}
         {% include 'angular' %}
         <script src="/static/javascript/project-read-angular.js"></script>
         {#
@@ -599,15 +596,11 @@ $templates['page_create'] = <<<HERE
             <li class="active">New</li>
         </ol>
         </header>
-        {{form_start(form)}}
-            {% for field in form %}
-            <div class="form-group">
-                {{form_row(field,{attr:{class:'form-control'}}) }}
-            </div>
-            {%endfor%}
-            <button type="reset">Reset</button>
-            <button type="submit">Save</button>
-        {{form_end(form)}}
+        {% include 'page_form'%}
+	{%endblock%}
+	{%block scripts %}
+	{{parent()}}
+	{%include 'showdown'%}
 	{%endblock%}
 HERE;
 $templates['page_update'] = <<<HERE
@@ -620,15 +613,11 @@ $templates['page_update'] = <<<HERE
             <li class="active">Update</li>
         </ol>
         </header>
-        {{form_start(form)}}
-            {% for field in form %}
-            <div class="form-group">
-                {{form_row(field,{attr:{class:'form-control'}}) }}
-            </div>
-            {%endfor%}
-            <button type="reset">Reset</button>
-            <button type="submit">Save</button>
-        {{form_end(form)}}
+        {% include 'page_form'%}
+	{%endblock%}
+	{%block scripts %}
+	{{parent()}}
+	{%include 'showdown'%}
 	{%endblock%}
 HERE;
 $templates['page_read'] = <<<HERE
@@ -641,7 +630,11 @@ $templates['page_read'] = <<<HERE
         </ol>
         </header>
         <div class="row">
-        <dl>
+        <div class="col-md-12">
+			<a href="{{path('page_update',{id:page.id}) }}" class="btn btn-default">Edit Page</a>
+        </div>
+        <hr>
+        <dl class="col-sm-12">
         <dt>Title</dt>
         <dd>{{page.title}}</dd>
          <dt>Category</dt>
@@ -649,12 +642,25 @@ $templates['page_read'] = <<<HERE
         <dt>Language</dt>
         <dd>{{page.language}}</dd>
          <dt>Description</dt>
-        <dd>{{page.description}}</dd>
-         <dt>Content</dt>
-        <dd>{{page.content}}</dd>
+        <dd data-to-markdown >{{page.description}}</dd>
         </dl>
         </div>
 	{%endblock%}
+	{%block scripts%}
+		{{parent()}}
+		{%include 'showdown' %}
+	{%endblock%}
+HERE;
+$templates['page_form']=<<<HERE
+    {{form_start(form)}}
+        {% for field in form %}
+        <div class="form-group">
+            {{form_row(field,{attr:{class:'form-control'}}) }}
+        </div>
+        {%endfor%}
+        <button type="reset">Reset</button>
+        <button type="submit">Save</button>
+    {{form_end(form)}}
 HERE;
 /**
  * MENUS
@@ -920,5 +926,8 @@ $templates['bootstrap_css'] = <<<HERE
 	{# Optional theme #}
 	{#<link rel='stylesheet' href='//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css'>#}
 HERE;
-
+$templates['showdown']=<<<HERE
+	<script defer src="//cdnjs.cloudflare.com/ajax/libs/showdown/0.3.1/showdown.min.js"></script>
+	<script defer src="/static/private/javascript/to-markdown.js"></script>
+HERE;
 return $templates;

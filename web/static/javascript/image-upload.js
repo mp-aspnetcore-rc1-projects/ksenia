@@ -1,5 +1,5 @@
+/*jslint white:true,es5:true,unparam:true,devel:true,browser:true,nomen:true,regexp:true*/
 /*global jQuery,FormData,FileReader,Observable*/
-"use strict";
 /**
  * IMAGE UPLOAD SCRIPT
  * @copyrights mparaiso <mparaiso@online.fr>
@@ -13,6 +13,7 @@
  * who will recieve the command action.
  */
 jQuery(function ($) {
+    "use strict";
     var mediator, model, command, view;
     //noinspection FunctionWithInconsistentReturnsJS
     /**
@@ -20,10 +21,10 @@ jQuery(function ($) {
      * @type {Object}
      */
     model = new Observable({
-        progress:0,
+        progress: 0,
         dropText: "Drop Some Image Files Here",
-        uploadingText:"Uploading...",
-        notUploadingText:"Upload",
+        uploadingText: "Uploading...",
+        notUploadingText: "Upload",
         formData: null,
         url: null,
         files: [],
@@ -32,9 +33,9 @@ jQuery(function ($) {
         style='overflow:hidden;height:150px;padding:5px'> \
         <img style='height:100%'/><progress/></div>"
     });
-    model.on('change',function(){
-        mediator.trigger('change.model',arguments);
-        console.log("change!",arguments);
+    model.on('change', function () {
+        mediator.trigger('change.model', arguments);
+        console.log("change!", arguments);
     });
 
     /**
@@ -42,9 +43,9 @@ jQuery(function ($) {
      * @type {Object}
      */
     view = {
-        textButtonUpload:$('.text-btn-upload'),
-        progress : $('<progress max="100"></progress>'),
-        doneButton:$('.done'),
+        textButtonUpload: $('.text-btn-upload'),
+        progress: $('<progress max="100"></progress>'),
+        doneButton: $('.done'),
         form: document.querySelector('#upload-form'),
         submitButton: $('button[type=submit]').on({'click': function (event) {
             mediator.trigger('submit-button:clicked', this);
@@ -113,7 +114,7 @@ jQuery(function ($) {
                         mediator.trigger('ajax:error', [err]);
                     }
                 });
-                mediator.trigger('ajax:start',[ajax]);
+                mediator.trigger('ajax:start', [ajax]);
                 return ajax;
             }
         },
@@ -190,8 +191,9 @@ jQuery(function ($) {
         },
         createImageFileView: {
             execute: function (file) {
-                var reader = new FileReader();
-                var $image = $(model.uploadTemplate);
+                var reader, $image;
+                reader = new FileReader();
+                $image = $(model.uploadTemplate);
                 $image.attr('height', '100');
                 reader.onload = function (event) {
                     $image.find('progress').remove();
@@ -201,30 +203,30 @@ jQuery(function ($) {
                 return $image;
             }
         },
-        renderView:{
-            execute:function(model){
-                if(model.uploading==true){
-                    view.dropZone.find('.background-text').html(view.progress).css({'zIndex':100});
+        renderView: {
+            execute: function (model) {
+                if (model.uploading === true) {
+                    view.dropZone.find('.background-text').html(view.progress).css({'zIndex': 100});
                     view.textButtonUpload.text(model.uploadingText);
-                    $(".upload-item").fadeTo(1000,0.5);
+                    $(".upload-item").fadeTo(1000, 0.5);
                     command.disableDone.execute();
                     command.disableClear.execute();
                     command.disableSubmit.execute();
-                }else{
+                } else {
                     view.textButtonUpload.text(model.notUploadingText);
-                    view.dropZone.find('.background-text').html(model.dropText).css({zIndex:-10});
-                    $(".upload-item").css('opacity',1);
+                    view.dropZone.find('.background-text').html(model.dropText).css({zIndex: -10});
+                    $(".upload-item").css('opacity', 1);
                     command.disableClear.execute();
                     command.disableSubmit.execute();
                     command.enableDone.execute();
                 }
             }
         },
-        updateProgress:{
-            execute:function(){
-                this.target.attr('value',model.progress);
+        updateProgress: {
+            execute: function () {
+                this.target.attr('value', model.progress);
             },
-            target:view.progress
+            target: view.progress
 
         }
     };
@@ -232,20 +234,20 @@ jQuery(function ($) {
      * mediator
      */
     mediator = $({}).on({
-        'change.model':function(){
+        'change.model': function () {
             command.log.execute('model changed!');
-           command.renderView.execute(model);
+            command.renderView.execute(model);
         },
-        'ajax:start':function(e,ajax){
-            model.uploading=true;
+        'ajax:start': function (e, ajax) {
+            model.uploading = true;
         },
         'ajax:success': function (e, res) {
-            model.uploading=false;
+            model.uploading = false;
             command.log.execute('success', res);
             command.clearImageFiles.execute();
         },
         'ajax:error': function (e, err) {
-            model.uploading=false;
+            model.uploading = false;
             command.log.execute('error', err);
         },
         'ajax:progress': function (e, progress) {
@@ -287,8 +289,8 @@ jQuery(function ($) {
         command.disableClear.execute();
         command.disableSubmit.execute();
         model.url = view.form.getAttribute('action');
-        window.model=model;
-        window.view=view;
+        window.model = model;
+        window.view = view;
     }());
 
 });

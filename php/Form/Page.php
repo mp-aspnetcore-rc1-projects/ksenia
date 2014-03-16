@@ -25,8 +25,6 @@ class Page extends AbstractType
             ->add('language', 'choice', array('choices' => array('en' => 'English', 'ru' => 'Russian')))
             ->add('isPublished', 'choice', array('choices' => array('no', 'yes')))
             ->add('category')
-            ->add('description', 'textarea', array('attr' => array('rows' => 2)))
-            ->add('content', 'textarea', array('attr' => array('rows' => 10)));
-
+            ->add('description', 'textarea', array('attr' => array('rows' => 10,'data-markdown-preview'=>'description')));
     }
 }

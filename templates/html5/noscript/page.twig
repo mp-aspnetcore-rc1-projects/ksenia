@@ -1,0 +1,11 @@
+{% extends 'noscript/layout.twig' %}
+{% block content_noscript %}
+    <section class="resource">
+        <div id="page" class="container" style="display: block;">
+            <div class="page">
+                <h2 class="primary">{{ page.title }}</h2>
+                <div><pre>{{ page.content }}</pre></div>
+                <div class="space">&nbsp;</div>
+            </div>
+    </section>
+{% endblock %}

@@ -1,66 +1,76 @@
-body{
-	background: #EFEFEF;
-	color:#555;
-	font-family: "Georgia",sans-serif;
-	font-size: 100%;
+body {
+    background: #EFEFEF;
+    color: #555;
+    font-family: "Georgia", sans-serif;
+    font-size: 100%;
+    max-width: 100%;
 }
 
-a{
-	color:inherit;
-	text-decoration: none;
+a {
+    color: inherit;
+    text-decoration: none;
 }
-a:hover{
-	text-decoration: underline;
+
+a:hover {
+    text-decoration: underline;
 }
-hr{
-	border-style: dotted;
-	border-color:#777;
-	border-width: 1px;
-	border-top-width: 0;
-	border-collapse: collapse;
-	height:0;
+
+hr {
+    border-style: dotted;
+    border-color: #777;
+    border-width: 1px;
+    border-top-width: 0;
+    border-collapse: collapse;
+    height: 0;
 }
 
 /**
  * HEADER
  */
-.head{
-	/* background: #000; */
-	border-bottom:1px dotted rgba(0,0,0,0.3);
+.head {
+    /* background: #000; */
+    border-bottom: 1px dotted rgba(0, 0, 0, 0.3);
 }
-header{
-	padding-top:10px;
-	/** @note @css border opacity @link http://stackoverflow.com/questions/4062001/css3-border-opacity */
-	width: 100%;
-	overflow: hidden;
-}
-	header hgroup{
-	}
-	header h1,
-	header h4,
-	header h5{
-		display: inline-block;
-        margin:0;
-		padding:0;
-        margin-bottom: 5px;
-	}
-	header .nav{
-		float:right;
-		max-width:100%;
-	}
 
-h1,h2,h3{
+header {
+    padding-top: 10px;
+    /** @note @css border opacity @link http://stackoverflow.com/questions/4062001/css3-border-opacity */
+    width: 100%;
+    overflow: hidden;
 }
-    h1 a:hover,h2 a:hover,h3 a:hover{
-        text-decoration: none;
-    }
+
+header hgroup {
+}
+
+header h1,
+header h4,
+header h5 {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+    margin-bottom: 5px;
+}
+
+header .nav {
+    float: right;
+    max-width: 100%;
+}
+
+h1, h2, h3 {
+}
+
+h1 a:hover, h2 a:hover, h3 a:hover {
+    text-decoration: none;
+}
+
 /**
  * CONTAINER
  */
-.container{
-	margin: auto;
-	width:80%;
+.container {
+    margin: auto;
+    width: 80%;
 }
+
 /**
  * NAVIGATION
  */
@@ -68,211 +78,246 @@ h1,h2,h3{
  * justify menu
  * @link http://code.jelmerdemaat.nl/2012/perfectly-justified-css-grid-technique-using-inline-block/
  */
-nav{
-	display: inline;
-	float: right;
-	width:auto;
-}
-nav li{
-	color:#888;
-	display:inline;
-}
-nav li a:hover{
-	color:#222;
-	text-decoration: none;
-}
-.separator{
-	margin-right: 5px;
-	border-right:1px dotted #999;
-}
-.nav-sub{
-	clear:right;
-	overflow: hidden;
-}
-.nav-sub li{
-	display: block;
+nav {
+    display: inline;
+    float: right;
+    width: auto;
 }
 
-.browsehappy{
-	font-size: 30px;
-	position: absolute;
-	top:0;
-	left: 0;
-	background: #FAA;
-	color: #A00;
-	border: 10px solid #A00;
+nav li {
+    color: #888;
+    display: inline;
+}
+
+nav li a:hover {
+    color: #222;
+    text-decoration: none;
+}
+
+.separator {
+    margin-right: 5px;
+    border-right: 1px dotted #999;
+}
+
+.nav-sub {
+    clear: right;
+    overflow: hidden;
+}
+
+.nav-sub li {
+    display: block;
+}
+
+.browsehappy {
+    font-size: 30px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #FAA;
+    color: #A00;
+    border: 10px solid #A00;
 }
 
 /**
  * GALLERY
  */
-.gallery{
-	position: relative;
-	width:100%;
-	overflow: hidden;
-	background:url('/static/public/images/stripes.jpg') #222;
+.gallery {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    background: url('/static/public/images/stripes.jpg') #222;
 }
-	.gallery .container,
-	.spinner{
-		background: url('/static/public/images/spinner-black.gif') 50% 50% no-repeat ;
-	}
-	.gallery figure{
-		margin:0 auto;
-		text-align: center;
-		height: 640px;
-		vertical-align: middle;
-		overflow: hidden;
-	}
-		.gallery figure img{
-			height:100%;
-            width:auto;
-			transition:.1s opacity;
-		}
-    .gallery details{
-        transition:.5s background;
-        background: rgba(0,0,0,.8);
-        color:#F5F5F5;
-        font-size: inherit;
-        z-index:4;
-        position: absolute;
-        bottom:0;
-        width:80%;
-    }
-    .gallery details:hover{
-        background: rgba(0,0,0,.1);
-    }
-        .gallery details > *{
-                padding: 0 15px;
-        }
-    .gallery .controls{
-        overflow: hidden;
-    }
-        .gallery .controls button{
-            border: none;
-            transition:.2s all ease-out;
-            width:41px;
-            height:35px;
-        }
-        .gallery .controls button:hover{
-            opacity:1;
-        }
 
-.previous{
-	text-decoration: none;
-	position:absolute;
-	left:0;
-	top:50%;
-	display:block;
-	opacity:0.8;
-	background: url('/static/public/images/prev_pic.png');
+.gallery .container,
+.spinner {
+    background: url('/static/public/images/spinner-black.gif') 50% 50% no-repeat;
 }
-.next{
-	text-decoration: none;
-	position:absolute;
-	right:0;
-	top:50%;
-	display:block;
-	opacity:0.8;
-	background: url('/static/public/images/next_pic.png');
+
+.gallery figure {
+    margin: 0 auto;
+    text-align: center;
+    height: 640px;
+    vertical-align: middle;
+    overflow: hidden;
 }
+
+.gallery figure img {
+    height: 100%;
+    width: auto;
+    transition: .1s opacity;
+}
+
+.gallery details {
+    transition: .5s background;
+    background: rgba(0, 0, 0, .8);
+    color: #F5F5F5;
+    font-size: inherit;
+    z-index: 4;
+    position: absolute;
+    bottom: 0;
+    width: 80%;
+}
+
+.gallery details:hover {
+    background: rgba(0, 0, 0, .1);
+}
+
+.gallery details > * {
+    padding: 0 15px;
+}
+
+.gallery .controls {
+    overflow: hidden;
+}
+
+.gallery .controls button {
+    border: none;
+    transition: .2s all ease-out;
+    width: 41px;
+    height: 35px;
+}
+
+.gallery .controls button:hover {
+    opacity: 1;
+}
+
+.previous {
+    text-decoration: none;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    display: block;
+    opacity: 0.8;
+    background: url('/static/public/images/prev_pic.png');
+}
+
+.next {
+    text-decoration: none;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    display: block;
+    opacity: 0.8;
+    background: url('/static/public/images/next_pic.png');
+}
+
 .next:hover,
-.previous:hover{
-	opacity: 1;
-	background-position: 0 -35px;
+.previous:hover {
+    opacity: 1;
+    background-position: 0 -35px;
 }
 
-.spinner{
-	position: absolute;
-	z-index: -10;
-	top:0;
-	left:0;
-	width: 100%;
-	height: 100%;
-	/* @note @css center background in the page*/
-	background: url('/static/public/images/spinner.gif') 50% 50% no-repeat ;
-	transition: .5s opacity;
+.spinner {
+    position: absolute;
+    z-index: -10;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* @note @css center background in the page*/
+    background: url('/static/public/images/spinner.gif') 50% 50% no-repeat;
+    transition: .5s opacity;
 }
 
 /**
  * FOOTER
  */
-footer{
-	bottom:0;
-	overflow: hidden;
-	opacity: .8;
+footer {
+    bottom: 0;
+    overflow: hidden;
+    opacity: .8;
 }
-	footer section{
-		margin:0 auto;
-		font-weight: lighter;
-	}
+
+footer section {
+    margin: 0 auto;
+    font-weight: lighter;
+}
+
 /** main */
-.resource{
-	border-top:1px dotted rgba(256,256,256,0.3);
-	/** @note @css border opacity @link http://stackoverflow.com/questions/4062001/css3-border-opacity */
-	padding:30px 0 10px 0;
-	width:100%;
-	min-height: 400%;
+.resource {
+    border-top: 1px dotted rgba(256, 256, 256, 0.3);
+    /** @note @css border opacity @link http://stackoverflow.com/questions/4062001/css3-border-opacity */
+    padding: 30px 0 10px 0;
+    width: 100%;
+    min-height: 400%;
 }
-pre{
-	font-family: inherit;
+
+pre {
+    font-family: inherit;
 }
-.page div{
-	width:700px;
+
+.page div {
+    width: 700px;
 }
 
 .project h3,
-.project h2{
-	padding-bottom: 5px;
-	border-bottom: 1px dotted ;
+.project h2 {
+    padding-bottom: 5px;
+    border-bottom: 1px dotted;
 }
 
 .thumbnail {
-	width:50px;
-	height: 50px;
-	overflow: hidden;
-	display:inline-block;
-	margin-right:10px;
-	margin-bottom:10px;
-	background-color: #000;
-	text-align: center;
-	border:1px solid #AAA;
+    width: 50px;
+    height: 50px;
+    overflow: hidden;
+    display: inline-block;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    background-color: #000;
+    text-align: center;
+    border: 1px solid #AAA;
 }
-.thumbnail:hover{
-	border:1px solid #0AF;
+
+.thumbnail:hover {
+    border: 1px solid #0AF;
 }
-.thumbnail img{
-	height: 100%;
-    width:auto;
+
+.thumbnail img {
+    height: 100%;
+    width: auto;
 }
+
 /**
  * HELPERS
  */
-.inline{
-	display: inline-block;
+.inline {
+    display: inline-block;
 }
-.hidden{
-	opacity: 0;
-}
-.center{
-	font-weight:lighter;
-}
-.min{
-	height:200px;
-}
-.primary{
-	color: #20a3ea;
-}
-.small{
-	font-size: 0.8em;
-}
-.text-muted{
 
-	color:#AAA;
+.hidden {
+    opacity: 0;
 }
-.space{
 
-	height:200px;
+.center {
+    font-weight: lighter;
 }
-.stripped{
-	background:url('/static/public/images/stripes.jpg') #222;
+
+.min {
+    height: 200px;
+}
+
+.primary {
+    color: #20a3ea;
+}
+
+.small {
+    font-size: 0.8em;
+}
+
+.text-muted {
+
+    color: #AAA;
+}
+
+.text-warning {
+    color: #ff4d6f;
+}
+
+.space {
+
+    height: 200px;
+}
+
+.stripped {
+    background: url('/static/public/images/stripes.jpg') #222;
 }

@@ -144,3 +144,6 @@ main.container {
 .image-list.ng-move.ng-move.active {
     opacity: 0.6;
 }
+.markdown-preview{
+    color:#777;
+}

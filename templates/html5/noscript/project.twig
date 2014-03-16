@@ -1,0 +1,17 @@
+{% extends 'noscript/layout.twig' %}
+{% block content_noscript %}
+    {% if  image is not defined %}
+        {% set image = project.images[0] %}
+    {% endif %}
+    {% include 'noscript/gallery.twig' with {image:image} %}
+    <section class="resource">
+        <div class="project container">
+            <h2 class="primary inline">{{ project.title }}</h2>
+            {% include 'noscript/thumbnails.twig' with {images:project.images} only %}
+            <div>
+                <pre>{{ project.description }}</pre>
+            </div>
+            <div class="space">&nbsp;</div>
+        </div>
+    </section>
+{% endblock %}

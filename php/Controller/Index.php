@@ -18,20 +18,16 @@ class Index implements ControllerProviderInterface
 {
 
     function index(App $app) {
-        $projects = $app->projectService->findBy(array('isPublished' => true), array('createdAt' => -1));
-        return $app->twig->render('index.twig', array('projects' => $projects));
+        return $app->twig->render('index.twig');
     }
 
-    function project(App $app, $projectId) {
-        $project = $app->projectService->find($projectId) or $app->abort(404);
-        return $app->twig->render('project.twig', array('project' => $project));
-    }
-
-    function image(App $app, $projectId, $imageId) {
+    function project(App $app, $projectId, $imageId) {
         /** @var \Entity\Project $project */
         $project = $app->projectService->find($projectId) or $app->abort(404);
-        $image = $project->getImageById($imageId) or $app->abort(404);
-        return $app->twig->render('image.twig', array('image' => $image, 'project' => $project));
+        if ($imageId) {
+            $image = $project->getImageById($imageId) or $app->abort(404);
+        }
+        return $app->twig->render('project.twig', array('image' => $image, 'project' => $project));
     }
 
     function page(App $app, $pageId) {
@@ -115,9 +111,10 @@ class Index implements ControllerProviderInterface
             ->bind('index');
         $portfolioController->get('/project/{projectId}', array($this, 'project'))
             ->bind('project');
-        $portfolioController->get('/project/{projectId}/image/{imageId}', array($this, 'image'))
+        $portfolioController->get('/project/{projectId}/image/{imageId}', array($this, 'project'))
             ->bind('image');
-        $portfolioController->get('/page/{pageId}}', array($this, 'page'))
+        $portfolioController->get('/page/{pageId}/{title}', array($this, 'page'))
+            ->value('title','')
             ->bind('page');
         $portfolioController->get('/static/images/cache/{imageId}.{extension}', array($this, 'imageLoad'))->value("extension", "jpg")
             ->bind('image_load');

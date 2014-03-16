@@ -19,3 +19,4 @@
 - Sat Mar 15 01:09:00 GMT 2014 : width is 85%
 - Sat Mar 15 14:23:18 GMT 2014 : front-end tests added, fix = next/previous buttons didnt work properly on firefox
 - Sun Mar 16 14:42:04 GMT 2014 : markdown support added
+- Sun Mar 16 14:56:42 GMT 2014 : markdown syntax guid link updated

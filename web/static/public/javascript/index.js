@@ -426,6 +426,7 @@ jQuery(function($) {
                				<p>\
                   				Project: <a href="#project/<%-project.id%>"><%-project.title%></a><br>\
                   				Client: <%-project.client%><br>\
+                                <%-description%>
                				</p>'),
 
         main: _.template('  <!--HEADER -->\

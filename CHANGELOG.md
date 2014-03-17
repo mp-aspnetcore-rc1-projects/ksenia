@@ -26,3 +26,4 @@
 - Mon Mar 17 02:42:18 GMT 2014 : administration is now password protected
 - Mon Mar 17 03:21:32 GMT 2014 : user profile
 - Mon Mar 17 03:23:32 GMT 2014 : black spinner
+- Mon Mar 17 03:54:32 GMT 2014 : subnav font reduced

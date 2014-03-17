@@ -963,16 +963,16 @@
         },
         {
             "name": "mparaiso/simpleuserserviceprovider",
-            "version": "0.0.17",
+            "version": "0.0.18",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Mparaiso/simpleuserserviceprovider.git",
-                "reference": "8b6dcf8dec6078b957c9a86f5835f077fc6d7d3e"
+                "reference": "c9c30b61a63d5782b66e333e87bf2c8b857e5c54"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Mparaiso/simpleuserserviceprovider/zipball/8b6dcf8dec6078b957c9a86f5835f077fc6d7d3e",
-                "reference": "8b6dcf8dec6078b957c9a86f5835f077fc6d7d3e",
+                "url": "https://api.github.com/repos/Mparaiso/simpleuserserviceprovider/zipball/c9c30b61a63d5782b66e333e87bf2c8b857e5c54",
+                "reference": "c9c30b61a63d5782b66e333e87bf2c8b857e5c54",
                 "shasum": ""
             },
             "require": {
@@ -1000,7 +1000,7 @@
             "keywords": [
                 "User management"
             ],
-            "time": "2014-03-16 16:25:59"
+            "time": "2014-03-17 02:47:27"
         },
         {
             "name": "pimple/pimple",

@@ -13,7 +13,19 @@ this code was open sourced for educational purpose only.
 
 You cannot use it for personal nor commercial projects.
 
-### TODO
+###Portfolio and CMS solution for designers
 
-- [ ] Complete page templates
+- written in PHP,Javascript and backed by MongoDB
+
+###FEATURES
+
+- Developped from scratch with Silex and the Symfony framework.
+- Administration powered by AngularJS
+- Animated Frontend powered by Backbone
+- Markdown Editor for page and project descriptions
+- Drag And Drop Menu creation
+- Drag and Drop file image upload
+- User login/logout authentication,authorization management
+- User registration through a console application
+- Images are saves in the database , and cached on the app server
 

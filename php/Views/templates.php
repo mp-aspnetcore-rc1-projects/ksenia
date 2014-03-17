@@ -158,14 +158,12 @@ HERE;
 $templates['admin_nav'] = <<<HERE
 	<ul class="list-group">
 		<li class="list-group-item"><strong><a href="{{path('admin_index')}}">DASHBOARD</a></strong></li>
-		<li class="list-group-item text-muted uppercase">
-			<strong>PROJECTS</strong>
-		</li>
+
+		<li class="list-group-item text-muted uppercase"><strong>PROJECTS</strong></li>
 		<li class="list-group-item"><a href="{{path('project_index')}}">Manage Projects</a></li>
 		<li class="list-group-item"><a href="{{path('project_create')}}">Create a new project</a></li>
-	    <li class="list-group-item text-muted uppercase">
-			<strong>PAGES</strong>
-		</li>
+
+	    <li class="list-group-item text-muted uppercase"><strong>PAGES</strong></li>
 		<li class="list-group-item"><a href="{{path('page_index')}}">Manage Pages</a></li>
 		<li class="list-group-item"><a href="{{path('page_create')}}">Create a new page</a></li>
 
@@ -174,12 +172,11 @@ $templates['admin_nav'] = <<<HERE
 		<li class="list-group-item"><a href="{{path('menu_create')}}">Create a new menu</a></li>
 
 		<li class="list-group-item text-muted uppercase"><strong>USERS</strong></li>
-		<li class="list-group-item"><a href="#">Manage Users</a></li>
+		<li class="list-group-item"><a href="{{ path('mp.user.route.profile.index') }}">Your profile</a></li>
 
 	    <li class="list-group-item text-muted uppercase"><strong>SETTINGS</strong></li>
 		<li class="list-group-item"><a href="{{path('configuration_update')}}">Manage Settings</a></li>
-		<li class="list-group-item"><a href="{{path('configuration_update')}}">Manage Translations</a></li>
-
+		{#<li class="list-group-item"><a href="{{path('configuration_update')}}">Manage Translations</a></li>#}
 	</ul>
 HERE;
 $templates['admin_index'] = <<<HERE

@@ -130,7 +130,7 @@ nav li a:hover {
 
 .gallery .container,
 .spinner {
-    background: url('/static/public/images/spinner-black.gif') 50% 50% no-repeat;
+    background: url('/static/public/images/black-spinner.gif') 50% 50% no-repeat;
 }
 
 .gallery figure {

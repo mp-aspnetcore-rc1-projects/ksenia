@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "16c091d96a33a1e31d76dc4d04387a34",
+    "hash": "1246184aa0e8253f9490b2f2cada46bd",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -698,6 +698,74 @@
             "time": "2014-03-10 15:20:26"
         },
         {
+            "name": "friendsofsymfony/user-bundle",
+            "version": "v1.3.3",
+            "target-dir": "FOS/UserBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/FriendsOfSymfony/FOSUserBundle.git",
+                "reference": "0fc044447ca41acc73d424a6a90d1b9f7fa25d7b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/0fc044447ca41acc73d424a6a90d1b9f7fa25d7b",
+                "reference": "0fc044447ca41acc73d424a6a90d1b9f7fa25d7b",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2",
+                "symfony/framework-bundle": "~2.1",
+                "symfony/security-bundle": "~2.1"
+            },
+            "require-dev": {
+                "doctrine/doctrine-bundle": "*",
+                "swiftmailer/swiftmailer": "~4.3",
+                "symfony/validator": "~2.1",
+                "symfony/yaml": "~2.1",
+                "twig/twig": "~1.5",
+                "willdurand/propel-typehintable-behavior": "dev-master"
+            },
+            "suggest": {
+                "willdurand/propel-typehintable-behavior": "Needed when using the propel implementation"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "FOS\\UserBundle": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Christophe Coevoet",
+                    "email": "stof@notk.org"
+                },
+                {
+                    "name": "Thibault Duplessis",
+                    "email": "thibault.duplessis@gmail.com",
+                    "homepage": "http://ornicar.github.com"
+                },
+                {
+                    "name": "FriendsOfSymfony Community",
+                    "homepage": "https://github.com/friendsofsymfony/FOSUserBundle/contributors"
+                }
+            ],
+            "description": "Symfony FOSUserBundle",
+            "homepage": "http://friendsofsymfony.github.com",
+            "keywords": [
+                "User management"
+            ],
+            "time": "2013-09-23 08:24:12"
+        },
+        {
             "name": "monolog/monolog",
             "version": "1.7.0",
             "source": {
@@ -763,6 +831,50 @@
                 "psr-3"
             ],
             "time": "2013-11-14 19:48:31"
+        },
+        {
+            "name": "mparaiso/consoleserviceprovider",
+            "version": "0.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Mparaiso/consoleserviceprovider.git",
+                "reference": "affd0bbd30a2ded44b4b8f62e8b67ad86568cc18"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Mparaiso/consoleserviceprovider/zipball/affd0bbd30a2ded44b4b8f62e8b67ad86568cc18",
+                "reference": "affd0bbd30a2ded44b4b8f62e8b67ad86568cc18",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3",
+                "silex/silex": "*@dev",
+                "symfony/console": "2.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Mparaiso": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL"
+            ],
+            "authors": [
+                {
+                    "name": "MParaiso",
+                    "email": "mparaiso@online.fr"
+                }
+            ],
+            "description": "Symfony Console integration for Silex",
+            "homepage": "https://github.com/Mparaiso/consoleserviceprovider",
+            "keywords": [
+                "console",
+                "silex",
+                "symfony"
+            ],
+            "time": "2013-06-28 00:51:30"
         },
         {
             "name": "mparaiso/doctrineodmserviceprovider",
@@ -848,6 +960,47 @@
                 "silex"
             ],
             "time": "2014-03-10 07:08:29"
+        },
+        {
+            "name": "mparaiso/simpleuserserviceprovider",
+            "version": "0.0.17",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Mparaiso/simpleuserserviceprovider.git",
+                "reference": "8b6dcf8dec6078b957c9a86f5835f077fc6d7d3e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Mparaiso/simpleuserserviceprovider/zipball/8b6dcf8dec6078b957c9a86f5835f077fc6d7d3e",
+                "reference": "8b6dcf8dec6078b957c9a86f5835f077fc6d7d3e",
+                "shasum": ""
+            },
+            "require": {
+                "friendsofsymfony/user-bundle": "1.*",
+                "php": ">=5.3.2"
+            },
+            "type": "provider",
+            "autoload": {
+                "psr-0": {
+                    "": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "MParaiso",
+                    "email": "mparaiso@online.fr"
+                }
+            ],
+            "description": "Simple User management for Silex intended to mimic FOSUserBundle features, work in progress , not production ready yet ! ",
+            "homepage": "https://github.com/Mparaiso/simpleuserserviceprovider",
+            "keywords": [
+                "User management"
+            ],
+            "time": "2014-03-16 16:25:59"
         },
         {
             "name": "pimple/pimple",
@@ -2050,53 +2203,47 @@
         },
         {
             "name": "symfony/security",
-            "version": "v2.4.2",
+            "version": "v2.3.11",
             "target-dir": "Symfony/Component/Security",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Security.git",
-                "reference": "ae020b9dc10e6438dc4033103c16bae7d46a4dd6"
+                "reference": "2a0c07ee32ab4ee7f82834707eaa5dcd662e5705"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Security/zipball/ae020b9dc10e6438dc4033103c16bae7d46a4dd6",
-                "reference": "ae020b9dc10e6438dc4033103c16bae7d46a4dd6",
+                "url": "https://api.github.com/repos/symfony/Security/zipball/2a0c07ee32ab4ee7f82834707eaa5dcd662e5705",
+                "reference": "2a0c07ee32ab4ee7f82834707eaa5dcd662e5705",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3",
                 "symfony/event-dispatcher": "~2.1",
                 "symfony/http-foundation": "~2.1",
-                "symfony/http-kernel": "~2.4"
-            },
-            "replace": {
-                "symfony/security-acl": "self.version",
-                "symfony/security-core": "self.version",
-                "symfony/security-csrf": "self.version",
-                "symfony/security-http": "self.version"
+                "symfony/http-kernel": "~2.1"
             },
             "require-dev": {
                 "doctrine/common": "~2.2",
                 "doctrine/dbal": "~2.2",
                 "ircmaxell/password-compat": "1.0.*",
                 "psr/log": "~1.0",
-                "symfony/expression-language": "~2.4",
+                "symfony/form": "~2.0",
                 "symfony/routing": "~2.2",
                 "symfony/validator": "~2.2"
             },
             "suggest": {
-                "doctrine/dbal": "For using the built-in ACL implementation",
-                "ircmaxell/password-compat": "For using the BCrypt password encoder in PHP <5.5",
-                "symfony/class-loader": "For using the ACL generateSql script",
-                "symfony/expression-language": "For using the expression voter",
-                "symfony/finder": "For using the ACL generateSql script",
-                "symfony/routing": "For using the HttpUtils class to create sub-requests, redirect the user, and match URLs",
-                "symfony/validator": "For using the user password constraint"
+                "doctrine/dbal": "to use the built-in ACL implementation",
+                "ircmaxell/password-compat": "",
+                "symfony/class-loader": "",
+                "symfony/finder": "",
+                "symfony/form": "",
+                "symfony/routing": "",
+                "symfony/validator": ""
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.4-dev"
+                    "dev-master": "2.3-dev"
                 }
             },
             "autoload": {
@@ -2122,7 +2269,185 @@
             ],
             "description": "Symfony Security Component",
             "homepage": "http://symfony.com",
+            "time": "2014-02-19 21:27:55"
+        },
+        {
+            "name": "symfony/security-bundle",
+            "version": "v2.3.11",
+            "target-dir": "Symfony/Bundle/SecurityBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/SecurityBundle.git",
+                "reference": "69c8d1dea7ee7ac0ec77191a83dd6c1d1bb715c0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/SecurityBundle/zipball/69c8d1dea7ee7ac0ec77191a83dd6c1d1bb715c0",
+                "reference": "69c8d1dea7ee7ac0ec77191a83dd6c1d1bb715c0",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3",
+                "symfony/http-kernel": "~2.2",
+                "symfony/security": "~2.2"
+            },
+            "require-dev": {
+                "symfony/form": "~2.1",
+                "symfony/framework-bundle": "~2.2",
+                "symfony/twig-bundle": "~2.2",
+                "symfony/validator": "~2.2",
+                "symfony/yaml": "~2.0"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.3-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Symfony\\Bundle\\SecurityBundle\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com",
+                    "homepage": "http://fabien.potencier.org",
+                    "role": "Lead Developer"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "http://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony SecurityBundle",
+            "homepage": "http://symfony.com",
+            "time": "2014-02-11 10:29:24"
+        },
+        {
+            "name": "symfony/security-core",
+            "version": "v2.4.2",
+            "target-dir": "Symfony/Component/Security/Core",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/security-core.git",
+                "reference": "f89d3aaafadc65e150949082af1a3f9b1ea8a9c3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/security-core/zipball/f89d3aaafadc65e150949082af1a3f9b1ea8a9c3",
+                "reference": "f89d3aaafadc65e150949082af1a3f9b1ea8a9c3",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "ircmaxell/password-compat": "1.0.*",
+                "psr/log": "~1.0",
+                "symfony/event-dispatcher": "~2.1",
+                "symfony/expression-language": "~2.4",
+                "symfony/http-foundation": "~2.4",
+                "symfony/validator": "~2.2"
+            },
+            "suggest": {
+                "ircmaxell/password-compat": "For using the BCrypt password encoder in PHP <5.5",
+                "symfony/event-dispatcher": "",
+                "symfony/expression-language": "For using the expression voter",
+                "symfony/http-foundation": "",
+                "symfony/validator": "For using the user password constraint"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.4-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Symfony\\Component\\Security\\Core\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com",
+                    "homepage": "http://fabien.potencier.org",
+                    "role": "Lead Developer"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "http://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony Security Component - Core Library",
+            "homepage": "http://symfony.com",
             "time": "2014-02-11 13:52:09"
+        },
+        {
+            "name": "symfony/security-csrf",
+            "version": "v2.4.2",
+            "target-dir": "Symfony/Component/Security/Csrf",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/security-csrf.git",
+                "reference": "0bff29b92dd81f032c89a84178b558941fea0c41"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/security-csrf/zipball/0bff29b92dd81f032c89a84178b558941fea0c41",
+                "reference": "0bff29b92dd81f032c89a84178b558941fea0c41",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3",
+                "symfony/security-core": "~2.4"
+            },
+            "require-dev": {
+                "symfony/http-foundation": "~2.1"
+            },
+            "suggest": {
+                "symfony/http-foundation": "For using the class SessionTokenStorage."
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.4-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Symfony\\Component\\Security\\Csrf\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com",
+                    "homepage": "http://fabien.potencier.org",
+                    "role": "Lead Developer"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "http://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony Security Component - CSRF Library",
+            "homepage": "http://symfony.com",
+            "time": "2014-01-07 13:29:32"
         },
         {
             "name": "symfony/serializer",

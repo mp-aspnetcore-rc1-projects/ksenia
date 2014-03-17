@@ -382,7 +382,7 @@ jQuery(function($) {
 									<% _.each(images,function(image){ %>\
 										<figure class="thumbnail">\
 											<a href="#image/<%-image.id%>/<%-image.title%>">\
-												<img data-src="/static/images/cache/<%-image.id%>.<%-image.extension%>"/>\
+												<img class="thumb" data-src="/static/images/cache/<%-image.id%>.<%-image.extension%>"/>\
 											</a>\
 										</figure>\
 									<% }); %>\
@@ -400,7 +400,7 @@ jQuery(function($) {
 
         page: _.template('<div class="page">\
 								<h2 class="primary"><%-title%></h2>\
-								<div><%=markdown%></div>\
+								<div class="markdown"><%=markdown%></div>\
 								<div class="space">&nbsp;</div>\
 							</div>'),
 
@@ -410,12 +410,12 @@ jQuery(function($) {
 										<% _.each(images,function(image){ %>\
 											<figure class="stripped thumbnail">\
 												<a href="#/project/<%-id%>/image/<%-image.id%>">\
-													<img data-src="/static/images/cache/<%-image.id%>.<%-image.extension%>"/>\
+													<img class="thumb" data-src="/static/images/cache/<%-image.id%>.<%-image.extension%>"/>\
 												</a>\
 											</figure>\
 										<% }); %>\
 									</section>\
-									<p><%=markdown%></p>\
+									<div class="markdown"><%=markdown%></div>\
 									<div class="space">&nbsp;</div>\
 							</div>'),
 
@@ -466,7 +466,7 @@ jQuery(function($) {
                         <section class="small">\
                             <hr>\
                             &copy; <% print((new Date).getFullYear()) %> Marc Paraiso. Ksenia Pirovskikh.<br>\
-                            programming - marc paraiso : mparaiso@online.fr\
+                            programming - marc paraiso : <a href="mailto:mparaiso@online.fr">mparaiso@online.fr</a>\
                         </section>\
                     </footer>')
     };
@@ -587,7 +587,7 @@ jQuery(function($) {
 
         },
         showResourceImages: function() {
-            this.$page.find('img').each(function(index) {
+            this.$page.find('img.thumb').each(function(index) {
                 var $this = $(this);
                 $this.parent().hide();
                 setTimeout(

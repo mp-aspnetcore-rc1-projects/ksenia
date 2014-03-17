@@ -21,11 +21,12 @@ jQuery(function($) {
 		var $this = $(this);
 		var field = $this.data('markdown-preview') || ""; // if value passed to attribute get it
 		// create markdown preview
-		var $target = $('<div>', {
-			class: 'form-control markdown-preview',
-			style: 'overflow:auto;',
-			height: $this.height()
-		}).html(markdown.makeHtml(xscape($this.val())));
+		var $target = $('<div class="markdown">')
+		.height($this.height())
+		.css('overflow-y','scroll')
+		.addClass('markdown-preview')
+		.addClass('form-control')
+		.html(markdown.makeHtml(xscape($this.val())));
 
 		$this.on({
 			'keyup': function() {
@@ -43,6 +44,6 @@ jQuery(function($) {
 	 */
 	$('[data-to-markdown]').each(function() {
 		var $this = $(this);
-		$this.html(markdown.makeHtml(xscape($this.text())));
+		$this.html(markdown.makeHtml(xscape($this.text()))).addClass('markdown');
 	});
 });

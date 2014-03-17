@@ -49,6 +49,8 @@ class Administration implements ControllerProviderInterface
         $adminController->mount('/menu', $menu->connect($app));
         $configuration = new Configuration();
         $adminController->mount('/configuration', $configuration->connect($app));
+        $user = new User();
+        $adminController->mount('/user', $user->connect($app));
         return $adminController;
     }
 }

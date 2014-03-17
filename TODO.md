@@ -10,7 +10,7 @@ FRONTEND
 BACKEND
 -------
 
-- [ ] Description should support markdown
-- [ ] enable markdown preview
+- [X] Description should support markdown
+- [X] enable markdown preview
 - [ ] images should be optimized when uploaded to database
 

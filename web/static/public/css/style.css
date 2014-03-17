@@ -280,6 +280,13 @@ pre {
 /**
  * HELPERS
  */
+.markdown{
+
+}
+.markdown img{
+    max-width:100%;
+    max-height:250px;
+}
 .inline {
     display: inline-block;
 }

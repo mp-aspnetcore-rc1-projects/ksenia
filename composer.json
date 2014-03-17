@@ -15,14 +15,16 @@
         "symfony/twig-bridge": "~2.3",
         "symfony/validator": "~2.3",
         "symfony/form": "~2.3",
-        "symfony/security":"~2.3.",
+        "symfony/security":"2.3.*",
         "mparaiso/doctrineodmserviceprovider": "0.*@dev",
         "doctrine/mongodb-odm": "*@dev",
         "doctrine/mongodb-odm-bundle": "3.*@dev",
         "monolog/monolog": "*",
         "symfony/monolog-bridge": "*",
         "symfony/serializer": "~2.3",
-        "mparaiso/silex-simplerest": "0.1.0"
+        "mparaiso/silex-simplerest": "0.1.0",
+        "mparaiso/simpleuserserviceprovider":"0.*",
+        "mparaiso/consoleserviceprovider":"0.1.*"
     },
     "provide": {
         "ext-mongo": "*",

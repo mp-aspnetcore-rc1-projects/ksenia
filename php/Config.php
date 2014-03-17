@@ -7,7 +7,9 @@
  */
 use Controller\Administration;
 use Controller\Index;
+use Mparaiso\Provider\ConsoleServiceProvider;
 use Mparaiso\Provider\DoctrineODMMongoDBServiceProvider;
+use Mparaiso\Provider\SimpleUserServiceProvider;
 use Mparaiso\SimpleRest\Controller\Controller as RestController;
 use Silex\Application;
 use Silex\Provider\HttpCacheServiceProvider;
@@ -19,6 +21,7 @@ use Silex\Provider\SessionServiceProvider;
 use Silex\Provider\TranslationServiceProvider;
 use Silex\Provider\TwigServiceProvider;
 use Silex\Provider\UrlGeneratorServiceProvider;
+use Silex\Provider\ValidatorServiceProvider;
 use Silex\ServiceProviderInterface;
 use Silex\Provider\FormServiceProvider;
 use Symfony\Component\HttpFoundation\Request;
@@ -50,11 +53,11 @@ class Config implements ServiceProviderInterface
         /* hard coded configuration */
         $app['ksu'] = array(
             'title' => "KSENIA PIROVSKIKH",
-            'subtitle'=>'Interior and Graphic Designer',
-            "version"=>"0.0.1",
+            'subtitle' => 'Interior and Graphic Designer',
+            "version" => "0.0.1",
             'template' => 'html5',
         );
-        $app['settings']=$app->share(function($app){
+        $app['settings'] = $app->share(function ($app) {
             return $app->configurationService->find();
         });
 
@@ -107,6 +110,52 @@ class Config implements ServiceProviderInterface
                 )
             )
         ));
+        $app->register(new SimpleUserServiceProvider, array(
+            'mp.user.service.user' => $app->share(function ($app) {
+                return $app['userService'];
+            }),
+            'mp.user.login_template' => 'mp.user.template.login',
+            'mp.user.template.layout' => "mp.user.template.layout",
+            'mp.user.user.class' => '\Entity\User',
+            "mp.user.om" => $app->share(function ($app) {
+                return $app['odm.om'];
+            }),
+            "mp.user.manager_registry" => $app->share(function ($app) {
+                return $app['odm.manager_registry'];
+            }),
+            'mp.user.allow_registration' => false
+        ));
+        $app->register(new SecurityServiceProvider, array(
+            "security.role_hierarchy" => array(
+                'ROLE_USER' => array(),
+                'ROLE_ADMIN' => array('ROLE_USER')),
+            "security.access_rules" => array(
+                array('/logout', 'IS_AUTHENTICATED_FULLY'),
+                array('/login-check', 'IS_AUTHENTICATED_FULLY'),
+                array('/private', 'IS_AUTHENTICATED_FULLY'),
+            ),
+            "security.firewalls" => $app->share(function (App $app) {
+                return array(
+                    "secured" => array(
+                        "pattern" => "^/",
+                        "anonymous" => TRUE,
+                        "form" => array(
+                            "login_path" => "/login",
+                            "check_path" => "/login-check"
+                        ),
+                        "logout" => array(
+                            "logout_path" => $app->url_generator->generate('mp.user.route.logout'),
+                            "target" => "/",
+                            "invalidate_session" => true,
+                            "delete_cookies" => true
+                        ),
+                        "users" => $app['mp.user.user_provider']
+                    )
+                );
+            })
+        ));
+        $app->register(new ConsoleServiceProvider(), array());
+        $app->register(new ValidatorServiceProvider(), array());
         $app['formFactory'] = $app->share(function ($app) {
             return $app['form.factory'];
         });
@@ -135,8 +184,11 @@ class Config implements ServiceProviderInterface
         $app['linkService'] = $app->share(function ($app) {
             return new \Service\Link($app['odm.dm']);
         });
-        $app['configurationService']=$app->share(function($app){
+        $app['configurationService'] = $app->share(function ($app) {
             return new \Service\Configuration($app['odm.dm']);
+        });
+        $app['userService'] = $app->share(function ($app) {
+            return new \Service\User($app['odm.dm'], $app["security.encoder_factory"]);
         });
         /** REST CONTROLLERS */
         $app['imageRestController'] = $app->share(function ($app) {
@@ -146,8 +198,8 @@ class Config implements ServiceProviderInterface
                 "resourcePluralize" => "images",
                 "model" => '\Entity\Image',
                 "service" => $app["imageService"],
-                "criteria" => array('project','language'),
-                "logger"=>$app['logger']
+                "criteria" => array('project', 'language'),
+                "logger" => $app['logger']
             ));
         });
         $app['projectRestController'] = $app->share(function ($app) {
@@ -159,7 +211,7 @@ class Config implements ServiceProviderInterface
                 "service" => $app["projectService"],
                 "logger" => $app['logger'],
                 "allows" => array('list', 'read'),
-                "criteria"=>array('language')
+                "criteria" => array('language')
             ));
         });
         $app['pageRestController'] = $app->share(function ($app) {
@@ -171,7 +223,7 @@ class Config implements ServiceProviderInterface
                 "service" => $app['pageService'],
                 "logger" => $app['logger'],
                 "allows" => array('list', 'read'),
-                'criteria'=>array('language')
+                'criteria' => array('language')
             ));
         });
         $app['menuRestController'] = $app->share(function ($app) {
@@ -183,7 +235,7 @@ class Config implements ServiceProviderInterface
                 "service" => $app['menuService'],
                 "logger" => $app['logger'],
                 "allows" => array('list', 'read'),
-                "criteria"=>array('isMain','language')
+                "criteria" => array('isMain', 'language')
             ));
         });
 
@@ -200,12 +252,42 @@ class Config implements ServiceProviderInterface
         /**
          * routing
          */
+        /** users */
+        $app->match('/login', 'mp.user.controller.security:login')
+            ->bind('mp.user.route.login');
+        $app->match('/register')
+            ->bind('mp.user.route.register');
+        $app->match('/login-check')
+            ->bind('mp.user.route.login.check');
+        /**  */
         $app->mount('/private', new Administration());
         $app->mount('/private/api/', $app['imageRestController']);
         $app->mount('/private/api/', $app['projectRestController']);
         $app->mount('/private/api/', $app['pageRestController']);
         $app->mount('/private/api/', $app['menuRestController']);
         $app->mount('/', new Index());
+        /** handle production errors */
+        $app->error(function (\Exception $e, $code) use ($app) {
+            /* @var App $app */
+            // if production show custom error page
+            if (!$app['debug']) {
+                switch ($code) {
+                    case 404:
+                        $message = 'The requested page could not be found.';
+                        break;
+                    default:
+                        $message = 'We are sorry, but something went terribly wrong.';
+                }
+                switch ($app->request->getRequestFormat('html')) {
+                    case 'json':
+                        $response = $app->json(array('message' => $message));
+                        break;
+                    default:
+                        $response = $app->twig->render('error', array('message' => $message));
+                }
+                return $response;
+            }
+        });
     }
 }
 

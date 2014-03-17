@@ -9,6 +9,14 @@ $vars = array(
     'table_class' => 'table table-hover'
 );
 $templates = array();
+$templates['error'] = <<<HERE
+    {%extends 'layout'%}
+    {%block top_nav%}
+    {%endblock%}
+    {%block content%}
+        <div class="alert alert-error">{{message}}</div>
+    {%endblock%}
+HERE;
 $templates['layout'] = <<<HERE
 	<!doctype html>
 	<html lang='{{app.locale}}'>
@@ -19,9 +27,16 @@ $templates['layout'] = <<<HERE
 				<meta http-equiv='X-UA-Compatible' content='IE=edge'/>
 				<meta name='viewport' content='width=device-width, initial-scale=1'/>
 			{% endblock %}
-			{% block styles %}{% endblock %}
+	        {% block styles %}
+                {%include 'bootstrap_css'%}
+                {# google font #}
+                <link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css'>
+                {# custom styles #}
+                <link rel="stylesheet" href="/static/css/styles.css">
+            {% endblock %}
 		</head>
 		<body>
+		    {%block top_nav%}
 			<nav class="navbar navbar-inverse">
                 <div class="container">
                     <section class="navbar-header">
@@ -29,12 +44,11 @@ $templates['layout'] = <<<HERE
                     </section>
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="{{path('index')}}">Home</a></li>
-                        {#<li><a href="#">Services</a></li>
-                        <li><a href="#">Clients</a></li>
-                        <li><a href="#">About me</a></li>#}
+                        {% include app['mp.user.template.status'] %}
                     </ul>
                 </div>
             </nav>
+            {%endblock%}
 			<main class='container'>
 				<noscript><h2 class="alert alert-warning">Please Enable Javascript!</h2></noscript>
 				{%block content%}{%endblock%}
@@ -48,22 +62,74 @@ $templates['layout'] = <<<HERE
 		</body>
 	</html>
 HERE;
-$templates['index'] = <<<HERE
-	{% extends 'layout' %}
-	{% block content %}
-		<h1>HOMEPAGE</h1>
-	{% endblock %}
+
+/** user registration */
+$templates['mp.user.template.layout'] = <<<HERE
+    {%extends 'layout'%}
+    {%block content %}
+    <div class="row">
+        {% block mp_user_flash %}
+            {% include app['mp.user.template.flash'] %}
+        {% endblock %}
+    </div>
+    <div class="row">
+        {% block mp_user_content %}
+        {% endblock %}
+    </div>
+    {%endblock%}
 HERE;
+$templates['mp.user.template.login'] = <<<HERE
+    {% extends app['mp.user.template.layout'] %}
+    {% block mp_user_content %}
+    <h4>Please login</h4>
+    <form class="form col-sm-4" action="{{ path('mp.user.route.login.check')}}" method='POST'>
+        <div>  {{ error }}</div>
+        <div>
+            <div class="form-group">
+                <label for="login">login
+                </label>
+                <input class="form-control"
+                    type="text" id="username" name='_username' value='{{last_username}}' />
+            </div>
+
+            <div class="form-group">
+                <label for="password">password
+                </label>
+                <input
+                    class="form-control"
+                    id="password" type="password" name='_password'/>
+            </div>
+        </div>
+        <div>
+            <input class='btn btn-default' type="reset" value="Reset"  />
+            <input class='btn btn-primary' type="submit" value="Login"  />
+        </div>
+    </form>
+    {% endblock %}
+HERE;
+$templates['user_profile'] = <<<HERE
+    {%extends 'admin_layout'%}
+    {%block admin_content%}
+        <header class="lead">
+            <ol class="breadcrumb">
+                <li>User</li>
+                <li class="active">Your Profile</li>
+            </ol>
+        </header>
+        <div class="row">
+            <dl class="col-sm-12">
+                <dt>Username</dt>
+                <dd>{{ app.security.token.user.username}}</dd>
+                <dt>Email</dt>
+                <dd>{{ app.security.token.user.email}}</dd>
+            </dl>
+        </div>
+    {%endblock%}
+HERE;
+
 /** administration */
 $templates['admin_layout'] = <<<HERE
 	{% extends 'layout'%}
-	{% block styles %}
-	    {%include 'bootstrap_css'%}
-		{# google font #}
-		<link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css'>
-		{# custom styles #}
-		<link rel="stylesheet" href="/static/css/styles.css">
-	{% endblock %}
 	{% block content %}
 		<section class='row'>
 		<aside class='col-md-3'>
@@ -120,6 +186,22 @@ $templates['admin_index'] = <<<HERE
 	{% extends 'admin_layout' %}
 	{% block admin_content %}
         <header class="lead text-muted">ADMINISTRATION</header>
+        <div class="row">
+            <p class=" lead col-sm-12">
+                Welcome to the portfolio administration panel.
+            </p>
+            <p  class="col-sm-12">
+                A few statistics :
+            </p>
+            <div class="col-sm-12">
+                <h3 class="text-info"><a href="{{path('page_index')}}">{{app.pageService.count()}} pages</a></h3>
+                <h3 class="text-info"><a href="{{path('project_index')}}">{{app.projectService.count() }} projects</a></h3>
+                <h3 class="text-info">{{app.imageService.count()}} images</h3>
+                <h3 class="text-info"><a href="{{path('menu_index')}}">{{app.menuService.count()}} menus</a></h3>
+                <h3 class="text-info">{{app.linkService.count()}} links</h3>
+            </div>
+
+        </div>
 	{% endblock %}
 HERE;
 $templates['admin_upload'] = <<<HERE
@@ -651,7 +733,7 @@ $templates['page_read'] = <<<HERE
 		{%include 'showdown' %}
 	{%endblock%}
 HERE;
-$templates['page_form']=<<<HERE
+$templates['page_form'] = <<<HERE
     {{form_start(form)}}
         {% for field in form %}
         <div class="form-group">
@@ -926,7 +1008,7 @@ $templates['bootstrap_css'] = <<<HERE
 	{# Optional theme #}
 	{#<link rel='stylesheet' href='//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css'>#}
 HERE;
-$templates['showdown']=<<<HERE
+$templates['showdown'] = <<<HERE
 	<script defer src="//cdnjs.cloudflare.com/ajax/libs/showdown/0.3.1/showdown.min.js"></script>
 	<script defer src="/static/private/javascript/to-markdown.js"></script>
 HERE;

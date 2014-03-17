@@ -144,6 +144,11 @@ main.container {
 .image-list.ng-move.ng-move.active {
     opacity: 0.6;
 }
+/** markdown **/
 .markdown-preview{
     color:#777;
+}
+.markdown img{
+    max-width:100%;
+    max-height:250px;
 }

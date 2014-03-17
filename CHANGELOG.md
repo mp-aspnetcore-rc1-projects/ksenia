@@ -23,3 +23,4 @@
 - Sun Mar 16 14:58:52 GMT 2014 : images now display description on front page
 - Sun Mar 16 15:02:07 GMT 2014 : homepage fix:illegal character in index.js
 - Sun Mar 16 15:06:14 GMT 2014 : homepage fix: footer now displays correct year
+- Mon Mar 17 02:42:18 GMT 2014 : administration is now password protected

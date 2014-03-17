@@ -1,7 +1,7 @@
 body {
     background: #EFEFEF;
     color: #555;
-    font-family: "Georgia", sans-serif;
+    font-family: "Georgia","Times", sans-serif;
     font-size: 100%;
     max-width: 100%;
 }
@@ -83,7 +83,22 @@ nav {
     float: right;
     width: auto;
 }
-
+nav ul{
+    padding-left:0;
+    margin-left:0;
+    width:100%;
+}
+nav .nav{
+    /*text-align: justify;*/
+}
+nav .nav:after{
+    content:"";
+    width:100%;
+    line-height: 0;
+}
+nav .nav-sub{
+    font-size: 0.8em;
+}
 nav li {
     color: #888;
     display: inline;

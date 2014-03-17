@@ -25,3 +25,4 @@
 - Sun Mar 16 15:06:14 GMT 2014 : homepage fix: footer now displays correct year
 - Mon Mar 17 02:42:18 GMT 2014 : administration is now password protected
 - Mon Mar 17 03:21:32 GMT 2014 : user profile
+- Mon Mar 17 03:23:32 GMT 2014 : black spinner

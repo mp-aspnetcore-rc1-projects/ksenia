@@ -6,6 +6,9 @@
     <title>{% block title app.settings.title ~ " - " ~ app.settings.subtitle %}</title>
     <meta name="description" content="{{ app.settings.subtitle }}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="cleartype" content="on">
+    <!--http://www.mattcutts.com//blog/google-supports-meta-noodp-tag/-->
+    <meta name="robots" content="NOYDIR,NOODP" />
     {% block styles %}
         <!-- STYLES -->
         <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400' rel='stylesheet' type='text/css'>

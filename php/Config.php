@@ -130,6 +130,7 @@ class Config implements ServiceProviderInterface
                 'ROLE_USER' => array(),
                 'ROLE_ADMIN' => array('ROLE_USER')),
             "security.access_rules" => array(
+                array('/login','IS_AUTHENTICATED_ANONYMOUSLY'),
                 array('/logout', 'IS_AUTHENTICATED_FULLY'),
                 array('/login-check', 'IS_AUTHENTICATED_FULLY'),
                 array('/private', 'IS_AUTHENTICATED_FULLY'),

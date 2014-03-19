@@ -447,28 +447,28 @@ jQuery(function($) {
                                 </header>\
                             </section>\
                             <section class="gallery">\
-                        <section id="gallery" class="container">\
-                            <figure><img/></figure>\
-                            <div class="controls">\
-                                <button class="previous"></button>\
-                                <button class="next"></button>\
-                            </div>\
-                            <!-- SUMMARY-->\
-                            <details id="detail" class="summary" open>\
-                            </details>\
-                            <!--ENDSUMMARY-->\
-                        </section>\
-                        </section>\
-                    <section class="resource">\
-                        <div id="page" class="container"></div>\
-                    </section>\
-                    <footer class="container">\
-                        <section class="small">\
-                            <hr>\
-                            &copy; <% print((new Date).getFullYear()) %> Marc Paraiso. Ksenia Pirovskikh.<br>\
-                            programming - marc paraiso : <a href="mailto:mparaiso@online.fr">mparaiso@online.fr</a>\
-                        </section>\
-                    </footer>')
+                                <section id="gallery" class="container">\
+                                    <figure><img/></figure>\
+                                    <div class="controls">\
+                                        <button class="previous"></button>\
+                                        <button class="next"></button>\
+                                    </div>\
+                                    <!-- SUMMARY-->\
+                                    <details id="detail" class="summary" open>\
+                                    </details>\
+                                    <!--ENDSUMMARY-->\
+                                </section>\
+                            </section>\
+                            <section class="resource">\
+                                <div id="page" class="container"></div>\
+                            </section>\
+                            <footer class="container">\
+                                <section class="small">\
+                                    <hr>\
+                                    &copy; <% print((new Date).getFullYear()) %> Marc Paraiso. Ksenia Pirovskikh.<br>\
+                                    programming - marc paraiso : <a href="mailto:mparaiso@online.fr">mparaiso@online.fr</a>\
+                                </section>\
+                            </footer>')
     };
     View = Backbone.View.extend({
         events: {

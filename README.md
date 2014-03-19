@@ -27,5 +27,4 @@ You cannot use it for personal nor commercial projects.
 - Drag and Drop file image upload
 - User login/logout authentication,authorization management
 - User registration through a console application
-- Images are saves in the database , and cached on the app server
-
+- Images are saved in the database then cached on the server when required.

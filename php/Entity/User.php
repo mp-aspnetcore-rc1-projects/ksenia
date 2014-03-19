@@ -132,8 +132,6 @@ class User implements UserInterface
      * the plain-text password is stored on this object.
      */
     public function eraseCredentials() {
-        $this->password = "";
-        $this->salt = "";
     }
 
     public function __toString() {

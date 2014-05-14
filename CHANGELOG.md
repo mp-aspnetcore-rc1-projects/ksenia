@@ -28,3 +28,4 @@
 - Mon Mar 17 03:23:32 GMT 2014 : black spinner
 - Mon Mar 17 03:54:32 GMT 2014 : subnav font reduced
 - Mon Mar 17 11:04:23 GMT 2014 : simpleuserserviceprovider updated
+- Wed Mar 19 20:59:42 GMT 2014 : password and salt were erased

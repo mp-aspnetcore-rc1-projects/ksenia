@@ -1,0 +1,154 @@
+/**
+ * KSENIA PORTFOLIO
+ * @copyright 2014 mparaiso <mparaiso@online.fr>
+ * all rights reserved
+ * this code was open sourced for educational purpose only.
+ */
+* {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    border-radius: 0 0;
+}
+footer.container{
+    margin-top:200px;
+}
+body {
+    font-family: 'PT Sans', Helvetica, sans-serif;
+}
+
+/**
+ * CLASSES
+ */
+.inline {
+    display: inline;
+}
+
+.no-select,.drop-zone {
+    /*
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    /* Required to make elements draggable in old WebKit */
+    /*
+    -khtml-user-drag: element;
+    -webkit-user-drag: element;
+    */
+}
+[contenteditable]:hover{
+    border:1px solid rgba(200,200,200,1);
+}
+[contenteditable]{
+    cursor: text;
+    display:inline-block;
+    border:1px solid rgba(200,200,200,.5);
+    padding:1px 3px;
+    /*
+    -webkit-touch-callout: all;
+    -webkit-user-select: all;
+    -khtml-user-select: all;
+    -moz-user-select: all;
+    -ms-user-select: all;
+    user-select: all;
+    */
+    /* Required to make elements draggable in old WebKit */
+    /*
+    -khtml-user-drag: element;
+    -webkit-user-drag: element;
+    */
+}
+[draggable] {
+    cursor: move;
+}
+
+.item {
+    width: 50px;
+    height: 50px;
+    display: inline-block;
+    margin: 10px 10px;
+    /*background-color: #AAF;*/
+    overflow: hidden;
+}
+
+.item progress {
+    width: 100%;
+    height: 100%;
+}
+
+main.container {
+    min-height: 700px;
+}
+
+/*
+#drop_zone {
+    background-color: #EEE;
+    min-width: 400px;
+    min-height: 400px;
+    font-size: 20px;
+}
+*/
+.ng-dragged-over,
+.dragged-over {
+    border: 3px solid #989898 !important;
+    opacity: 0.3 !important;
+}
+
+.ng-dragged {
+    opacity: 0.5;
+}
+
+.drop-zone {
+    position: relative;
+    /*min-height: 200px;*/
+    vertical-align: middle;
+    z-index: 0;
+    border:3px dashed #d8d8d8;
+    background-color: #f1f6e7;
+}
+
+.drop-zone .background-text {
+    width: 300px;
+    position: absolute;
+    font-size: 2em;
+    color: #909588;
+    z-index: -100;
+    margin: auto;
+    top: 50%;
+    left: 35%;
+    vertical-align: middle;
+    cursor: default;
+}
+
+/** animation for angularjs */
+.image-list.ng-move
+.image-list.ng-enter,
+.image-list.ng-leave {
+    -webkit-transition: all ease-in 0.6s;
+    transition: all ease-in 0.6s;
+}
+
+.image-list.ng-enter,
+.image-list.ng-move,
+.image-list.ng-leave.ng-leave-active {
+    opacity: 0;
+}
+
+.image-list.ng-leave,
+.image-list.ng-enter.ng-enter-active {
+    opacity: 1;
+}
+
+.image-list.ng-move.ng-move.active {
+    opacity: 0.6;
+}
+/** markdown **/
+.markdown-preview{
+    color:#777;
+}
+.markdown img{
+    max-width:100%;
+    max-height:250px;
+}

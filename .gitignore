@@ -1,0 +1,6 @@
+.idea
+/vendor/
+/temp/
+/web/static/images/cache/
+/dev/
+

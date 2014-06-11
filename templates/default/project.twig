@@ -1,0 +1,30 @@
+{% extends 'layout.twig' %}
+{% block content %}
+    <header class="lead text-muted">
+        {{ project.title }} -
+        <span class="small text-muted">{{ project.client }}</span>
+    </header>
+    <article>
+            <section class="row">
+                <div class="col-sm-8">
+                    {% for image in project.images[:8] %}
+                        <div class="col-sm-3">
+                            <a href="{{ path('image',{projectId:project.id,imageId:image.id}) }}">
+                                <figure class="thumbnail">
+                                    <img style="height:150px;"
+                                         src="{{ path('image_load',{projectId:project.id,imageId:image.id}) }}"
+                                         alt="{{ image.title }}"/>
+
+                                </figure>
+                                <figcaption>{{ image.title }}</figcaption>
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="col-sm-4">
+                    <p><strong>Client : {{ project.client }}</strong></p>
+                    <p>{{ project.description }}</p>
+                </div>
+            </section>
+    </article>
+{% endblock %}

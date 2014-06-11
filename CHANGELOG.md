@@ -1,0 +1,31 @@
+- Wed Mar 12 12:48:43 GMT 2014  : Setting page created
+- Wed Mar 12 12:58:47 GMT 2014 : clean up index.twig
+- Wed Mar 12 18:04:28 GMT 2014 : menu links now direct to resources
+- Wed Mar 12 18:08:33 GMT 2014 : showImage is not a function error
+- Wed Mar 12 18:41:45 GMT 2014 : spinner showing up
+- Wed Mar 12 19:26:11 GMT 2014 : image summary is now on the bottom
+- Wed Mar 12 19:33:17 GMT 2014 : image summary slideDown
+- Wed Mar 12 19:36:05 GMT 2014 : image summary slideUp slideDown and font reduced
+- Wed Mar 12 19:41:38 GMT 2014 : container font-size
+- Thu Mar 13 17:00:25 GMT 2014 : design changed
+- Thu Mar 13 17:21:41 GMT 2014 : zoom removed
+- Thu Mar 13 17:58:34 GMT 2014 : gallery slideUp/Down
+- Fri Mar 14 17:40:10 GMT 2014 : Slideshow now displays images related to project when project is selected.
+- Fri Mar 14 19:25:05 GMT 2014 : resource images fadein
+- Fri Mar 14 22:14:58 GMT 2014 : front displays only published resources
+- Fri Mar 14 22:23:07 GMT 2014 : page did not have content
+- Fri Mar 14 22:31:34 GMT 2014 : updated images were unpublished
+- Fri Mar 14 23:23:59 GMT 2014 : previous and next image links are now pushed into browsers history
+- Sat Mar 15 01:09:00 GMT 2014 : width is 85%
+- Sat Mar 15 14:23:18 GMT 2014 : front-end tests added, fix = next/previous buttons didnt work properly on firefox
+- Sun Mar 16 14:42:04 GMT 2014 : markdown support added
+- Sun Mar 16 14:56:42 GMT 2014 : markdown syntax guid link updated
+- Sun Mar 16 14:58:52 GMT 2014 : images now display description on front page
+- Sun Mar 16 15:02:07 GMT 2014 : homepage fix:illegal character in index.js
+- Sun Mar 16 15:06:14 GMT 2014 : homepage fix: footer now displays correct year
+- Mon Mar 17 02:42:18 GMT 2014 : administration is now password protected
+- Mon Mar 17 03:21:32 GMT 2014 : user profile
+- Mon Mar 17 03:23:32 GMT 2014 : black spinner
+- Mon Mar 17 03:54:32 GMT 2014 : subnav font reduced
+- Mon Mar 17 11:04:23 GMT 2014 : simpleuserserviceprovider updated
+- Wed Mar 19 20:59:42 GMT 2014 : password and salt were erased

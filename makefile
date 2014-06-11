@@ -10,4 +10,6 @@ run:
 	@php -S localhost:3000 -t web web/index.php &
 deploy: push
 	@git push heroku master
+os: commit
+	@git push openshift master
 .PHONY: commit run test push deploy

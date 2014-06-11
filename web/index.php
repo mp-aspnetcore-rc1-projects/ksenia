@@ -12,7 +12,7 @@ if (php_sapi_name() === 'cli-server' && is_file($filename)) {
 $vendor = require __DIR__ . '/../vendor/autoload.php';
 $vendor->add('', __DIR__ . '/../app');
 /* application bootstrap */
-$debug = getenv('PHP_ENV') === 'production' ? false : true;
+$debug = getenv('PHP_ENV') === 'development' ? true : false;
 $app = new \App(array('debug' => $debug));
 //enable forms to send _PUT or _DELETE requests
 Request::enableHttpMethodParameterOverride();

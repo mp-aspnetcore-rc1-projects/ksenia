@@ -11,7 +11,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 $autoload = require(__DIR__ . '/../vendor/autoload.php');
-$autoload->add('', __DIR__ . '/../php');
+$autoload->add('', __DIR__ . '/../app');
 
 $app = new App(array('debug' => true, 'session.test' => true));
 

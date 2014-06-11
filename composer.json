@@ -22,6 +22,7 @@
         "monolog/monolog": "*",
         "symfony/monolog-bridge": "*",
         "symfony/serializer": "~2.3",
+        "symfony/intl":"~2.3",
         "mparaiso/silex-simplerest": "0.1.0",
         "mparaiso/simpleuserserviceprovider":"0.0.*",
         "mparaiso/consoleserviceprovider":"0.1.*"

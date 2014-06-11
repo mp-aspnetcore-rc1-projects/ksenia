@@ -7,7 +7,6 @@
             "email": "aikah@free.fr"
         }
     ],
-    "minimum-stability":"dev",
     "require": {
         "silex/silex": "1.*@dev",
         "doctrine/dbal": "*",
@@ -18,7 +17,7 @@
         "symfony/form": "~2.3",
         "symfony/security":"2.3.*",
         "mparaiso/doctrineodmserviceprovider": "0.*@dev",
-        "doctrine/mongodb-odm": "*@dev",
+        "doctrine/mongodb-odm": "1.0.*@dev",
         "doctrine/mongodb-odm-bundle": "3.*@dev",
         "monolog/monolog": "*",
         "symfony/monolog-bridge": "*",

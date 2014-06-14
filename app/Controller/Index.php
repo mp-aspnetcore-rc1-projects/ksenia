@@ -21,12 +21,15 @@ class Index implements ControllerProviderInterface
         return $app->twig->render('index.twig');
     }
 
-    function project(App $app, $projectId, $imageId) {
+    function project(App $app,$projectId){
+        $project=$app->projectService->find($projectId) or $app->abort(404);
+        return $app->twig->render('project.twig',array('project'=>$project));
+    }
+
+    function image(App $app, $projectId, $imageId) {
         /** @var \Entity\Project $project */
         $project = $app->projectService->find($projectId) or $app->abort(404);
-        if ($imageId) {
-            $image = $project->getImageById($imageId) or $app->abort(404);
-        }
+        $image = $project->getImageById($imageId) or $app->abort(404);
         return $app->twig->render('project.twig', array('image' => $image, 'project' => $project));
     }
 
@@ -110,8 +113,9 @@ class Index implements ControllerProviderInterface
         $portfolioController->get('/', array($this, 'index'))
             ->bind('index');
         $portfolioController->get('/project/{projectId}', array($this, 'project'))
+            ->value('image',null)
             ->bind('project');
-        $portfolioController->get('/project/{projectId}/image/{imageId}', array($this, 'project'))
+        $portfolioController->get('/project/{projectId}/image/{imageId}', array($this, 'image'))
             ->bind('image');
         $portfolioController->get('/page/{pageId}/{title}', array($this, 'page'))
             ->value('title','')

@@ -30,3 +30,4 @@
 - Mon Mar 17 11:04:23 GMT 2014 : simpleuserserviceprovider updated
 - Wed Mar 19 20:59:42 GMT 2014 : password and salt were erased
 - Wed Jun 11 16:42:47 GMT 2014 : first
+- Sat Jun 14 04:24:50 GMT 2014 : project

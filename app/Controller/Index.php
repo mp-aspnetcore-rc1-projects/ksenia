@@ -29,17 +29,15 @@ class Index implements ControllerProviderInterface
         return $app->twig->render('index.twig', array('image' => $image));
     }
 
-    function project(App $app, $projectId)
-    {
-        $project = $app->projectService->find($projectId) or $app->abort(404);
-        return $app->twig->render('project.twig', array('project' => $project));
-    }
-
     function projectImage(App $app, $projectId, $imageId)
     {
         /** @var \Entity\Project $project */
         $project = $app->projectService->find($projectId) or $app->abort(404);
-        $image = $project->getImageById($imageId) or $app->abort(404);
+
+        $image = $project->getImageById($imageId);
+        if ($image == null) {
+            $image = $project->getImages()->first() or $app->abort(404);
+        }
         return $app->twig->render('project.twig', array('image' => $image, 'project' => $project));
     }
 
@@ -132,9 +130,10 @@ class Index implements ControllerProviderInterface
         $portfolioController->get('/image/{imageId}/{title}', array($this, 'image'))
             ->value('title', null);
 
-        $portfolioController->get('/project/{projectId}/{title}', array($this, 'project'))
+        $portfolioController->get('/project/{projectId}/{title}', array($this, 'projectImage'))
             ->value('title', null)
-            ->value('image', null)
+            ->value('imageId', null)
+            ->bind('projectImage')
             ->bind('project');
         $portfolioController->get('/project/{projectId}/image/{imageId}', array($this, 'projectImage'))
             ->bind('image');

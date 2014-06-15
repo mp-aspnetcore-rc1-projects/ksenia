@@ -11,7 +11,7 @@
     <!--http://www.mattcutts.com//blog/google-supports-meta-noodp-tag/-->
     <meta name="robots" content="NOYDIR,NOODP"/>
     <!--favicon-->
-    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico"/>
     {% block opengraph %}
 
         <meta property="fb:app_id" content="{{ app.settings.facebookAppId }}"/>
@@ -23,6 +23,13 @@
         <meta name="google-site-verification" content="{{ app.settings.googleSiteVerification }}"/>
     {% endblock %}
     {% block twittercard %}
+        {% if image is defined %}
+            <meta name="twitter:site" content="{{ app.settings.twitterUsername }}">
+            <meta name="twitter:creator" content="{{ app.settings.twitterUsername }}">
+            <meta name="twitter:card" content="photo"/>
+            <meta name="twitter:title" content="{{ image.description }}"/>
+            <meta name="twitter:image" content="{{ url('image_load',{imageId:image.id,extension:image.extension}) }}"/>
+        {% endif %}
     {% endblock %}
     {% block styles %}
         <!-- STYLES -->

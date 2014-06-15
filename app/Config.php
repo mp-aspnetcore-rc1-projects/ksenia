@@ -55,13 +55,8 @@ class Config implements ServiceProviderInterface
         $app['temp'] = __DIR__ . "/../temp";
         /* hard coded configuration */
         $app['ksu'] = array(
-            'title' => "KSENIA PIROVSKIKH",
-            'subtitle' => 'Interior and Graphic Designer',
             "version" => "0.0.1",
-            'template' => 'html5',
-            'opengraph' => array(
-                "app_id" => "849201731760693"
-            )
+            'template' => 'html5'
         );
         $app['settings'] = $app->share(function ($app) {
             return $app->configurationService->find();

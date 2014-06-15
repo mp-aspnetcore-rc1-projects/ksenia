@@ -483,7 +483,7 @@ jQuery(function ($) {
                                         programming - marc paraiso : <a href="mailto:mparaiso@online.fr">mparaiso@online.fr</a>\
                                     </div>\
                                     <div class="right">\
-                                        <a class="share facebook" href="#"><i class="icon icon-facebook"></i></a>\
+                                        <a class="share facebook" href="javascript:void 0;"><i class="icon icon-facebook"></i></a>\
                                         <a class="share twitter" href="http://twitter.com/share" target="_blank"><i class="icon icon-twitter"></i></a>\
                                     </div>\
                                 </section>\
@@ -529,6 +529,9 @@ jQuery(function ($) {
         },
         shareFacebook: function (evt) {
             window.open("http://www.facebook.com/sharer/sharer.php?u=" + window.location.href, "_blank");
+            evt.stopPropagation();
+            evt.preventDefault();
+            return false;
         },
         showSummary: function () {
             var deferred = $.Deferred();

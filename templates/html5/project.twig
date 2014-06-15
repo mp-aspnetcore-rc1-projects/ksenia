@@ -9,8 +9,8 @@
     {{ parent() }}
 {% endblock %}
 {% block twittercard %}
-    <meta name="twitter:site" content="{{app.request.uri}}">
-    <meta name="twitter:creator" content="{{app.settings.title}}">
+    <meta name="twitter:site" content="{{ app.settings.twitterUsername }}">
+    <meta name="twitter:creator" content="{{ app.settings.twitterUsername }}">
     <meta name="twitter:card" content="photo"/>
     <meta name="twitter:title" content="{{ image.description }}"/>
     <meta name="twitter:image" content="{{ url('image_load',{imageId:image.id,extension:image.extension}) }}"/>

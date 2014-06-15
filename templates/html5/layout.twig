@@ -10,18 +10,17 @@
     <meta name="ROBOTS" content="INDEX, FOLLOW">
     <!--http://www.mattcutts.com//blog/google-supports-meta-noodp-tag/-->
     <meta name="robots" content="NOYDIR,NOODP"/>
+    <!--favicon-->
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
     {% block opengraph %}
 
-        <meta property="fb:app_id" content="{{ app.ksu.opengraph.app_id }}"/>
+        <meta property="fb:app_id" content="{{ app.settings.facebookAppId }}"/>
         <meta property="og:site_name" content"{{ app.settings.title }}"/>
         <meta property="og:url" content="{{ app.request.uri }}"/>
         <meta property="og:title" content="{{ app.settings.title }}"/>
         <meta property="og:description" content="{{ app.settings.subtitle }}"/>
         <!--google verification -->
-        <meta name="google-site-verification" content="057nzccyBOntpG9lqhwOZ1s9NfpOPzS29h308SFqeNo" />
-
-
-
+        <meta name="google-site-verification" content="{{ app.settings.googleSiteVerification }}"/>
     {% endblock %}
     {% block twittercard %}
     {% endblock %}
@@ -67,6 +66,7 @@
                 version: "{{app.ksu.version}}",
                 title: "{{app.settings.title}}",
                 subtitle: "{{app.settings.subtitle}}",
+                contactEmail: "{{app.settings.contactEmail}}",
                 projectResource: "{{path('public_project_resource')}}",
                 pageResource: "{{path('public_page_resource')}}",
                 menuResource: "{{ path('public_menu_resource') }}"

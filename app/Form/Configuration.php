@@ -11,12 +11,17 @@ use Transformer\StringToArray;
 
 class Configuration extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options) {
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
         parent::buildForm($builder, $options);
         $builder
             ->add("title", "text")
             ->add('subtitle', 'text')
-            ->add('description','textarea',array('attr'=>array('rows'=>3)))
+            ->add('description', 'textarea', array('attr' => array('rows' => 3)))
+            ->add('contactEmail', 'text', array('required' => false))
+            ->add('twitterUsername', 'text', array('required' => false))
+            ->add('googleSiteVerification', 'text', array('required' => true, 'data' => '057nzccyBOntpG9lqhwOZ1s9NfpOPzS29h308SFqeNo'))
+            ->add('facebookAppId', 'text', array('required' => true, 'data' => "849201731760693"))
             ->add('language', 'choice', array('label' => "Default Language",
                 'choices' => array('en' => 'English', 'ru' => 'Russian')));
     }
@@ -27,7 +32,8 @@ class Configuration extends AbstractType
      *
      * @return string The name of this type
      */
-    public function getName() {
+    public function getName()
+    {
         return "configuration";
     }
 

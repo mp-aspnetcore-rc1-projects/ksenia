@@ -107,6 +107,38 @@ class EntityConfigurationHydrator implements HydratorInterface
             $this->class->reflFields['meta']->setValue($document, $return);
             $hydratedData['meta'] = $return;
         }
+
+        /** @Field(type="string") */
+        if (isset($data['twitterUsername'])) {
+            $value = $data['twitterUsername'];
+            $return = (string) $value;
+            $this->class->reflFields['twitterUsername']->setValue($document, $return);
+            $hydratedData['twitterUsername'] = $return;
+        }
+
+        /** @Field(type="string") */
+        if (isset($data['facebookAppId'])) {
+            $value = $data['facebookAppId'];
+            $return = (string) $value;
+            $this->class->reflFields['facebookAppId']->setValue($document, $return);
+            $hydratedData['facebookAppId'] = $return;
+        }
+
+        /** @Field(type="string") */
+        if (isset($data['contactEmail'])) {
+            $value = $data['contactEmail'];
+            $return = (string) $value;
+            $this->class->reflFields['contactEmail']->setValue($document, $return);
+            $hydratedData['contactEmail'] = $return;
+        }
+
+        /** @Field(type="string") */
+        if (isset($data['googleSiteVerification'])) {
+            $value = $data['googleSiteVerification'];
+            $return = (string) $value;
+            $this->class->reflFields['googleSiteVerification']->setValue($document, $return);
+            $hydratedData['googleSiteVerification'] = $return;
+        }
         return $hydratedData;
     }
 }

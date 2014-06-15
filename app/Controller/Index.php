@@ -6,6 +6,7 @@
  * this code was open sourced for educational purpose only.
  */
 namespace Controller;
+
 use App;
 use Silex\Application;
 use Silex\ControllerCollection;
@@ -17,23 +18,33 @@ use Doctrine\Common\Collections\ArrayCollection;
 class Index implements ControllerProviderInterface
 {
 
-    function index(App $app) {
+    function index(App $app)
+    {
         return $app->twig->render('index.twig');
     }
 
-    function project(App $app,$projectId){
-        $project=$app->projectService->find($projectId) or $app->abort(404);
-        return $app->twig->render('project.twig',array('project'=>$project));
+    function image(App $app, $imageId)
+    {
+        $image = $app->imageService->find($imageId);
+        return $app->twig->render('index.twig', array('image' => $image));
     }
 
-    function image(App $app, $projectId, $imageId) {
+    function project(App $app, $projectId)
+    {
+        $project = $app->projectService->find($projectId) or $app->abort(404);
+        return $app->twig->render('project.twig', array('project' => $project));
+    }
+
+    function projectImage(App $app, $projectId, $imageId)
+    {
         /** @var \Entity\Project $project */
         $project = $app->projectService->find($projectId) or $app->abort(404);
         $image = $project->getImageById($imageId) or $app->abort(404);
         return $app->twig->render('project.twig', array('image' => $image, 'project' => $project));
     }
 
-    function page(App $app, $pageId) {
+    function page(App $app, $pageId)
+    {
         $page = $app->pageService->find($pageId) or $app->abort(404);
         return $app->twig->render('page.twig', array('page' => $page));
     }
@@ -42,20 +53,24 @@ class Index implements ControllerProviderInterface
      * Returns all menu serialized
      * @return Response  json or xml response
      */
-    function publicMenuResource(App $app) {
+    function publicMenuResource(App $app)
+    {
         return $app->json($app->menuService->findAllPublishedMenus());
     }
 
-    function publicImageResource(App $app) {
+    function publicImageResource(App $app)
+    {
         return $app->json($app->imageService->findAllPublishedImages());
     }
 
-    function publicProjectResource(App $app) {
+    function publicProjectResource(App $app)
+    {
         $projects = $app->projectService->findAllPublishedProjects();
         return $app->json($projects);
     }
 
-    function publicPageResource(App $app) {
+    function publicPageResource(App $app)
+    {
         $pages = $app->pageService->findAllPublishedPages();
         return $app->json($pages);
     }
@@ -64,12 +79,13 @@ class Index implements ControllerProviderInterface
     /**
      * Load an image stored on grid fs if the image is not cached
      * @link http://php-and-symfony.matthiasnoback.nl/2012/10/uploading-files-to-mongodb-gridfs-2/
-     * @param App     $app
+     * @param App $app
      * @param Request $req
      * @param         $imageId
      * @return \Symfony\Component\HttpFoundation\StreamedResponse
      */
-    function imageLoad(App $app, Request $req, $imageId, $extension) {
+    function imageLoad(App $app, Request $req, $imageId, $extension)
+    {
         /** @var \Entity\Image $image */
         $image = $app->imageService->find($imageId);
         if (!$image) $app->abort(404);
@@ -107,18 +123,22 @@ class Index implements ControllerProviderInterface
      *
      * @return ControllerCollection A ControllerCollection instance
      */
-    public function connect(Application $app) {
+    public function connect(Application $app)
+    {
         /* @var \Silex\ControllerCollection $portfolioController */
         $portfolioController = $app['controllers_factory'];
         $portfolioController->get('/', array($this, 'index'))
             ->bind('index');
+        $portfolioController->get('/image/{imageId}/{title}', array($this, 'image'))
+            ->value('title',null);
+
         $portfolioController->get('/project/{projectId}', array($this, 'project'))
-            ->value('image',null)
+            ->value('image', null)
             ->bind('project');
-        $portfolioController->get('/project/{projectId}/image/{imageId}', array($this, 'image'))
+        $portfolioController->get('/project/{projectId}/image/{imageId}', array($this, 'projectImage'))
             ->bind('image');
         $portfolioController->get('/page/{pageId}/{title}', array($this, 'page'))
-            ->value('title','')
+            ->value('title', '')
             ->bind('page');
         $portfolioController->get('/static/images/cache/{imageId}.{extension}', array($this, 'imageLoad'))->value("extension", "jpg")
             ->bind('image_load');

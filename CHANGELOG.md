@@ -37,3 +37,4 @@
 - Sun Jun 15 16:48:27 GMT 2014 : project url
 - Sun Jun 15 16:54:00 GMT 2014 : google verification
 - Sun Jun 15 16:58:47 GMT 2014 : robots.txt
+- Sun Jun 15 17:22:11 GMT 2014 : config

@@ -16,8 +16,12 @@
         <meta property="og:site_name" content"{{ app.settings.title }}"/>
         <meta property="og:url" content="{{ app.request.uri }}"/>
         <meta property="og:title" content="{{ app.settings.title }}"/>
-        <meta property="og:description" content="{{ app.settings.description }}"/>
+        <meta property="og:description" content="{{ app.settings.subtitle }}"/>
 
+
+
+    {% endblock %}
+    {% block twittercard %}
     {% endblock %}
     {% block styles %}
         <!-- STYLES -->

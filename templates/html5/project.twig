@@ -5,7 +5,7 @@
 {% block opengraph %}
     <meta property="og:image" content="{{ url('image_load',{imageId:image.id,extension:image.extension}) }}"/>
     <meta property="og:description" content="{{image.description}}"/>
-    <meta property="og:type" content="image"/>
+    <!--<meta property="og:type" content="image"/>-->
     {{ parent() }}
 {% endblock %}
 {% block content %}

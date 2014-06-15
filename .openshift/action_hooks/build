@@ -30,5 +30,5 @@ else
 	unset GIT_DIR 
 	cd $OPENSHIFT_REPO_DIR 
 	mkdir vendor
-	php $OPENSHIFT_DATA_DIR/composer.phar  --no-ansi install
+	php $OPENSHIFT_DATA_DIR/composer.phar -q --no-ansi install 2&>1
 fi

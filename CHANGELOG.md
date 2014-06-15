@@ -33,3 +33,4 @@
 - Sat Jun 14 04:24:50 GMT 2014 : project
 - Sun Jun 15 15:35:19 GMT 2014 : facebook and twitter sharing
 - Sun Jun 15 15:41:48 GMT 2014 : robots.txt
+- Sun Jun 15 15:52:40 GMT 2014 : php dir deleted

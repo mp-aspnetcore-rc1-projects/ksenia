@@ -246,6 +246,7 @@ footer {
     bottom: 0;
     overflow: hidden;
     opacity: .8;
+    padding-bottom: 20px;
 }
 
 footer section {
@@ -370,7 +371,7 @@ pre {
 
 .space {
 
-    height: 200px;
+    height: 50px;
 }
 
 .stripped {

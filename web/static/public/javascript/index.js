@@ -483,8 +483,8 @@ jQuery(function ($) {
                                         programming - marc paraiso : <a href="mailto:mparaiso@online.fr">mparaiso@online.fr</a>\
                                     </div>\
                                     <div class="right">\
-                                        <a class="share facebook" href="javascript:void 0;"><i class="icon icon-facebook"></i></a>\
-                                        <a class="share twitter" href="http://twitter.com/share" target="_blank"><i class="icon icon-twitter"></i></a>\
+                                        <a title="Share on facebook" class="share facebook" href="javascript:void 0;"><i class="icon icon-facebook"></i></a>\
+                                        <a title="Share on twitter" class="share twitter" href="http://twitter.com/share" target="_blank"><i class="icon icon-twitter"></i></a>\
                                     </div>\
                                 </section>\
                             </footer>')

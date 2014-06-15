@@ -1,0 +1,25 @@
+{% extends 'layout.twig' %}
+{% block content %}
+    <header class="lead text-muted"><a href='{{ path('project',{projectId:project.id}) }}'>
+        {{ project.title }}
+        <small class="text-muted">{{ project.client }}</small>
+        </a>
+    </header>
+
+    <article>
+        <section class="row">
+            <div class="col-sm-8">
+                <figure class="thumbnail">
+                    <img
+                            src="{{ path('image_load',{projectId:project.id,imageId:image.id}) }}"
+                            alt="{{ image.title }}"/>
+                    <figcaption>{{ image.title }}</figcaption>
+                </figure>
+            </div>
+            <div clss="col-sm-4">
+                <p><strong>{{ image.title }}</strong></p>
+                <p>{{ image.description }}</p>
+            </div>
+        </section>
+    </article>
+{% endblock %}

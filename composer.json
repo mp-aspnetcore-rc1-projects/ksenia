@@ -25,6 +25,8 @@
         "symfony/intl":"~2.3@dev",
         "mparaiso/silex-simplerest": "0.1.0",
         "mparaiso/simpleuserserviceprovider":"0.0.*",
+        "mparaiso/silex-simplerest": "0.1.0",
+        "mparaiso/simpleuserserviceprovider":"0.0.*",
         "mparaiso/consoleserviceprovider":"0.1.*"
     },
     "require-dev":{

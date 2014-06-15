@@ -35,3 +35,4 @@
 - Sun Jun 15 15:41:48 GMT 2014 : robots.txt
 - Sun Jun 15 15:52:40 GMT 2014 : php dir deleted
 - Sun Jun 15 16:48:27 GMT 2014 : project url
+- Sun Jun 15 16:54:00 GMT 2014 : google verification

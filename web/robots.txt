@@ -1,2 +1,2 @@
 User-agent: *
-Disallow: /static/private
+Disallow: /static/private/

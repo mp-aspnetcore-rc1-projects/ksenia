@@ -1,8 +1,9 @@
 {% extends 'noscript/layout.twig' %}
+
+{% block opengraph %}
+    {{ parent() }}
+{% endblock %}
 {% block content_noscript %}
-    {% if  image is not defined %}
-        {% set image = project.images[0] %}
-    {% endif %}
     {% include 'noscript/gallery.twig' with {image:image} %}
     <section class="resource">
         <div class="project container">

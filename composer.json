@@ -27,6 +27,9 @@
         "mparaiso/simpleuserserviceprovider":"0.0.*",
         "mparaiso/consoleserviceprovider":"0.1.*"
     },
+    "require-dev":{
+        "symfony/browser-kit": "~2.3"
+    },
     "provide": {
         "ext-mongo": "*",
         "lib-icu": "*"

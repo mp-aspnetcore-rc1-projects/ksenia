@@ -41,11 +41,14 @@ class Config implements ServiceProviderInterface
      *
      * @param Application $app An Application instance
      */
-    public function register(Application $app) {
+    public function register(Application $app)
+    {
         /**
          * constants
          */
-        $app['ksu_connection_string'] = getenv('KSENIA_MONGODB');
+        $app['ksu_connection_string'] = $app->share(function () {
+            return getenv('KSENIA_MONGODB');
+        });
         $app['ksu_dbname'] = "ksenia-portfolio";
         $app['ksu_cache_images_locally'] = true;
         $app['ksu_image_cache_path'] = __DIR__ . "/../web/static/images/cache/";
@@ -56,6 +59,9 @@ class Config implements ServiceProviderInterface
             'subtitle' => 'Interior and Graphic Designer',
             "version" => "0.0.1",
             'template' => 'html5',
+            'opengraph' => array(
+                "app_id" => "849201731760693"
+            )
         );
         $app['settings'] = $app->share(function ($app) {
             return $app->configurationService->find();
@@ -94,11 +100,11 @@ class Config implements ServiceProviderInterface
         /** form factory helper */
         $app->register(new  DoctrineODMMongoDBServiceProvider(), array(
             'odm.connection.server' => function ($app) {
-                return $app['ksu_connection_string'];
-            },
+                    return $app['ksu_connection_string'];
+                },
             'odm.connection.dbname' => function ($app) {
-                return $app['ksu_dbname'];
-            },
+                    return $app['ksu_dbname'];
+                },
             'odm.connection.options' => array('connect' => true),
             'odm.proxy_dir' => __DIR__ . '/Proxy',
             'odm.hydrator_dir' => __DIR__ . '/Hydrator',
@@ -112,17 +118,17 @@ class Config implements ServiceProviderInterface
         ));
         $app->register(new SimpleUserServiceProvider, array(
             'mp.user.service.user' => $app->share(function ($app) {
-                return $app['userService'];
-            }),
+                    return $app['userService'];
+                }),
             'mp.user.login_template' => 'mp.user.template.login',
             'mp.user.template.layout' => "mp.user.template.layout",
             'mp.user.user.class' => '\Entity\User',
             "mp.user.om" => $app->share(function ($app) {
-                return $app['odm.om'];
-            }),
+                    return $app['odm.om'];
+                }),
             "mp.user.manager_registry" => $app->share(function ($app) {
-                return $app['odm.manager_registry'];
-            }),
+                    return $app['odm.manager_registry'];
+                }),
             'mp.user.allow_registration' => false
         ));
         $app->register(new SecurityServiceProvider, array(
@@ -130,30 +136,30 @@ class Config implements ServiceProviderInterface
                 'ROLE_USER' => array(),
                 'ROLE_ADMIN' => array('ROLE_USER')),
             "security.access_rules" => array(
-                array('/login','IS_AUTHENTICATED_ANONYMOUSLY'),
+                array('/login', 'IS_AUTHENTICATED_ANONYMOUSLY'),
                 array('/logout', 'IS_AUTHENTICATED_FULLY'),
                 array('/login-check', 'IS_AUTHENTICATED_FULLY'),
                 array('/private', 'IS_AUTHENTICATED_FULLY'),
             ),
             "security.firewalls" => $app->share(function (App $app) {
-                return array(
-                    "secured" => array(
-                        "pattern" => "^/",
-                        "anonymous" => TRUE,
-                        "form" => array(
-                            "login_path" => "/login",
-                            "check_path" => "/login-check"
-                        ),
-                        "logout" => array(
-                            "logout_path" => $app->url_generator->generate('mp.user.route.logout'),
-                            "target" => "/",
-                            "invalidate_session" => true,
-                            "delete_cookies" => true
-                        ),
-                        "users" => $app['mp.user.user_provider']
-                    )
-                );
-            })
+                    return array(
+                        "secured" => array(
+                            "pattern" => "^/",
+                            "anonymous" => TRUE,
+                            "form" => array(
+                                "login_path" => "/login",
+                                "check_path" => "/login-check"
+                            ),
+                            "logout" => array(
+                                "logout_path" => $app->url_generator->generate('mp.user.route.logout'),
+                                "target" => "/",
+                                "invalidate_session" => true,
+                                "delete_cookies" => true
+                            ),
+                            "users" => $app['mp.user.user_provider']
+                        )
+                    );
+                })
         ));
         $app->register(new ConsoleServiceProvider(), array());
         $app->register(new ValidatorServiceProvider(), array());
@@ -249,7 +255,8 @@ class Config implements ServiceProviderInterface
      * and should be used for "dynamic" configuration (whenever
      * a service must be requested).
      */
-    public function boot(Application $app) {
+    public function boot(Application $app)
+    {
         /**
          * routing
          */
@@ -285,6 +292,7 @@ class Config implements ServiceProviderInterface
                         break;
                     default:
                         $response = $app->twig->render('error', array('message' => $message));
+                        $response = new Response($response, $code);
                 }
                 return $response;
             }

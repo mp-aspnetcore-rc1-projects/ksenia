@@ -10,6 +10,8 @@ class Bootstrap{
         $app = new App(array("debug"=>true));
         $app['ksu_connection_string'] = getenv('KSENIA_MONGODB_TEST');
         $app['ksu_dbname'] = 'tests';
+        $app['session.test']=true;
+        $app['exception_handler']->disable();
         $app->boot();
         return $app;
     }

@@ -8,7 +8,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="cleartype" content="on">
     <!--http://www.mattcutts.com//blog/google-supports-meta-noodp-tag/-->
-    <meta name="robots" content="NOYDIR,NOODP" />
+    <meta name="robots" content="NOYDIR,NOODP"/>
+    {% block opengraph %}
+
+        <meta property="fb:app_id" content="{{ app.ksu.opengraph.app_id }}"/>
+        <meta property="og:site_name" content"{{ app.settings.title }}"/>
+        <meta property="og:locale" content="{{ app.locale }}"/>
+        <meta property="og:url" content="{{ app.request.uri }}"/>
+        <meta property="og:title" content="{{ app.settings.title }}"/>
+        <meta property="og:description" content="{{ app.settings.description }}"/>
+
+    {% endblock %}
     {% block styles %}
         <!-- STYLES -->
         <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400' rel='stylesheet' type='text/css'>
@@ -39,12 +49,12 @@
     {% endblock %}
     {% block scripts %}
         <!-- SCRIPTS -->
-        <script  defer src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-        <script  defer src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
-        <script  defer src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js"></script>
-        <script  defer src="//cdnjs.cloudflare.com/ajax/libs/showdown/0.3.1/showdown.min.js"></script>
-        <script  defer src="/static/public/javascript/Model.js"></script>
-        <script  defer src="/static/public/javascript/index.js"></script>
+        <script defer src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        <script defer src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
+        <script defer src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js"></script>
+        <script defer src="//cdnjs.cloudflare.com/ajax/libs/showdown/0.3.1/showdown.min.js"></script>
+        <script defer src="/static/public/javascript/Model.js"></script>
+        <script defer src="/static/public/javascript/index.js"></script>
         <!-- scripts -->
         <script type="text/javascript">
             var Config = {

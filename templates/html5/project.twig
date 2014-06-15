@@ -1,4 +1,13 @@
 {% extends 'layout.twig' %}
+    {% if  image is not defined %}
+        {% set image = project.images[0] %}
+    {% endif %}
+{% block opengraph %}
+    <meta property="og:image" content="{{ url('image_load',{imageId:image.id,extension:image.extension}) }}"/>
+    <meta property="og:description" content="{{image.description}}"/>
+    <meta property="og:type" content="image"/>
+    {{ parent() }}
+{% endblock %}
 {% block content %}
     {% include 'noscript/project.twig' %}
     <div id="spinner" class="spinner hidden"></div>

@@ -34,14 +34,16 @@ use Symfony\Component\Validator\Validator;
 class App extends Application
 {
 
-    function __construct(array $params = array()) {
+    function __construct(array $params = array())
+    {
         parent::__construct($params);
         $this->register(new Config);
 
     }
 
-
-    function __get($property) {
+    /** virtual properties */
+    function __get($property)
+    {
         if ($this->offsetExists($property)) {
             return $this[$property];
         } else {

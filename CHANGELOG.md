@@ -31,3 +31,4 @@
 - Wed Mar 19 20:59:42 GMT 2014 : password and salt were erased
 - Wed Jun 11 16:42:47 GMT 2014 : first
 - Sat Jun 14 04:24:50 GMT 2014 : project
+- Sun Jun 15 15:35:19 GMT 2014 : facebook and twitter sharing

@@ -14,6 +14,7 @@ use Silex\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class Index implements ControllerProviderInterface
 {
@@ -28,8 +29,8 @@ class Index implements ControllerProviderInterface
     function image(App $app, $imageId)
     {
         $image = $app->imageService->find($imageId);
-        $images=$app->imageService->findAllPublishedImages();
-        return $app->twig->render('index.twig', array('image' => $image,'images'=>$images));
+        $images = $app->imageService->findAllPublishedImages();
+        return $app->twig->render('index.twig', array('image' => $image, 'images' => $images));
     }
 
     function project(App $app, $projectId, $imageId)
@@ -92,7 +93,8 @@ class Index implements ControllerProviderInterface
         if (!$image) $app->abort(404);
         $dir = $app['ksu_image_cache_path'];
         $doCache = $app['ksu_cache_images_locally'];
-        $r = $app->stream(function () use ($image, $imageId, $dir, $doCache) {
+        //$r = $app->stream();
+        $r = new StreamedResponse(function () use ($image, $imageId, $dir, $doCache) {
             $file = $image->getFile();
             $r = $file->getMongoGridFSFile()->getResource();
             $out = fopen('php://output', 'w');
@@ -110,10 +112,12 @@ class Index implements ControllerProviderInterface
             if ($doCache) fclose($cache);
         }, 200, array(
             'Content-Type' => $image->getMimeType() ? $image->getMimeType() : 'image/*',
-            'Cache-Control' => 's-maxage=20',
-            'Etag' => '"' . $image->getMd5() . '"'
+            'Cache-Control' => 's-maxage=100',
         ));
-        $r->setTtl(20);
+        $r->setEtag($image->getMd5())
+            ->setExpires((new \DateTime())->add(new \DateInterval("D5")))
+            ->setPublic()
+            ->setTtl(2000);
         return $r;
     }
 

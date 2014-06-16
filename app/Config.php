@@ -66,14 +66,8 @@ class Config implements ServiceProviderInterface
          * silex core services
          */
         $app->register(new ServiceControllerServiceProvider);
-        $app->register(new SessionServiceProvider);
-        /*
-        $app->register(new SecurityServiceProvider(),array(
-            'security.firewalls'=>array(
-                "secured"=>array()
-            )
-        ));
-        */
+        $app->register(new SessionServiceProvider, array('session.storage.options' => array('name' => "EXPRESS")));
+
         $app->register(new SerializerServiceProvider());
         $app->register(new MonologServiceProvider, array(
             'monolog.logfile' => $app['temp'] . '/' . date('Y-m-d') . '.txt'

@@ -22,7 +22,7 @@ class Configuration extends AbstractType
             ->add('twitterUsername', 'text', array('required' => false))
             ->add('googleSiteVerification', 'text', array('required' => true, 'data' => '057nzccyBOntpG9lqhwOZ1s9NfpOPzS29h308SFqeNo'))
             ->add('facebookAppId', 'text', array('required' => true, 'data' => "849201731760693"))
-            ->add('googleAnalyticsId', 'text', array('data' => 'UA-7390829-4'))
+            ->add('googleAnalyticsId', 'text', array('data' => 'UA-7390829-5'))
             ->add('language', 'choice', array('label' => "Default Language",
                 'choices' => array('en' => 'English', 'ru' => 'Russian')));
     }

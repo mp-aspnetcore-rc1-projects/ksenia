@@ -45,3 +45,4 @@
 - Mon Jun 16 13:02:42 GMT 2014 : image route corrected
 - Mon Jun 16 13:08:57 GMT 2014 : removed slug
 - Mon Jun 16 14:16:43 GMT 2014 : analytics
+- Mon Jun 16 14:47:00 GMT 2014 : session

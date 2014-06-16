@@ -2,6 +2,7 @@
 
 namespace Service;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Entity\Image as ImageEntity;
 use Symfony\Component\HttpFoundation\File\File;
 
@@ -13,8 +14,10 @@ class ImageStub
      * @var Base
      */
     private $projectService;
-
-    public $images = array();
+    /**
+     * @var ArrayCollection<ImageEntity>
+     */
+    public $images;
 
     /**
      * @return \Service\Base
@@ -22,12 +25,16 @@ class ImageStub
 //    public function getProjectService() {
 //        return $this->projectService;
 //    }
-//
+    function __construct()
+    {
+        $this->images = new ArrayCollection();
+    }
+
     function create($model)
     {
         /** @var ImageEntity $model */
         //if (!$model->getProject()) throw new \Exception("image should have a project!");
-        $this->images[] = $model;
+        $this->images->add($model);
     }
 
 
@@ -77,9 +84,16 @@ class ImageStub
     /** find all published images */
     function findAllPublishedImages()
     {
-        return array_filter($this->images, function (ImageEntity $image) {
+        return $this->images->filter(function (ImageEntity $image) {
             return $image->getIsPublished();
         });
+    }
+
+    function find($id)
+    {
+        return $this->images->filter(function (ImageEntity $image) use ($id) {
+            return $image->getId() == $id;
+        })->first();
     }
 
 }

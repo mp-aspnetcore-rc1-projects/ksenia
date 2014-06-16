@@ -42,6 +42,24 @@ class AppTest extends WebTestCase
         $crawler = $client->request("GET", "/");
         $html = $crawler->html();
         $this->assertContains("Marc Paraiso", $html);
+
+        return $image;
+    }
+
+    /**
+     * @depends testIndex
+     */
+    function testImage($image)
+    {
+        $this->app['imageService'] = $this->app->share(function () {
+            return new ImageStub();
+        });
+        $client = $this->createClient();
+        $this->app->imageService->create($image);
+        $crawler = $client->request('GET', '/image/' . $image->getId());
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+
+
     }
 
     function test404()

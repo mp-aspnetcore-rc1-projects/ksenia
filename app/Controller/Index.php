@@ -28,7 +28,8 @@ class Index implements ControllerProviderInterface
     function image(App $app, $imageId)
     {
         $image = $app->imageService->find($imageId);
-        return $app->twig->render('index.twig', array('image' => $image));
+        $images=$app->imageService->findAllPublishedImages();
+        return $app->twig->render('index.twig', array('image' => $image,'images'=>$images));
     }
 
     function project(App $app, $projectId, $imageId)

@@ -621,8 +621,7 @@ jQuery(function ($) {
                         $this.parent().hide();
                         $this.replaceWith(image);
                         $(image).parent().fadeIn();
-                    }),
-                    index * 200);
+                    }), 50 * index);
             });
         },
     });

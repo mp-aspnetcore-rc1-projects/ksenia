@@ -42,3 +42,4 @@
 - Sun Jun 15 17:52:09 GMT 2014 : share facebook corrected
 - Sun Jun 15 18:01:00 GMT 2014 : project.twig
 - Sun Jun 15 18:45:56 GMT 2014 : bottom
+- Mon Jun 16 13:02:42 GMT 2014 : image route corrected

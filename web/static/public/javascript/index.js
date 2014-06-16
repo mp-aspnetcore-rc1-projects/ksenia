@@ -437,7 +437,7 @@ jQuery(function ($) {
                             </summary>\
                             <hr>\
                             <p>\
-                                Project: <a href="#project/<%-project.id%>"><%-_.slug(project.title)%></a><br>\
+                                Project: <a href="#project/<%-project.id%>"><%-project.title%></a><br>\
                                 Client: <%-project.client%><br>\
                                 <%-description%>\
                             </p>'),

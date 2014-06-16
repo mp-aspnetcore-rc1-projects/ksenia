@@ -18,10 +18,11 @@
         <meta property="og:site_name" content"{{ app.settings.title }}"/>
         <meta property="og:url" content="{{ app.request.uri }}"/>
         <meta property="og:title" content="{{ app.settings.title }}"/>
-        <meta property="og:description" content="{{ app.settings.subtitle }}"/>
         {% if image is defined %}
             <meta property="og:image" content="{{ url('image_load',{imageId:image.id,extension:image.extension}) }}"/>
             <meta property="og:description" content="{{ image.description }}"/>
+        {% else %}
+            <meta property="og:description" content="{{ app.settings.subtitle }}"/>
         {% endif %}
         <!--google verification -->
         <meta name="google-site-verification" content="{{ app.settings.googleSiteVerification }}"/>

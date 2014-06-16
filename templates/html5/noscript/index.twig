@@ -1,9 +1,5 @@
 {% extends 'noscript/layout.twig' %}
 {% block content_noscript %}
-    {% set images = app.imageService.findAllPublishedImages() %}
-    {% if  image is not defined %}
-        {% set image = images[0] %}
-    {% endif %}
     {% include 'noscript/gallery.twig' with {image:image} %}
     <section class="resource">
         <div id="page" class="container" style="display: block;">

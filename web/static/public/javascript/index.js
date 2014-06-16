@@ -80,7 +80,7 @@ jQuery(function ($) {
                     view.$page.html(template.thumbnails({
                         images: model.get('playlist')
                     }));
-                    view.$page.slideDown(700);
+                    view.$page.slideDown(400);
                     model.set('galleryResourceVisisble', true);
                     view.showResourceImages();
                 });
@@ -156,7 +156,7 @@ jQuery(function ($) {
                 var deferred = $.Deferred();
                 if (model.get('galleryVisible') === false) {
                     model.set('galleryVisible', true);
-                    view.$gallery.slideDown(700, deferred.resolve.bind(deferred));
+                    view.$gallery.slideDown(400, deferred.resolve.bind(deferred));
                 }
                 setTimeout(deferred.resolve.bind(deferred), 1);
                 return deferred;
@@ -168,7 +168,7 @@ jQuery(function ($) {
                 var deferred = $.Deferred();
                 if (model.get('galleryVisible') === true) {
                     model.set('galleryVisible', false);
-                    view.$gallery.slideUp(500, deferred.resolve.bind(deferred));
+                    view.$gallery.slideUp(400, deferred.resolve.bind(deferred));
                 }
                 setTimeout(deferred.resolve.bind(deferred), 1);
                 return deferred;
@@ -179,7 +179,7 @@ jQuery(function ($) {
             execute: function () {
                 var deferred = $.Deferred();
                 command.hideSummary.execute().done(function () {
-                    view.$gallery.find('figure').fadeOut(500, function () {
+                    view.$gallery.find('figure').fadeOut(300, function () {
                         deferred.resolve();
                     });
                 });
@@ -192,9 +192,9 @@ jQuery(function ($) {
                 model.set('transition', true);
                 return command.hideImage.execute().pipe(command.showGallery.execute()).done(function () {
                     view.$gallery.find('figure').html(img);
-                    view.$gallery.find('figure').fadeIn(700, function () {
+                    view.$gallery.find('figure').fadeIn(200, function () {
                         view.$summary.html(template.summary(model.getCurrentImage()));
-                        view.$summary.slideDown(500);
+                        view.$summary.slideDown(400);
                         model.set('transition', false);
                     });
                 });

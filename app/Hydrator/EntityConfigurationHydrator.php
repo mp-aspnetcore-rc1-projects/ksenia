@@ -139,6 +139,14 @@ class EntityConfigurationHydrator implements HydratorInterface
             $this->class->reflFields['googleSiteVerification']->setValue($document, $return);
             $hydratedData['googleSiteVerification'] = $return;
         }
+
+        /** @Field(type="string") */
+        if (isset($data['googleAnalyticsId'])) {
+            $value = $data['googleAnalyticsId'];
+            $return = (string) $value;
+            $this->class->reflFields['googleAnalyticsId']->setValue($document, $return);
+            $hydratedData['googleAnalyticsId'] = $return;
+        }
         return $hydratedData;
     }
 }

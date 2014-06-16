@@ -50,6 +50,10 @@ class Configuration implements JsonSerializable, NormalizableInterface
      * @var string
      */
     private $googleSiteVerification;
+    /**
+     * @ODM\String
+     */
+    private $googleAnalyticsId;
 
     public function getId()
     {
@@ -234,5 +238,21 @@ class Configuration implements JsonSerializable, NormalizableInterface
     public function setGoogleSiteVerification($googleSiteVerification)
     {
         $this->googleSiteVerification = $googleSiteVerification;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getGoogleAnalyticsId()
+    {
+        return $this->googleAnalyticsId;
+    }
+
+    /**
+     * @param mixed $googleAnalyticsId
+     */
+    public function setGoogleAnalyticsId($googleAnalyticsId)
+    {
+        $this->googleAnalyticsId = $googleAnalyticsId;
     }
 }

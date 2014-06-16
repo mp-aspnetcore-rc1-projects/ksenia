@@ -21,7 +21,7 @@ $templates['layout'] = <<<HERE
 	<!doctype html>
 	<html lang='{{app.locale}}'>
 		<head>
-			<title>{{app.ksu.title}}</title>
+			<title>{{app.settings.title}}</title>
 			{% block metas %}
 				<meta charset='UTF-8' />
 				<meta http-equiv='X-UA-Compatible' content='IE=edge'/>
@@ -40,7 +40,8 @@ $templates['layout'] = <<<HERE
 			<nav class="navbar navbar-inverse">
                 <div class="container">
                     <section class="navbar-header">
-                        <a class="navbar-brand" href="{{path('admin_index')}}">{{ app.ksu.title | upper }} | Administration </a>
+                        <a class="navbar-brand" href="{{path('admin_index')}}">{{ app.settings.title | upper }} |
+                        Administration </a>
                     </section>
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="{{path('index')}}">Home</a></li>

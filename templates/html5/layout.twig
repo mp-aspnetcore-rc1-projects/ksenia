@@ -38,31 +38,7 @@
     {% endblock %}
     {% block styles %}
         <!-- STYLES -->
-        <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400' rel='stylesheet' type='text/css'>
-        <link rel="stylesheet" href="/static/public/css/reset.css">
-        <link rel="stylesheet" href="/static/public/css/style.css">
-        <style type="text/css">
-            body {
-                color: {{ app.settings.textColor|default('#444') }};
-                background-color: {{ app.settings.backgroundColor|default('#EFEFEF') }};
-            }
 
-            .muted {
-                color: {{ app.settings.textMuted|default('#AAA') }};
-            }
-
-            .primary {
-                color: {{ app.settings.primaryColor|default('#20a3ea') }};
-            }
-
-            .secondary {
-                color: {{ app.settings.primaryColor|default('#20a3ea') }};
-            }
-
-            .ternary {
-                color: {{ app.settings.primaryColor|default('#20a3ea') }};
-            }
-        </style>
     {% endblock %}
     {% block scripts %}
         <!-- SCRIPTS -->
@@ -81,7 +57,8 @@
                 contactEmail: "{{app.settings.contactEmail}}",
                 projectResource: "{{path('public_project_resource')}}",
                 pageResource: "{{path('public_page_resource')}}",
-                menuResource: "{{ path('public_menu_resource') }}"
+                menuResource: "{{ path('public_menu_resource') }}",
+                googleAnalyticsId: "{{app.settings.googleAnalyticsId}}"
             }
         </script>
     {% endblock %}
@@ -96,7 +73,7 @@
 {% block content %}
 {% endblock %}
 <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
-<script>
+<script defer>
     (function (b, o, i, l, e, r) {
         b.GoogleAnalyticsObject = l;
         b[l] || (b[l] =
@@ -109,8 +86,33 @@
         e.src = '//www.google-analytics.com/analytics.js';
         r.parentNode.insertBefore(e, r)
     }(window, document, 'script', 'ga'));
-    ga('create', 'UA-XXXXX-X');
+    ga('create', Config.googleAnalyticsId);
     ga('send', 'pageview');
 </script>
+<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="/static/public/css/reset.css">
+<link rel="stylesheet" href="/static/public/css/style.css">
+<style type="text/css">
+    body {
+        color: {{ app.settings.textColor|default('#444') }};
+        background-color: {{ app.settings.backgroundColor|default('#EFEFEF') }};
+    }
+
+    .muted {
+        color: {{ app.settings.textMuted|default('#AAA') }};
+    }
+
+    .primary {
+        color: {{ app.settings.primaryColor|default('#20a3ea') }};
+    }
+
+    .secondary {
+        color: {{ app.settings.primaryColor|default('#20a3ea') }};
+    }
+
+    .ternary {
+        color: {{ app.settings.primaryColor|default('#20a3ea') }};
+    }
+</style>
 </body>
 </html>

@@ -32,7 +32,7 @@ class Index implements ControllerProviderInterface
         return $app->twig->render('index.twig', array('image' => $image,'images'=>$images));
     }
 
-    function project(App $app, $projectId, $imageId)
+    function project(App $app, $projectId, $imageId,$title)
     {
         /** @var \Entity\Project $project */
         $project = $app->projectService->find($projectId) or $app->abort(404);
@@ -139,6 +139,9 @@ class Index implements ControllerProviderInterface
             ->bind('project');
         $portfolioController->get('/project/{projectId}/image/{imageId}', array($this, 'project'))
             ->bind('image');
+        $portfolioController->get('/project/{projectId}/image/{imageId}/{title}', array($this, 'project'))
+            ->value('title',null)
+            ->bind('project_image_title');
         $portfolioController->get('/page/{pageId}/{title}', array($this, 'page'))
             ->value('title', '')
             ->bind('page');

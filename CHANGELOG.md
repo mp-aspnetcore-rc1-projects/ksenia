@@ -48,3 +48,4 @@
 - Mon Jun 16 14:47:00 GMT 2014 : session
 - Mon Jun 16 15:25:49 GMT 2014 : revert
 - Mon Jun 16 21:15:57 GMT 2014 : transition
+- Mon Jun 16 22:11:00 GMT 2014 : analytics

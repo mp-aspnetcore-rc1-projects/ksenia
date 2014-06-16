@@ -178,10 +178,8 @@ jQuery(function ($) {
         hideImage: {
             execute: function () {
                 var deferred = $.Deferred();
-                command.hideSummary.execute().done(function () {
-                    view.$gallery.find('figure').fadeOut(300, function () {
-                        deferred.resolve();
-                    });
+                view.$gallery.find('figure,.summary').fadeOut(300, function () {
+                    deferred.resolve();
                 });
                 return deferred.promise();
             }
@@ -192,10 +190,10 @@ jQuery(function ($) {
                 model.set('transition', true);
                 return command.hideImage.execute().pipe(command.showGallery.execute()).done(function () {
                     view.$gallery.find('figure').html(img);
-                    view.$gallery.find('figure').fadeIn(200, function () {
-                        view.$summary.html(template.summary(model.getCurrentImage()));
-                        view.$summary.slideDown(400);
+                    view.$summary.html(template.summary(model.getCurrentImage()));
+                    view.$gallery.find('figure,.summary').fadeIn(200, function () {
                         model.set('transition', false);
+                        $.scrollTo(0,200);
                     });
                 });
             }
@@ -220,9 +218,9 @@ jQuery(function ($) {
                 }
                 image = model.getNextImage();
                 if (model.get('currentProject')) {
-                    route = '#project/' + model.get('currentProject').id + "/image/" + image.id + '/' + image.title;
+                    route = '#project/' + model.get('currentProject').id + "/image/" + image.id + '/' + _.slug(image.title);
                 } else {
-                    route = '#image/' + image.id + '/' + image.title;
+                    route = '#image/' + image.id + '/' + _.slug(image.title);
                 }
                 router.navigate(route, {
                     trigger: true
@@ -467,7 +465,7 @@ jQuery(function ($) {
                                         <button class="next"></button>\
                                     </div>\
                                     <!-- SUMMARY-->\
-                                    <details id="detail" class="summary" open>\
+                                    <details id="detail" class="summary">\
                                     </details>\
                                     <!--ENDSUMMARY-->\
                                 </section>\
@@ -535,14 +533,14 @@ jQuery(function ($) {
         },
         showSummary: function () {
             var deferred = $.Deferred();
-            this.$summary.show(700, function () {
+            this.$summary.show(1, function () {
                 deferred.resolve();
             });
             return deferred.promise();
         },
         hideSummary: function () {
             var deferred = $.Deferred();
-            this.$summary.slideUp(500, function () {
+            this.$summary.slideUp(1, function () {
                 deferred.resolve();
             });
             return deferred.promise();

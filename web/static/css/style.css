@@ -169,7 +169,8 @@ nav li a:hover {
 
 .gallery details {
     transition: .5s background;
-    background: rgba(0, 0, 0, .8);
+
+    background: rgba(0, 0, 0, .1);
     color: #F5F5F5;
     font-size: inherit;
     z-index: 4;
@@ -179,11 +180,17 @@ nav li a:hover {
 }
 
 .gallery details:hover {
-    background: rgba(0, 0, 0, .1);
+    background: rgba(0, 0, 0, .8);
 }
 
 .gallery details > * {
     padding: 0 15px;
+}
+
+.gallery summary h4{
+    background: rgba(0, 0, 0, .6);
+    padding:10px;
+    border-radius:5px;
 }
 
 .gallery .controls {
@@ -271,12 +278,12 @@ footer .right {
 }
 
 .icon-facebook {
-    background: url('../../images/glyphicons_social_30_facebook.png');
+    background: url('../../static/images/glyphicons_social_30_facebook.png');
 
 }
 
 .icon-twitter {
-    background: url('../../images/glyphicons_social_31_twitter.png');
+    background: url('../../static/images/glyphicons_social_31_twitter.png');
 
 }
 

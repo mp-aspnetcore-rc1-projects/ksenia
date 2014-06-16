@@ -32,7 +32,7 @@ $templates['layout'] = <<<HERE
                 {# google font #}
                 <link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css'>
                 {# custom styles #}
-                <link rel="stylesheet" href="/static/css/styles.css">
+                <link rel="stylesheet" href="/static/private/css/styles.css">
             {% endblock %}
 		</head>
 		<body>

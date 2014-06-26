@@ -32,7 +32,7 @@ class Index implements ControllerProviderInterface
         return $app->twig->render('index.twig', array('image' => $image,'images'=>$images));
     }
 
-    function project(App $app, $projectId, $imageId,$title)
+    function project(App $app, $projectId, $imageId,$title="")
     {
         /** @var \Entity\Project $project */
         $project = $app->projectService->find($projectId) or $app->abort(404);

@@ -50,3 +50,4 @@
 - Mon Jun 16 21:15:57 GMT 2014 : transition
 - Mon Jun 16 22:11:00 GMT 2014 : analytics
 - Mon Jun 16 22:39:43 GMT 2014 : missing route fixed
+- Thu Jun 26 08:11:17 GMT 2014 : error log

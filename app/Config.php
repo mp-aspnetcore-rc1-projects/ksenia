@@ -7,6 +7,8 @@
  */
 use Controller\Administration;
 use Controller\Index;
+use Monolog\Handler\SyslogHandler;
+use Monolog\Logger;
 use Mparaiso\Provider\ConsoleServiceProvider;
 use Mparaiso\Provider\DoctrineODMMongoDBServiceProvider;
 use Mparaiso\Provider\SimpleUserServiceProvider;
@@ -26,6 +28,7 @@ use Silex\ServiceProviderInterface;
 use Silex\Provider\FormServiceProvider;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+
 
 /**
  * Configure application
@@ -70,8 +73,14 @@ class Config implements ServiceProviderInterface
 
         $app->register(new SerializerServiceProvider());
         $app->register(new MonologServiceProvider, array(
-            'monolog.logfile' => $app['temp'] . '/' . date('Y-m-d') . '.txt'
+            'monolog.logfile' => $app['temp'] . '/' . date('Y-m-d') . '.txt',
         ));
+        /*
+        $app['monolog'] = $app->extend('monolog', function (Logger $monolog, $container) {
+            $monolog->pushHandler(new SyslogHandler($monolog->getName(), LOG_USER, Logger::ERROR, true));
+            return $monolog;
+        });
+        */
         $app->register(new TwigServiceProvider(), array(
             'twig.path' => array(__DIR__ . '/../templates/' . $app['ksu']['template']),
             'twig.templates' => require(__DIR__ . '/Views/templates.php'),
@@ -267,6 +276,7 @@ class Config implements ServiceProviderInterface
         $app->error(function (\Exception $e, $code) use ($app) {
             /* @var App $app */
             // if production show custom error page
+            error_log(var_export(array($e->getCode(), $e->getMessage()), true));
             if (!$app['debug']) {
                 switch ($code) {
                     case 404:

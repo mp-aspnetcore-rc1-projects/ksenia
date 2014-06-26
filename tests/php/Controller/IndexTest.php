@@ -28,5 +28,6 @@ class IndexTest extends WebTestCase
         $url = $app->url_generator->generate('project_image_title', array('projectId' => 100, 'imageId' => 200,
             'title' => "foo"));
         $this->assertNotNull($url);
+        /// $client = $this->createClient();
     }
 }

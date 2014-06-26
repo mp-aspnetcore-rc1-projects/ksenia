@@ -131,16 +131,16 @@ class Index implements ControllerProviderInterface
         $portfolioController->get('/', array($this, 'index'))
             ->bind('index');
         $portfolioController->get('/image/{imageId}/{title}', array($this, 'image'))
-            ->value('title', null);
+            ->value('title', "");
         $portfolioController->get('/project/{projectId}/{title}', array($this, 'project'))
-            ->value('title', null)
+            ->value('title', "")
             ->value('imageId', null)
             ->bind('projectImage')
             ->bind('project');
         $portfolioController->get('/project/{projectId}/image/{imageId}', array($this, 'project'))
             ->bind('image');
         $portfolioController->get('/project/{projectId}/image/{imageId}/{title}', array($this, 'project'))
-            ->value('title',null)
+            ->value('title',"")
             ->bind('project_image_title');
         $portfolioController->get('/page/{pageId}/{title}', array($this, 'page'))
             ->value('title', '')

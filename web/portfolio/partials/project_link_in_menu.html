@@ -1,0 +1,6 @@
+<li>
+    <a data-id="<%-id%>" data-item-id="<%-itemId%>" class="{{type}}"
+    <% if(type!="menu"){%> ng-href="#{{type!='menu'?'/'+itemId%>/<%-_.slug(title)%>" <% }else{ %> href="javascript:void 0;" <% } %> >\
+    <%-title%>\
+    </a>
+</li>

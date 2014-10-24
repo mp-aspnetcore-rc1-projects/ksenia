@@ -51,3 +51,4 @@
 - Mon Jun 16 22:11:00 GMT 2014 : analytics
 - Mon Jun 16 22:39:43 GMT 2014 : missing route fixed
 - Thu Jun 26 08:11:17 GMT 2014 : error log
+- Thu Jun 26 08:37:52 GMT 2014 : title
